@@ -12,7 +12,7 @@ class WargaModel extends Authenticatable
 
     protected $table = 'm_warga';
 
-    protected $primaryKey = 'nik';
+    protected $primaryKey = 'id_warga';
 
     protected $fillable = [
         'nik',
