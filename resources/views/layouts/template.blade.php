@@ -3,7 +3,7 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>{{ config('app.name', 'PWL Laravel Starter Code') }}</title>
+    <title>{{ config('app.name', 'SIBANSOS') }}</title>
 
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
@@ -29,18 +29,21 @@
         <!-- /.navbar -->
 
         <!-- Main Sidebar Container -->
-        <aside class="main-sidebar sidebar-dark-primary elevation-4">
-            <!-- Brand Logo -->
-            <a href="{{ url('/') }}" class="brand-link">
-                <img src="{{ asset('adminlte/dist/img/AdminLTELogo.png') }}" alt="AdminLTE Logo"
-                    class="brand-image img-circle elevation-3" style="opacity: .8">
-                <span class="brand-text font-weight-light">PWL - Starter Code</span>
-            </a>
+        @auth
+        @if(Auth::user()->id_level == '1' || Auth::user()->id_level == '2')
+            <aside class="main-sidebar sidebar-dark-primary elevation-4">
+                <!-- Brand Logo -->
+                <a href="{{ url('/') }}" class="brand-link">
+                    <img src="{{ asset('adminlte/dist/img/AdminLTELogo.png') }}" alt="AdminLTE Logo" class="brand-image img-circle elevation-3" style="opacity: .8">
+                    <span class="brand-text font-weight-light">PWL - Starter Code</span>
+                </a>
 
-            <!-- Sidebar -->
-            @include('layouts.sidebar')
-            <!-- /.sidebar -->
-        </aside>
+                <!-- Sidebar -->
+                @include('layouts.sidebar')
+                <!-- /.sidebar -->
+            </aside>
+        @endif
+        @endauth
 
         <!-- Content Wrapper. Contains page content -->
         <div class="content-wrapper">
