@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\WargaController;
+use App\Http\Controllers\WelcomeController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -15,16 +16,16 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
+Route::get('/', [WelcomeController::class, 'index']);
+// Route::get('/', [AuthController::class, 'index'])->name('login');
+// Route::post('login', [AuthController::class, 'proses_login'])->name('proses_login');
+// Route::get('logout', [AuthController::class, 'logout'])->name('logout');
+// Route::group(['middleware' => ['auth']], function () {
+//     route::group(['middleware' => ['cek_login:1,2']], function () {
+//         Route::resource('admin', WargaController::class);
+//     });
 
-Route::get('/', [AuthController::class, 'index'])->name('login');
-Route::post('login', [AuthController::class, 'proses_login'])->name('proses_login');
-Route::get('logout', [AuthController::class, 'logout'])->name('logout');
-Route::group(['middleware' => ['auth']], function () {
-    route::group(['middleware' => ['cek_login:1,2']], function () {
-        Route::resource('admin', WargaController::class);
-    });
-
-    route::group(['middleware' => ['cek_login:3']], function () {
-        Route::resource('user', WargaController::class);
-    });
-});
+//     route::group(['middleware' => ['cek_login:3']], function () {
+//         Route::resource('user', WargaController::class);
+//     });
+// });
