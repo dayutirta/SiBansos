@@ -14,7 +14,7 @@ return [
     */
 
     'defaults' => [
-        'guard' => 'web',
+        'guard' => 'warga',
         'passwords' => 'users',
     ],
 
@@ -36,9 +36,9 @@ return [
     */
 
     'guards' => [
-        'web' => [
+        'warga' => [
             'driver' => 'session',
-            'provider' => 'users',
+            'provider' => 'warga',
         ],
     ],
 
@@ -60,9 +60,9 @@ return [
     */
 
     'providers' => [
-        'users' => [
+        'warga' => [
             'driver' => 'eloquent',
-            'model' => App\Models\User::class,
+            'model' => App\Models\WargaModel::class,
         ],
 
         // 'users' => [
