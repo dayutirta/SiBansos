@@ -3,6 +3,7 @@
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\WargaController;
 use App\Http\Controllers\WelcomeController;
+use App\Http\Controllers\BansosController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -17,6 +18,18 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::get('/', [WelcomeController::class, 'index']);
+
+Route::group(['prefix' => 'bansos'], function() {
+    Route::get('/', [BansosController::class, 'index']);          // menampilkan halaman awal user
+    Route::post('/list', [BansosController::class, 'list']);      // menampilkan data user dalam bentuk json untuk datatables
+    Route::get('/create', [BansosController::class, 'create']);   // menampilkan halaman form tambah user
+    Route::post('/', [BansosController::class, 'store']);         // menyimpan data user baru
+    Route::get('/{id}', [BansosController::class, 'show']);       // menampilkan detail user
+    Route::get('/{id}/edit', [BansosController::class, 'edit']);  // menampilkan halaman form edit user
+    Route::put('/{id}', [BansosController::class, 'update']);     // menyimpan perubahan data user
+    Route::delete('/{id}', [BansosController::class, 'destroy']); // menghapus data user
+});
+
 // Route::get('/', [AuthController::class, 'index'])->name('login');
 // Route::post('login', [AuthController::class, 'proses_login'])->name('proses_login');
 // Route::get('logout', [AuthController::class, 'logout'])->name('logout');

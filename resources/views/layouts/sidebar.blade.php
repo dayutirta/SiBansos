@@ -45,7 +45,7 @@
                 </a>
                 <ul class="nav nav-treeview">
                     <li class="nav-item">
-                        <a href="{{ url('/kategori') }}" class="nav-link">
+                        <a href="{{ url('/bansos') }}" class="nav-link">
                             <i class="fas fa-database nav-icon"></i>
                             <p>Data Bansos</p>
                         </a>
