@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::create('m_penerima', function (Blueprint $table) {
             $table->id('id_penerima');
             $table->unsignedBigInteger('id_bansos')->index();
-            $table->string('nokk',20)->index();
+            $table->unsignedBigInteger('id_warga')->index();
             $table->string('nama',100);
             $table->integer('usia');
             $table->integer('pendapatan');
@@ -24,7 +24,7 @@ return new class extends Migration
             $table->timestamps();
 
             $table->foreign('id_bansos')->references('id_bansos')->on('m_bansos');
-            $table->foreign('nokk')->references('nokk')->on('m_warga');
+            $table->foreign('id_warga')->references('id_warga')->on('m_warga');
         });
     }
 
