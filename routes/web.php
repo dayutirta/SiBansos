@@ -30,15 +30,15 @@ Route::group(['prefix' => 'bansos'], function() {
     Route::delete('/{id}', [BansosController::class, 'destroy']); // menghapus data user
 });
 
-// Route::get('/', [AuthController::class, 'index'])->name('login');
-// Route::post('login', [AuthController::class, 'proses_login'])->name('proses_login');
-// Route::get('logout', [AuthController::class, 'logout'])->name('logout');
-// Route::group(['middleware' => ['auth']], function () {
-//     route::group(['middleware' => ['cek_login:1,2']], function () {
-//         Route::resource('admin', WargaController::class);
-//     });
-
-//     route::group(['middleware' => ['cek_login:3']], function () {
-//         Route::resource('user', WargaController::class);
-//     });
-// });
+Route::get('login', [AuthController::class, 'index'])->name('login');
+Route::post('login', [AuthController::class, 'proses_login'])->name('proses_login');
+Route::group(['middleware' => ['cek_login:1', 'auth']], function () {
+    Route::resource('admin', WargaController::class);
+});
+Route::group(['middleware' => ['cek_login:2', 'auth']], function () {
+    Route::resource('rt', WargaController::class);
+});
+Route::group(['middleware' => ['cek_login:3', 'auth']], function () {
+    Route::resource('user', WargaController::class);
+});
+Route::get('logout', [AuthController::class, 'logout'])->name('logout');
