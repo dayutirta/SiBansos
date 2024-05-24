@@ -15,22 +15,22 @@
             @if (session('error'))
                 <div class="alert alert-danger">{{ session('error') }}</div>
             @endif
-            {{-- <div class="row">
+            <div class="row">
                 <div class="col-md-12">
                     <div class="form-group row">
                         <label class="col-1 control-label col-form-label">Filter:</label>
                         <div class="col-3">
-                            <select class="form-control" id="nik" name="nik" required>
+                            <select class="form-control" id="id_level" name="id_level" required>
                                 <option value="">- Semua -</option>
-                                @foreach ($nik as $item)
-                                    <option value="{{ $item->nik }}">{{ $item->rt }}</option>
+                                @foreach ($warga as $item)
+                                    <option value="{{ $item->warga }}">{{ $item->nama_level }}</option>
                                 @endforeach
                             </select>
                             <small class="form-text text-muted">nik</small>
                         </div>
                     </div>
                 </div>
-            </div> --}}
+            </div>
             <table class="table table-bordered table-striped table-hover table-sm" id="table_warga">
                 <thead>
                     <tr>
@@ -40,6 +40,7 @@
                         <th>Alamat</th>
                         {{-- <th>RT</th>
                         <th>RW</th> --}}
+                        <th>Level</th>
                         <th>Agama</th>
                         <th>Aksi</th>
                     </tr>
@@ -68,7 +69,7 @@
                     "url": "{{ url('warga/list') }}",
                     "type": 'POST',
                     "data": function(d) {
-                        d.nik = $('#nik').val();
+                        d.id_level = $('#id_level').val();
                     }
                 },
                 columns: [{
@@ -108,6 +109,12 @@
                     //     searchable: true
                     // },
                     {
+                        data: 'level.nama_level',
+                        name: 'level.nama_level',
+                        orderable: false,
+                        searchable: true
+                    },
+                    {
                         data: 'agama',
                         name: 'agama',
                         orderable: false,
@@ -122,7 +129,7 @@
                 ]
             });
 
-            $('#rt').on('change', function() {
+            $('#id_level').on('change', function() {
                 dataWarga.ajax.reload();
             });
         });
