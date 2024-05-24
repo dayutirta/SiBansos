@@ -5,79 +5,46 @@ namespace App\Http\Controllers;
 use App\Models\WargaModel;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Yajra\DataTables\Facades\DataTables;
 
 class WargaController extends Controller
 {
     public function index()
     {
-        $user = Auth::user();
+        $breadcrumb = (object) [
+            'title' => 'Daftar Warga',
+            'list'  => ['Home', 'Warga']
+        ];
 
-        if ($user->id_level == '1') {
-            $breadcrumb = (object) [
-                'title' => 'Admin Page',
-                'list' => [
-                    'Home',
-                ]
-            ];
-    
-            $page = (object) [
-                'title' => 'Selamat Datang di Halaman Dashboard',
-            ];
-    
-            $activeMenu = 'user';
-    
-            $level = WargaModel::all();
-    
-            return view('admin.index', [
-                'breadcrumb' => $breadcrumb,
-                'page' => $page,
-                'level' => $level,
-                'activeMenu' => $activeMenu
-            ]);
-        } elseif ($user->id_level == '2') {
-            $breadcrumb = (object) [
-                'title' => 'Admin Page',
-                'list' => [
-                    'Home',
-                ]
-            ];
-    
-            $page = (object) [
-                'title' => 'Selamat Datang di Halaman Dashboard',
-            ];
-    
-            $activeMenu = 'user';
-    
-            $level = WargaModel::all();
-    
-            return view('rt.index', [
-                'breadcrumb' => $breadcrumb,
-                'page' => $page,
-                'level' => $level,
-                'activeMenu' => $activeMenu
-            ]);
-        } else if ($user->id_level == '3') {
-            $breadcrumb = (object) [
-                'title' => 'Page Warga',
-                'list' => [
-                    'Home',
-                ]
-            ];
-    
-            $page = (object) [
-                'title' => 'Selamat datang di halaman warga',
-            ];
-    
-            $activeMenu = 'user';
-    
-            $level = WargaModel::all();
-    
-            return view('user.index', [
-                'breadcrumb' => $breadcrumb,
-                'page' => $page,
-                'level' => $level,
-                'activeMenu' => $activeMenu
-            ]);
-        }
+        $page = (object) [
+            'title' => 'Daftar warga yang terdaftar dalam sistem'
+        ];
+
+        $activeMenu = 'warga';
+
+        $warga = WargaModel::all();
+
+        return view('admin.warga.index', ['breadcrumb' => $breadcrumb, 'page' => $page, 'warga' => $warga, 'activeMenu' => $activeMenu]);
+    }
+
+    public function list(Request $request) 
+    {
+        $warga = WargaModel::with('level');
+
+        // if ($request->nik) {
+        //     $warga->where('nik', $request->nik);
+        // }
+
+        return DataTables::of($warga)
+            ->addIndexColumn()
+            ->addColumn('aksi', function ($wargas) {
+                $btn = '<a href="'.url('/warga/' . $wargas->nik).'" class="btn btn-info btn-sm">Detail</a> ';
+                $btn .= '<a href="'.url('/warga/' . $wargas->nik . '/edit').'" class="btn btn-warning btn-sm">Edit</a> ';
+                $btn .= '<form class="d-inline-block" method="POST" action="'. url('/warga/'.$wargas->nik).'">'. csrf_field() . method_field('DELETE') .
+                    '<button type="submit" class="btn btn-danger btn-sm" onclick="return confirm(\'Apakah Anda yakin menghapus data ini?\');">Hapus</button></form>';
+                return $btn;
+            })
+            ->rawColumns(['aksi'])
+            ->make(true);
     }
 }
