@@ -6,7 +6,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>{{ config('app.name', 'PWL Laravel Starter Code') }}</title>
 
-    <meta name="csrf-token" content="{{ csrf_token() }}"> <!-- Untuk mengirimkan token Laravel CSRF pada setiap request ajax -->
+    <meta name="csrf-token" content="{{ csrf_token() }}">
+    <!-- Untuk mengirimkan token Laravel CSRF pada setiap request ajax -->
 
     <!-- Google Font: Source Sans Pro -->
     <link rel="stylesheet"
@@ -14,9 +15,10 @@
     <!-- Font Awesome -->
     <link rel="stylesheet" href="{{ asset('adminlte/plugins/fontawesome-free/css/all.min.css') }}">
     <!-- DataTables -->
-  <link rel="stylesheet" href="{{ asset('adminlte/plugins/datatables-bs4/css/dataTables.bootstrap4.min.css') }}">
-  <link rel="stylesheet" href="{{ asset('adminlte/plugins/datatables-responsive/css/responsive.bootstrap4.min.css') }}">
-  <link rel="stylesheet" href="{{ asset('adminlte/plugins/datatables-buttons/css/buttons.bootstrap4.min.css') }}">
+    <link rel="stylesheet" href="{{ asset('adminlte/plugins/datatables-bs4/css/dataTables.bootstrap4.min.css') }}">
+    <link rel="stylesheet"
+        href="{{ asset('adminlte/plugins/datatables-responsive/css/responsive.bootstrap4.min.css') }}">
+    <link rel="stylesheet" href="{{ asset('adminlte/plugins/datatables-buttons/css/buttons.bootstrap4.min.css') }}">
     <!-- Theme style -->
     <link rel="stylesheet" href="{{ asset('adminlte/dist/css/adminlte.min.css') }}">
 
@@ -37,7 +39,8 @@
                 <!-- Brand Logo -->
                 <a href="{{ url('/') }}" class="brand-link d-flex align-items-center">
                     <img src="{{ asset('adminlte/dist/img/SiB_new.png') }}" alt="SiBansos Logo"
-                        class="brand-image img-circle elevation-3" style="opacity: .5; max-height: 40px; margin-right: 10px;">
+                        class="brand-image img-circle elevation-3"
+                        style="opacity: .5; max-height: 40px; margin-right: 10px;">
                     <span class="brand-text font-weight-bold">SiBansos</span>
                 </a>
             </div>
@@ -45,7 +48,7 @@
             @include('layouts.sidebar')
             <!-- /.sidebar -->
         </aside>
-        
+
 
         <!-- Content Wrapper. Contains page content -->
         <div class="content-wrapper">
@@ -85,9 +88,13 @@
     <script src="{{ asset('adminlte/dist/js/adminlte.min.js') }}"></script>
     <script>
         // Untuk mengirimkan token Laravel CRSF pada setiap request ajax
-        $.ajaxSetup({headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')}});
-</script>
-@stack('js')
+        $.ajaxSetup({
+            headers: {
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+            }
+        });
+    </script>
+    @stack('js')
     <!-- Digunakan untuk memanggil custom js dari perintah push('js') pada setiap masing-masing view -->
     <!-- AdminLTE for demo purpose -->
     <script src="{{ asset('adminlte/dist/js/demo.js') }}"></script>
