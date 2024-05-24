@@ -12,7 +12,7 @@ class WargaController extends Controller
     {
         $user = Auth::user();
 
-        if ($user->id_level == '1' || $user->id_level == '2') {
+        if ($user->id_level == '1') {
             $breadcrumb = (object) [
                 'title' => 'Admin Page',
                 'list' => [
@@ -29,6 +29,28 @@ class WargaController extends Controller
             $level = WargaModel::all();
     
             return view('admin.index', [
+                'breadcrumb' => $breadcrumb,
+                'page' => $page,
+                'level' => $level,
+                'activeMenu' => $activeMenu
+            ]);
+        } elseif ($user->id_level == '2') {
+            $breadcrumb = (object) [
+                'title' => 'Admin Page',
+                'list' => [
+                    'Home',
+                ]
+            ];
+    
+            $page = (object) [
+                'title' => 'Selamat Datang di Halaman Dashboard',
+            ];
+    
+            $activeMenu = 'user';
+    
+            $level = WargaModel::all();
+    
+            return view('rt.index', [
                 'breadcrumb' => $breadcrumb,
                 'page' => $page,
                 'level' => $level,
