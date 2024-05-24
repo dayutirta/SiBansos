@@ -25,7 +25,11 @@ class Cek_login
 
         $user = Auth::user();
 
-        if ($user->id_level == $roles) {
+        // Ubah $roles menjadi array
+        $roles = explode(',', $roles);
+
+        // Periksa apakah id_level pengguna ada dalam array $roles
+        if (in_array((int)$user->id_level, $roles)) {
             return $next($request);
         }
 
