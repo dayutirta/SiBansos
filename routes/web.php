@@ -20,18 +20,26 @@ use Illuminate\Support\Facades\Route;
 
 Route::get('/', [WelcomeController::class, 'index']);
 
-// Route::get('login', [AuthController::class, 'index'])->name('login');
-// Route::post('login', [AuthController::class, 'proses_login'])->name('proses_login');
-// Route::group(['middleware' => ['cek_login:1', 'auth']], function () {
-//     Route::resource('admin', UserController::class);
-// });
-// Route::group(['middleware' => ['cek_login:2', 'auth']], function () {
-//     Route::resource('rt', UserController::class);
-// });
-// Route::group(['middleware' => ['cek_login:3', 'auth']], function () {
-//     Route::resource('user', UserController::class);
-// });
-// Route::get('logout', [AuthController::class, 'logout'])->name('logout');
+Route::get('login', [AuthController::class, 'index'])->name('login');
+Route::post('login', [AuthController::class, 'proses_login'])->name('proses_login');
+Route::get('logout', [AuthController::class, 'logout'])->name('logout');
+
+Route::group(['middleware' => ['auth']], function () {
+    Route::group(['middleware' => ['cek_login:1']], function () {
+        Route::get('/admin/index', [UserController::class, 'index'])->name('admin.index');
+        Route::resource('admin', UserController::class);
+    });
+    Route::group(['middleware' => ['cek_login:2']], function () {
+        Route::get('/rt/index', [UserController::class, 'index'])->name('rt.index');
+        Route::resource('rt', UserController::class);
+    });
+    Route::group(['middleware' => ['cek_login:3']], function () {
+        Route::get('/user/index', [UserController::class, 'index'])->name('user.index');
+        Route::resource('user', UserController::class);
+    });
+});
+
+
 
 Route::group(['prefix' => 'warga'], function() {
     Route::get('/', [WargaController::class, 'index']);          // menampilkan halaman awal user

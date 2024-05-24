@@ -15,7 +15,7 @@ return [
 
     'defaults' => [
         'guard' => 'warga',
-        'passwords' => 'users',
+        'passwords' => 'warga',
     ],
 
     /*
@@ -91,8 +91,8 @@ return [
     */
 
     'passwords' => [
-        'users' => [
-            'provider' => 'users',
+        'warga' => [
+            'provider' => 'warga',
             'table' => 'password_reset_tokens',
             'expire' => 60,
             'throttle' => 60,

@@ -15,36 +15,46 @@ class AuthController extends Controller
     
         if ($user) {
             if ($user->id_level == '1') {
-                return redirect()->intended(route('admin.index'));
+                return redirect()->intended('admin/index');
             } else if ($user->id_level == '2') {
-                return redirect()->intended(route('rt.index'));
+                return redirect()->intended('rt/index');
             }else if ($user->id_level == '3') {
-                return redirect()->intended(route('user.index'));
+                return redirect()->intended('user/index');
             }
         }
         return view('login');
     }
 
-    public function proses_login(Request $request){
+    public function proses_login(Request $request)
+    {
         $request->validate([
-            'nik' =>'required',
+            'nik' => 'required',
             'nokk' => 'required'
         ]);
     
-        $user = WargaModel::where('nik', $request->nik)->first();
+        $nik = $request->input('nik');
+        $nokk = $request->input('nokk');
     
-        if ($user && $request->nokk == $user->nokk) {
-            Auth::login($user);
+        // Cek apakah pengguna ada di database
+        $user = WargaModel::where('nik', $nik)->where('nokk', $nokk)->first();
     
-            if ($user->id_level == '1') {
-                return redirect()->intended(route('admin.index'));
-            } elseif ($user->id_level == '2') {
-                return redirect()->intended(route('rt.index'));
-            } else if ($user->id_level == '3') {
-                return redirect()->intended(route('user.index'));
+        if ($user) {
+            // Login pengguna secara manual
+            Auth::guard('warga')->login($user);
+    
+            // Redirect berdasarkan level_id
+            if ($user->level_id == '1') {
+                return redirect()->intended('admin/index');
             }
-            return redirect()->intended('/');
+            else if ($user->level_id == '2') {
+                return redirect()->intended('rt/index');
+            }
+            else if ($user->level_id == '3') {
+                return redirect()->intended('user/index');
+            }
+            // return redirect()->intended('/');
         }
+    
         return redirect('login')
             ->withInput()
             ->withErrors(['login_error' => 'NIK atau NOKK salah']);
