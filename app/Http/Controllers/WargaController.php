@@ -115,6 +115,32 @@ class WargaController extends Controller
         return redirect('/warga')->with('success', 'Data berhasil ditambahkan');
     }
 
+    public function show(String $nik){
+        $warga = WargaModel::with('level')->where('nik', $nik)->first();
+    
+        $breadcrumb = (object) [
+            'title' => 'Detail Warga',
+            'list' => [
+                'Home',
+                'Warga',
+                'Detail Warga'
+            ]
+        ];
+    
+        $page = (object) [
+            'title' => 'Detail Warga',
+        ];
+    
+        $activeMenu = 'warga';
+    
+        return view('admin.warga.detail', [
+            'breadcrumb' => $breadcrumb,
+            'page' => $page,
+            'warga' => $warga,
+            'activeMenu' => $activeMenu
+        ]);
+    }
+
     public function edit($nik)
     {
         $warga = WargaModel::where('nik', $nik)->first();
