@@ -12,11 +12,13 @@ class AuthController extends Controller
 {
     public function index(){
         $user = Auth::user();
-
+    
         if ($user) {
-            if ($user->id_level == '1' || $user->id_level == '2') {
+            if ($user->id_level == '1') {
                 return redirect()->intended(route('admin.index'));
-            } else if ($user->id_level == '3') {
+            } else if ($user->id_level == '2') {
+                return redirect()->intended(route('rt.index'));
+            }else if ($user->id_level == '3') {
                 return redirect()->intended(route('user.index'));
             }
         }
@@ -34,8 +36,10 @@ class AuthController extends Controller
         if ($user && $request->nokk == $user->nokk) {
             Auth::login($user);
     
-            if ($user->id_level == '1' || $user->id_level == '2') {
+            if ($user->id_level == '1') {
                 return redirect()->intended(route('admin.index'));
+            } elseif ($user->id_level == '2') {
+                return redirect()->intended(route('rt.index'));
             } else if ($user->id_level == '3') {
                 return redirect()->intended(route('user.index'));
             }
