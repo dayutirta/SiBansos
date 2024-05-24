@@ -26,7 +26,7 @@
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a href="{{ url('/user') }}" class="nav-link">
+                        <a href="{{ url('/warga') }}" class="nav-link">
                             <i class="fas fa-user-edit nav-icon"></i>
                             <p>User</p>
                         </a>
