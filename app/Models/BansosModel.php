@@ -1,17 +1,14 @@
 <?php
-
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Foundation\Auth\User as Authenticatable;
 
-class BansosModel extends Authenticatable
+class BansosModel extends Model
 {
     use HasFactory;
 
     protected $table = 'm_bansos';
-
     protected $primaryKey = 'id_bansos';
 
     protected $fillable = [
