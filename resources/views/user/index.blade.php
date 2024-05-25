@@ -9,11 +9,16 @@
             </div>
         </div>
         <div class="card-body">
-            <h1>Selamat Datang Halaman Warga</h1>
+            <h1>Selamat Datang, {{ Auth::user()->nama }}</h1>
+            <ul>
+                @foreach(Auth::user()->toArray() as $key => $value)
+                    <li>{{ $key }}: {{ $value }}</li>
+                @endforeach
+            </ul>
             <p>Silahkan klik menu yang tersedia.</p>
+            <a href="{{ route('logout') }}">
+                Logout
+            </a>
         </div>
-        <a href="{{ route('logout') }}">
-            logout
-        </a>
     </div>
 @endsection
