@@ -17,24 +17,6 @@ class Cek_login
      * @param  string  $roles
      * @return \Symfony\Component\HttpFoundation\Response
      */
-    // public function handle(Request $request, Closure $next, $roles): Response
-    // {
-    //     if (!Auth::check()) {
-    //         return redirect('login');
-    //     }
-
-    //     $user = Auth::user();
-
-    //     // Ubah $roles menjadi array
-    //     $roles = explode(',', $roles);
-
-    //     // Periksa apakah id_level pengguna ada dalam array $roles
-    //     if (in_array((int)$user->id_level, $roles)) {
-    //         return $next($request);
-    //     }
-
-    //     return redirect('login')->with('error', 'Anda tidak memiliki akses');
-    // }
     public function handle(Request $request, Closure $next, $roles): Response
     {
         if (!Auth::check()) {

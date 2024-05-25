@@ -11,9 +11,10 @@
         <div class="card-body">
             <h1>Selamat Datang Halaman Warga</h1>
             <p>Silahkan klik menu yang tersedia.</p>
+            <a href="{{ route('logout') }}">
+                logout
+            </a>
         </div>
-        <a href="{{ route('logout') }}">
-            logout
-        </a>
+       
     </div>
 @endsection

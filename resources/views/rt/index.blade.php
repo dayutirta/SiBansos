@@ -9,7 +9,7 @@
             </div>
         </div>
         <div class="card-body">
-            <h1>Selamat Datang di Halaman Admin</h1>
+            <h1>Selamat Datang di Halaman RT</h1>
             <p>Silahkan klik menu yang tersedia.</p>
             <a href="{{ route('logout') }}">
                 logout
