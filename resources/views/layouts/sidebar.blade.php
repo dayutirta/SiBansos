@@ -165,7 +165,7 @@
                 </a>
                 <ul class="nav nav-treeview">
                     <li class="nav-item">
-                        <a href="{{ url('/bansos') }}" class="nav-link">
+                        <a href="{{ url('/profil') }}" class="nav-link">
                             <i class="fas fa-user-cog nav-icon"></i>
                             <p>Profil Pengguna</p>
                         </a>

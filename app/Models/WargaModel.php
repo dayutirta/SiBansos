@@ -29,6 +29,9 @@ class WargaModel extends Authenticatable
         'pekerjaan',
         'pendidikan',
         'status_pernikahan',
+        'rt',
+        'rw',
+        'foto',
     ];
 
     public function level()

@@ -6,6 +6,7 @@ use App\Http\Controllers\WelcomeController;
 use App\Http\Controllers\BansosController;
 use App\Http\Controllers\PenerimaController;
 use App\Http\Controllers\UserController;
+use App\Http\Controllers\ProfilController;
 use Illuminate\Support\Facades\Route;
 
 //route index testing tampilan
@@ -52,6 +53,12 @@ Route::group(['prefix' => 'bansos'], function() {
     Route::put('/{id}', [BansosController::class, 'update']);     
     Route::delete('/{id}', [BansosController::class, 'destroy']); 
 });
+
+//router profil
+Route::group(['prefix' => 'profil'], function() {
+    Route::get('/', [ProfilController::class, 'show']);
+    Route::get('/{id}/edit', [ProfilController::class, 'edit']); 
+    Route::put('/{id}', [ProfilController::class, 'update']);
 
 //route bantuan
 Route::group(['prefix' => 'bantuan'], function() {
