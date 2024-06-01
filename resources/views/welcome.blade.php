@@ -58,6 +58,10 @@
             Copyright &copy; 2014-2021 <b><a href="https://adminlte.io" class="text-black">AdminLTE.io</a></b><br>
             All rights reserved
         </div>
+
+        <a href="{{ url('login') }}" class="btn btn-sm btn-primary">
+            Login
+        </a>
     </div>
     <!-- /.center -->
 
