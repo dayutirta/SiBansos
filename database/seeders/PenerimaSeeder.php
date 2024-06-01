@@ -15,37 +15,38 @@ class PenerimaSeeder extends Seeder
     {
         $data = [
             [
-                'id_bansos' => '2',
-                'id_warga' => '12',
-                'nama' => 'Anna',
-                'usia' => '35',
-                'pendapatan' => '2000000',
-                'status_kesehatan' => 'Tidak mempunyai jaminan kesehatan',
-                'pekerjaan' => 'Guru',
-                'notelp' => '081111111',
+                'id_bansos' => 2,
+                'id_warga' => 5,
+                'pendapatan' => 4, 
+                'status_rumah' => 3, 
+                'pln' => 4, 
+                'pdam' => 5, 
+                'status_kesehatan' => 4,
             ],
             [
-                'id_bansos' => '2',
-                'id_warga' => '14',
-                'nama' => 'Hadi',
-                'usia' => '32',
-                'pendapatan' => '1500000',
-                'status_kesehatan' => 'Tidak mempunyai jaminan kesehatan',
-                'pekerjaan' => 'Wiraswasta',
-                'notelp' => '0822222222',
+                'id_bansos' => 2,
+                'id_warga' => 6,
+                'pendapatan' => 2, 
+                'status_rumah' => 2, 
+                'pln' => 3, 
+                'pdam' => 3, 
+                'status_kesehatan' => 2, 
             ],
             [
-                'id_bansos' => '2',
-                'id_warga' => '10',
-                'nama' => 'Budi Santoso',
-                'usia' => '28',
-                'pendapatan' => '1000000',
-                'status_kesehatan' => 'Tidak mempunyai jaminan kesehatan',
-                'pekerjaan' => 'Petani',
-                'notelp' => '083333333',
+                'id_bansos' => 2,
+                'id_warga' => 7,
+                'pendapatan' => 1, 
+                'status_rumah' => 1, 
+                'pln' => 2, 
+                'pdam' => 1, 
+                'status_kesehatan' => 4, 
             ],
         ];
-
+    
         DB::table('m_penerima')->insert($data);
     }
+    
+
+    
+    
 }

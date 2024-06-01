@@ -15,12 +15,11 @@ return new class extends Migration
             $table->id('id_penerima');
             $table->unsignedBigInteger('id_bansos')->index();
             $table->unsignedBigInteger('id_warga')->index();
-            $table->string('nama',100);
-            $table->integer('usia');
             $table->integer('pendapatan');
-            $table->string('status_kesehatan',100);
-            $table->string('pekerjaan',100);
-            $table->string('notelp',100);
+            $table->integer('pln');
+            $table->integer('pdam');
+            $table->integer('status_kesehatan');
+            $table->integer('Status_rumah');
             $table->timestamps();
 
             $table->foreign('id_bansos')->references('id_bansos')->on('m_bansos');
