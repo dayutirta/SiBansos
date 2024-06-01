@@ -133,6 +133,31 @@
                     </ul>
                 </li>
             @endif
+            <li class="nav-header">Menu Pengaturan</li>
+            <li class="nav-item has-treeview">
+                <a href="#" class="nav-link">
+                    <i class="nav-icon fas fa-cogs"></i>
+                    <p>
+                        Pengaturan
+                        <i class="right fas fa-angle-left"></i>
+                    </p>
+                </a>
+                <ul class="nav nav-treeview">
+                    <li class="nav-item">
+                        <a href="{{ url('/bansos') }}" class="nav-link">
+                            <i class="fas fa-user-cog nav-icon"></i>
+                            <p>Profil Pengguna</p>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="{{ url('/bansos') }}" class="nav-link">
+                            <i class="fas fa-cog nav-icon"></i>
+                            <p>Pengaturan Akun</p>
+                        </a>
+                    </li>
+                </ul>
+            </li> 
+            
         </ul>
     </nav>
     <!-- /.sidebar-menu -->
