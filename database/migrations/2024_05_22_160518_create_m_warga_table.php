@@ -27,6 +27,8 @@ return new class extends Migration
             $table->string('pekerjaan',50);
             $table->string('pendidikan',100);
             $table->string('status_pernikahan',100);
+            $table->string('rt',3);
+            $table->string('rw',3);
             $table->binary('foto')->nullable(); 
             $table->timestamps();
         
