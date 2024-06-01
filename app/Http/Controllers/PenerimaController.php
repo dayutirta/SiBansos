@@ -24,11 +24,14 @@ class PenerimaController extends Controller
 
         $penerima = PenerimaModel::all();
 
+        $bansos = BansosModel::all();
+
         return view('admin.penerima.index', [
             'penerima' => $penerima,
             'breadcrumb' => $breadcrumb,
             'page' => $page,
-            'activeMenu' => $activeMenu
+            'activeMenu' => $activeMenu,
+            'bansos' => $bansos
         ]);
     }
 
@@ -77,6 +80,32 @@ class PenerimaController extends Controller
         ]);
     }
 
+    // public function store(Request $request){
+    //     $request->validate([
+    //         'nama' => 'required|string',
+    //         'usia' => 'required|integer',
+    //         'pendapatan' => 'required|integer',
+    //         'status_kesehatan' => 'required|string|max:100',
+    //         'pekerjaan' => 'required|string|max:100',
+    //         'notelp' => 'required|string|min:13|max:100',
+    //         'id_bansos' => 'required|integer',
+    //         'id_warga' => 'required|integer',
+    //     ]);
+
+    //     PenerimaModel::create([
+    //         'nama' => $request->nama,
+    //         'usia' => $request->usia,
+    //         'pendapatan' => $request->pendapatan,
+    //         'status_kesehatan' => $request->status_kesehatan,
+    //         'pekerjaan' => $request->pekerjaan,
+    //         'notelp' => $request->notelp,
+    //         'id_bansos' => $request->id_bansos,
+    //         'id_warga' => $request->id_warga,
+    //     ]);
+
+    //     return redirect('/penerima')->with('success', 'Data penerima berhasil ditambahkan');
+    // }
+
     public function store(Request $request){
         $request->validate([
             'nama' => 'required|string',
@@ -86,9 +115,14 @@ class PenerimaController extends Controller
             'pekerjaan' => 'required|string|max:100',
             'notelp' => 'required|string|min:13|max:100',
             'id_bansos' => 'required|integer',
-            'id_warga' => 'required|integer',
         ]);
-
+    
+        $warga = WargaModel::whereRaw('LOWER(nama) = ?', [strtolower($request->nama)])->first();
+    
+        if (!$warga) {
+            return redirect()->back()->withErrors(['nama' => 'Nama tidak ditemukan']);
+        }
+    
         PenerimaModel::create([
             'nama' => $request->nama,
             'usia' => $request->usia,
@@ -97,9 +131,9 @@ class PenerimaController extends Controller
             'pekerjaan' => $request->pekerjaan,
             'notelp' => $request->notelp,
             'id_bansos' => $request->id_bansos,
-            'id_warga' => $request->id_warga,
+            'id_warga' => $warga->id_warga,
         ]);
-
+    
         return redirect('/penerima')->with('success', 'Data penerima berhasil ditambahkan');
     }
 
@@ -151,6 +185,32 @@ class PenerimaController extends Controller
         ]);
     }
 
+    // public function update(Request $request, String $id){
+    //     $request->validate([
+    //         'nama' => 'required|string',
+    //         'usia' => 'required|integer',
+    //         'pendapatan' => 'required|integer',
+    //         'status_kesehatan' => 'required|string|max:100',
+    //         'pekerjaan' => 'required|string|max:100',
+    //         'notelp' => 'required|string|min:13|max:100',
+    //         'id_bansos' => 'required|integer',
+    //         'id_warga' => 'required|integer',
+    //     ]);
+
+    //     PenerimaModel::find($id)->update([
+    //         'nama' => $request->nama,
+    //         'usia' => $request->usia,
+    //         'pendapatan' => $request->pendapatan,
+    //         'status_kesehatan' => $request->status_kesehatan,
+    //         'pekerjaan' => $request->pekerjaan,
+    //         'notelp' => $request->notelp,
+    //         'id_bansos' => $request->id_bansos,
+    //         'id_warga' => $request->id_warga,
+    //     ]);
+
+    //     return redirect('/penerima')->with('success', 'Data penerima berhasil diubah');
+    // }
+
     public function update(Request $request, String $id){
         $request->validate([
             'nama' => 'required|string',
@@ -160,9 +220,14 @@ class PenerimaController extends Controller
             'pekerjaan' => 'required|string|max:100',
             'notelp' => 'required|string|min:13|max:100',
             'id_bansos' => 'required|integer',
-            'id_warga' => 'required|integer',
         ]);
-
+    
+        $warga = WargaModel::whereRaw('LOWER(nama) = ?', [strtolower($request->nama)])->first();
+    
+        if (!$warga) {
+            return redirect()->back()->withErrors(['nama' => 'Nama tidak ditemukan']);
+        }
+    
         PenerimaModel::find($id)->update([
             'nama' => $request->nama,
             'usia' => $request->usia,
@@ -171,9 +236,9 @@ class PenerimaController extends Controller
             'pekerjaan' => $request->pekerjaan,
             'notelp' => $request->notelp,
             'id_bansos' => $request->id_bansos,
-            'id_warga' => $request->id_warga,
+            'id_warga' => $warga->id,
         ]);
-
+    
         return redirect('/penerima')->with('success', 'Data penerima berhasil diubah');
     }
 
