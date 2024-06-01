@@ -35,6 +35,10 @@ return [
             'root' => storage_path('app'),
             'throw' => false,
         ],
+        'custom_img' => [
+            'driver' => 'local',
+            'root' => base_path('resources/img'),
+        ],        
 
         'public' => [
             'driver' => 'local',
