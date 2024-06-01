@@ -5,7 +5,7 @@
         <div class="card-header">
             <h3 class="card-title">{{ $page->title }}</h3>
             <div class="card-tools">
-                <a class="btn btn-sm btn-primary mt-1" href="{{ url('warga/create') }}">Tambah</a>
+                <a class="btn btn-sm btn-primary mt-1" href="{{ url('bantuan/create') }}">Tambah</a>
             </div>
         </div>
         <div class="card-body">
@@ -15,7 +15,7 @@
             @if (session('error'))
                 <div class="alert alert-danger">{{ session('error') }}</div>
             @endif
-            <div class="row">
+            {{-- <div class="row">
                 <div class="col-md-12">
                     <div class="form-group row">
                         <label class="col-1 control-label col-form-label">Filter:</label>
@@ -30,18 +30,12 @@
                         </div>
                     </div>
                 </div>
-            </div>
-            <table class="table table-bordered table-striped table-hover table-sm" id="table_warga">
+            </div> --}}
+            <table class="table table-bordered table-striped table-hover table-sm" id="table_bantuan">
                 <thead>
                     <tr>
-                        <th>Nomor</th>
-                        <th>NIK</th>
-                        <th>Nama</th>
-                        <th>Alamat</th>
-                        {{-- <th>RT</th>
-                        <th>RW</th> --}}
-                        <th>Level</th>
-                        <th>Agama</th>
+                        <th>Kode Bantuan</th>
+                        <th>Nama Bantuan</th>
                         <th>Aksi</th>
                     </tr>
                 </thead>
@@ -63,13 +57,13 @@
         });
 
         $(document).ready(function() {
-            var dataWarga = $('#table_warga').DataTable({
+            var dataBantuan = $('#table_bantuan').DataTable({
                 serverSide: true,
                 ajax: {
-                    "url": "{{ url('warga/list') }}",
+                    "url": "{{ url('bantuan/list') }}",
                     "type": 'POST',
                     "data": function(d) {
-                        d.id_level = $('#id_level').val();
+                        d.id_level = $('#id_bantuan').val();
                     }
                 },
                 columns: [{
@@ -79,44 +73,14 @@
                         searchable: false
                     },
                     {
-                        data: 'nik',
-                        name: 'nik',
+                        data: 'kode_bantuan',
+                        name: 'kode_bantuan',
                         orderable: false,
                         searchable: true
                     },
                     {
-                        data: 'nama',
-                        name: 'nama',
-                        orderable: false,
-                        searchable: true
-                    },
-                    {
-                        data: 'alamat',
-                        name: 'alamat',
-                        orderable: false,
-                        searchable: false
-                    },
-                    // {
-                    //     data: 'rt',
-                    //     name: 'rt',
-                    //     orderable: true,
-                    //     searchable: true
-                    // },
-                    // {
-                    //     data: 'rw',
-                    //     name: 'rw',
-                    //     orderable: true,
-                    //     searchable: true
-                    // },
-                    {
-                        data: 'level.nama_level',
-                        name: 'level.nama_level',
-                        orderable: false,
-                        searchable: true
-                    },
-                    {
-                        data: 'agama',
-                        name: 'agama',
+                        data: 'nama_bantuan',
+                        name: 'nama_bantuan',
                         orderable: false,
                         searchable: true
                     },
@@ -129,8 +93,8 @@
                 ]
             });
 
-            $('#id_level').on('change', function() {
-                dataWarga.ajax.reload();
+            $('#id_bantuan').on('change', function() {
+                dataBantuan.ajax.reload();
             });
         });
     </script>

@@ -11,7 +11,7 @@
         </div>
     </div>
     <div class="card-body">
-        @empty($warga)
+        @empty($bantuan)
             <div class="alert alert-danger alert-dismissible">
                 <h5>
                     <i class="icon fas fa-ban">
@@ -20,28 +20,20 @@
                     Data yang anda cari tidak ditemukan!
                 </h5>
             </div>
-            <a href="{{ url('warga') }}" class="btn btn-sm btn-default mt-2">
+            <a href="{{ url('bantuan') }}" class="btn btn-sm btn-default mt-2">
                 Kembali
             </a>
             @else
-            <form action="{{ url('/warga/' . $warga->nik) }}" method="POST" class="form-horizontal">
+            <form action="{{ url('/bantuan/' . $bantuan->id_bantuan) }}" method="POST" class="form-horizontal">
                 @csrf
                 {!! method_field('PUT') !!}
                 <div class="form-group row">
                     <label class="col-1 control-label col-form-label">
-                        Level
+                        Kode Bantuan
                     </label>
                     <div class="col-11">
-                        <select name="id_level" id="id_level" class="form-control" required>
-                            <option value="">- Pilih Level -</option>
-                            @foreach ($level as $item)
-                                <option value="{{ $item->id_level }}" @if ($item->id_level == $warga->id_level)
-                                selected @endif>
-                                    {{ $item->nama_level }}
-                                </option>
-                            @endforeach
-                        </select>
-                        @error('id_level')
+                        <input type="text" name="kode_bantuan" id="kode_bantuan" class="form-control" value="{{ old('kode_bantuan') ?? $bantuan->kode_bantuan }}" required>
+                        @error('kode_bantuan')
                             <small class="form-text text-danger">
                                 {{ $message }}
                             </small>
@@ -50,167 +42,11 @@
                 </div>
                 <div class="form-group row">
                     <label class="col-1 control-label col-form-label">
-                        NIK
+                        Nama Bantuan
                     </label>
                     <div class="col-11">
-                        <input type="text" name="nik" id="nik" class="form-control" value="{{ old('nik'), $warga->nik }}" required>
-                        @error('nik')
-                            <small class="form-text text-danger">
-                                {{ $message }}
-                            </small>
-                        @enderror
-                    </div>
-                </div>
-                <div class="form-group row">
-                    <label class="col-1 control-label col-form-label">
-                        No. KK
-                    </label>
-                    <div class="col-11">
-                        <input type="text" name="nokk" id="nokk" class="form-control" value="{{ old('nokk'), $warga->nokk }}" required>
-                        @error('nokk')
-                            <small class="form-text text-danger">
-                                {{ $message }}
-                            </small>
-                        @enderror
-                    </div>
-                </div>
-                <div class="form-group row">
-                    <label class="col-1 control-label col-form-label">
-                        nama
-                    </label>
-                    <div class="col-11">
-                        <input type="text" name="nama" id="nama" class="form-control" value="{{ old('nama'), $warga->nama }}" required>
-                        @error('nama')
-                            <small class="form-text text-danger">
-                                {{ $message }}
-                            </small>
-                        @enderror
-                    </div>
-                </div>
-                <div class="form-group row">
-                    <label class="col-1 control-label col-form-label">
-                        Jenis Kelamin
-                    </label>
-                    <div class="col-11">
-                        <input type="text" name="jenis_kelamin" id="jenis_kelamin" class="form-control" value="{{ old('jenis_kelamin'), $warga->jenis_kelamin }}" required>
-                        @error('jenis_kelamin')
-                            <small class="form-text text-danger">
-                                {{ $message }}
-                            </small>
-                        @enderror
-                    </div>
-                </div>
-                <div class="form-group row">
-                    <label class="col-1 control-label col-form-label">
-                        Tempat Lahir
-                    </label>
-                    <div class="col-11">
-                        <input type="text" name="tempat_lahir" id="tempat_lahir" class="form-control" value="{{ old('tempat_lahir'), $warga->tempat_lahir }}" required>
-                        @error('tempat_lahir')
-                            <small class="form-text text-danger">
-                                {{ $message }}
-                            </small>
-                        @enderror
-                    </div>
-                </div>
-                <div class="form-group row">
-                    <label class="col-1 control-label col-form-label">
-                        Tanggal Lahir
-                    </label>
-                    <div class="col-11">
-                        <input type="date" name="tanggal_lahir" id="tanggal_lahir" class="form-control" value="{{ old('tanggal_lahir'), $warga->tanggal_lahir }}" required>
-                        @error('tanggal_lahir')
-                            <small class="form-text text-danger">
-                                {{ $message }}
-                            </small>
-                        @enderror
-                    </div>
-                </div>
-                <div class="form-group row">
-                    <label class="col-1 control-label col-form-label">
-                        Alamat
-                    </label>
-                    <div class="col-11">
-                        <input type="text" name="alamat" id="alamat" class="form-control" value="{{ old('alamat'), $warga->alamat }}" required>
-                        @error('alamat')
-                            <small class="form-text text-danger">
-                                {{ $message }}
-                            </small>
-                        @enderror
-                    </div>
-                </div>
-                <div class="form-group row">
-                    <label class="col-1 control-label col-form-label">
-                        Agama
-                    </label>
-                    <div class="col-11">
-                        <input type="text" name="agama" id="agama" class="form-control" value="{{ old('agama'), $warga->agama }}" required>
-                        @error('agama')
-                            <small class="form-text text-danger">
-                                {{ $message }}
-                            </small>
-                        @enderror
-                    </div>
-                </div>
-                <div class="form-group row">
-                    <label class="col-1 control-label col-form-label">
-                        Status
-                    </label>
-                    <div class="col-11">
-                        <input type="text" name="status" id="status" class="form-control" value="{{ old('status'), $warga->status }}" required>
-                        @error('status')
-                            <small class="form-text text-danger">
-                                {{ $message }}
-                            </small>
-                        @enderror
-                    </div>
-                </div>
-                <div class="form-group row">
-                    <label class="col-1 control-label col-form-label">
-                        Kewarganegaraan
-                    </label>
-                    <div class="col-11">
-                        <input type="text" name="kewarganegaraan" id="kewarganegaraan" class="form-control" value="{{ old('kewarganegaraan'), $warga->kewarganegaraan }}" required>
-                        @error('kewarganegaraan')
-                            <small class="form-text text-danger">
-                                {{ $message }}
-                            </small>
-                        @enderror
-                    </div>
-                </div>
-                <div class="form-group row">
-                    <label class="col-1 control-label col-form-label">
-                        Pekerjaan
-                    </label>
-                    <div class="col-11">
-                        <input type="text" name="pekerjaan" id="pekerjaan" class="form-control" value="{{ old('pekerjaan'), $warga->pekerjaan }}" required>
-                        @error('pekerjaan')
-                            <small class="form-text text-danger">
-                                {{ $message }}
-                            </small>
-                        @enderror
-                    </div>
-                </div>
-                <div class="form-group row">
-                    <label class="col-1 control-label col-form-label">
-                        Pendidikan
-                    </label>
-                    <div class="col-11">
-                        <input type="text" name="pendidikan" id="pendidikan" class="form-control" value="{{ old('pendidikan'), $warga->pendidikan }}" required>
-                        @error('pendidikan')
-                            <small class="form-text text-danger">
-                                {{ $message }}
-                            </small>
-                        @enderror
-                    </div>
-                </div>
-                <div class="form-group row">
-                    <label class="col-1 control-label col-form-label">
-                        Status Pernikahan
-                    </label>
-                    <div class="col-11">
-                        <input type="text" name="status_pernikahan" id="status_pernikahan" class="form-control" value="{{ old('status_pernikahan'), $warga->status_pernikahan }}" required>
-                        @error('status_pernikahan')
+                        <input type="text" name="nama_bantuan" id="nama_bantuan" class="form-control" value="{{ old('nama_bantuan') ?? $bantuan->nama_bantuan }}" required>
+                        @error('nama_bantuan')
                             <small class="form-text text-danger">
                                 {{ $message }}
                             </small>
@@ -225,7 +61,7 @@
                         <button type="submit" class="btn btn-primary btn-sm">
                             Simpan
                         </button>
-                        <a href="{{ url('warga') }}" class="btn btn-default btn-sm ml-1">
+                        <a href="{{ url('bantuan') }}" class="btn btn-default btn-sm ml-1">
                             Kembali
                         </a>
                     </div>
