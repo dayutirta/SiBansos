@@ -62,7 +62,13 @@
                             </a>
                         </li>
                         <li class="nav-item">
-                            <a href="{{ url('/barang') }}" class="nav-link">
+                            <a href="{{ url('/bantuan') }}" class="nav-link">
+                                <i class="fas fa-users nav-icon"></i>
+                                <p>Lisr Daftar Bantuan</p>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="{{ url('/penerima') }}" class="nav-link">
                                 <i class="fas fa-users nav-icon"></i>
                                 <p>Data Penerima</p>
                             </a>

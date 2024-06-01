@@ -4,6 +4,7 @@ use App\Http\Controllers\AuthController;
 use App\Http\Controllers\WargaController;
 use App\Http\Controllers\WelcomeController;
 use App\Http\Controllers\BansosController;
+use App\Http\Controllers\PenerimaController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\ProfilController;
 use Illuminate\Support\Facades\Route;
@@ -58,4 +59,27 @@ Route::group(['prefix' => 'profil'], function() {
     Route::get('/', [ProfilController::class, 'show']);
     Route::get('/{id}/edit', [ProfilController::class, 'edit']); 
     Route::put('/{id}', [ProfilController::class, 'update']);
+
+//route bantuan
+Route::group(['prefix' => 'bantuan'], function() {
+    Route::get('/', [BansosController::class, 'index']);          
+    Route::post('/list', [BansosController::class, 'list']);      
+    Route::get('/create', [BansosController::class, 'create']);   
+    Route::post('/', [BansosController::class, 'store']);         
+    Route::get('/{id}', [BansosController::class, 'show']);       
+    Route::get('/{id}/edit', [BansosController::class, 'edit']);  
+    Route::put('/{id}', [BansosController::class, 'update']);     
+    Route::delete('/{id}', [BansosController::class, 'destroy']); 
+});
+
+//route penerima
+Route::group(['prefix' => 'penerima'], function() {
+    Route::get('/', [PenerimaController::class, 'index']);          
+    Route::post('/list', [PenerimaController::class, 'list']);      
+    Route::get('/create', [PenerimaController::class, 'create']);   
+    Route::post('/', [PenerimaController::class, 'store']);         
+    Route::get('/{id}', [PenerimaController::class, 'show']);       
+    Route::get('/{id}/edit', [PenerimaController::class, 'edit']);  
+    Route::put('/{id}', [PenerimaController::class, 'update']);     
+    Route::delete('/{id}', [PenerimaController::class, 'destroy']); 
 });
