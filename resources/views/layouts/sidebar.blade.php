@@ -30,16 +30,17 @@
                         </p>
                     </a>
                     <ul class="nav nav-treeview">
-                        <li class="nav-item">
-                            <a href="{{ url('/level') }}" class="nav-link">
-                                <i class="fas fa-user-shield nav-icon"></i>
-                                <p>Level</p>
-                            </a>
-                        </li>
+                        
                         <li class="nav-item">
                             <a href="{{ url('/warga') }}" class="nav-link">
                                 <i class="fas fa-user-edit nav-icon"></i>
-                                <p>User</p>
+                                <p>Data Warga</p>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="{{ url('/level') }}" class="nav-link">
+                                <i class="fas fa-print nav-icon"></i>
+                                <p>Cetak Data Warga</p>
                             </a>
                         </li>
                     </ul>
@@ -92,10 +93,17 @@
                         </p>
                     </a>
                     <ul class="nav nav-treeview">
+                        
                         <li class="nav-item">
                             <a href="{{ url('/warga') }}" class="nav-link">
                                 <i class="fas fa-user-edit nav-icon"></i>
-                                <p>User</p>
+                                <p>Data Warga</p>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="{{ url('/level') }}" class="nav-link">
+                                <i class="fas fa-print nav-icon"></i>
+                                <p>Cetak Data Warga</p>
                             </a>
                         </li>
                     </ul>
@@ -120,25 +128,57 @@
                 </li>
             @elseif (Auth::user()->id_level == 3)
                 <!-- Menu untuk warga -->
-                <li class="nav-header">Menu Bantuan Sosial</li>
-                <li class="nav-item has-treeview">
-                    <a href="#" class="nav-link">
-                        <i class="nav-icon fas fa-hand-holding-heart"></i>
-                        <p>
-                            Bantuan Sosial
-                            <i class="right fas fa-angle-left"></i>
-                        </p>
-                    </a>
-                    <ul class="nav nav-treeview">
-                        <li class="nav-item">
-                            <a href="{{ url('/bansos') }}" class="nav-link">
-                                <i class="fas fa-database nav-icon"></i>
-                                <p>Data Bansos</p>
-                            </a>
-                        </li>
-                    </ul>
-                </li>
             @endif
+            <li class="nav-header">Menu Pengajuan</li>
+            <li class="nav-item has-treeview">
+                <a href="#" class="nav-link">
+                    <i class="nav-icon fas fa-file-alt"></i>
+                    <p>
+                        Pengajuan Surat
+                        <i class="right fas fa-angle-left"></i>
+                    </p>
+                </a>
+                <ul class="nav nav-treeview">
+                    <li class="nav-item">
+                        <a href="{{ url('/pengajuan-dokumen') }}" class="nav-link">
+                            <i class="far fa-file-alt nav-icon"></i>
+                            <p>Pengajuan Dokumen</p>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="{{ url('/pengajuan-bansos') }}" class="nav-link">
+                            <i class="fas fa-hands-helping nav-icon"></i>
+                            <p>Pengajuan Bansos</p>
+                        </a>
+                    </li>
+                </ul>
+            </li>
+
+            <li class="nav-header">Menu Pengaturan</li>
+            <li class="nav-item has-treeview">
+                <a href="#" class="nav-link">
+                    <i class="nav-icon fas fa-cogs"></i>
+                    <p>
+                        Pengaturan
+                        <i class="right fas fa-angle-left"></i>
+                    </p>
+                </a>
+                <ul class="nav nav-treeview">
+                    <li class="nav-item">
+                        <a href="{{ url('/bansos') }}" class="nav-link">
+                            <i class="fas fa-user-cog nav-icon"></i>
+                            <p>Profil Pengguna</p>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="{{ url('/bansos') }}" class="nav-link">
+                            <i class="fas fa-cog nav-icon"></i>
+                            <p>Pengaturan Akun</p>
+                        </a>
+                    </li>
+                </ul>
+            </li> 
+            
         </ul>
     </nav>
     <!-- /.sidebar-menu -->
