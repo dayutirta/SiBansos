@@ -5,7 +5,7 @@
         <div class="card-header">
             <h3 class="card-title">{{ $page->title }}</h3>
             <div class="card-tools">
-                <a class="btn btn-sm btn-primary mt-1" href="{{ url('warga/create') }}">Tambah</a>
+                <a class="btn btn-sm btn-primary mt-1" href="{{ url('penerima/create') }}">Tambah</a>
             </div>
         </div>
         <div class="card-body">
@@ -20,28 +20,23 @@
                     <div class="form-group row">
                         <label class="col-1 control-label col-form-label">Filter:</label>
                         <div class="col-3">
-                            <select class="form-control" id="id_level" name="id_level" required>
+                            <select class="form-control" id="id_bansos" name="id_bansos" required>
                                 <option value="">- Semua -</option>
-                                @foreach ($warga as $item)
-                                    <option value="{{ $item->warga }}">{{ $item->nama_level }}</option>
+                                @foreach ($bansos as $item)
+                                    <option value="{{ $item->bansos }}">{{ $item->nama_program}}</option>
                                 @endforeach
                             </select>
-                            <small class="form-text text-muted">nik</small>
+                            <small class="form-text text-muted">Nama Program</small>
                         </div>
                     </div>
                 </div>
             </div>
-            <table class="table table-bordered table-striped table-hover table-sm" id="table_warga">
+            <table class="table table-bordered table-striped table-hover table-sm" id="table_penerima">
                 <thead>
                     <tr>
                         <th>Nomor</th>
-                        <th>NIK</th>
-                        <th>Nama</th>
-                        <th>Alamat</th>
-                        {{-- <th>RT</th>
-                        <th>RW</th> --}}
-                        <th>Level</th>
-                        <th>Agama</th>
+                        <th>Nama Penerima</th>
+                        <th>No Telp</th>
                         <th>Aksi</th>
                     </tr>
                 </thead>
@@ -63,13 +58,13 @@
         });
 
         $(document).ready(function() {
-            var dataWarga = $('#table_warga').DataTable({
+            var dataPenerima = $('#table_penerima').DataTable({
                 serverSide: true,
                 ajax: {
-                    "url": "{{ url('warga/list') }}",
+                    "url": "{{ url('penerima/list') }}",
                     "type": 'POST',
                     "data": function(d) {
-                        d.id_level = $('#id_level').val();
+                        d.id_bansos = $('#id_bansos').val();
                     }
                 },
                 columns: [{
@@ -79,44 +74,14 @@
                         searchable: false
                     },
                     {
-                        data: 'nik',
-                        name: 'nik',
-                        orderable: false,
-                        searchable: true
-                    },
-                    {
                         data: 'nama',
                         name: 'nama',
-                        orderable: false,
+                        orderable: true,
                         searchable: true
                     },
                     {
-                        data: 'alamat',
-                        name: 'alamat',
-                        orderable: false,
-                        searchable: false
-                    },
-                    // {
-                    //     data: 'rt',
-                    //     name: 'rt',
-                    //     orderable: true,
-                    //     searchable: true
-                    // },
-                    // {
-                    //     data: 'rw',
-                    //     name: 'rw',
-                    //     orderable: true,
-                    //     searchable: true
-                    // },
-                    {
-                        data: 'level.nama_level',
-                        name: 'level.nama_level',
-                        orderable: false,
-                        searchable: true
-                    },
-                    {
-                        data: 'agama',
-                        name: 'agama',
+                        data: 'notelp',
+                        name: 'notelp',
                         orderable: false,
                         searchable: true
                     },
@@ -129,8 +94,8 @@
                 ]
             });
 
-            $('#id_level').on('change', function() {
-                dataWarga.ajax.reload();
+            $('#id_bansos').on('change', function() {
+                dataPenerima.ajax.reload();
             });
         });
     </script>
