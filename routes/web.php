@@ -4,6 +4,7 @@ use App\Http\Controllers\AuthController;
 use App\Http\Controllers\WargaController;
 use App\Http\Controllers\WelcomeController;
 use App\Http\Controllers\BansosController;
+use App\Http\Controllers\PenerimaController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\ProfilController;
 use App\Http\Controllers\SettingController;
