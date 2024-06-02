@@ -6,6 +6,8 @@ use App\Http\Controllers\WelcomeController;
 use App\Http\Controllers\BansosController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\ProfilController;
+use App\Http\Controllers\SettingController;
+use App\Http\Controllers\PenerimaController;
 use Illuminate\Support\Facades\Route;
 
 //route index testing tampilan
@@ -58,4 +60,33 @@ Route::group(['prefix' => 'profil'], function() {
     Route::get('/', [ProfilController::class, 'show']);
     Route::get('/{id}/edit', [ProfilController::class, 'edit']); 
     Route::put('/{id}', [ProfilController::class, 'update']);
+});
+
+//router setting
+Route::group(['prefix' => 'setting'], function() {
+    Route::get('/', [SettingController::class, 'index']);
+});
+
+// Route untuk Pengajuan Dokumen
+Route::group(['prefix' => 'pengajuan-dokumen'], function() {
+    Route::get('/', [BansosController::class, 'index']);          
+    Route::post('/list', [BansosController::class, 'list']);      
+    Route::get('/create', [BansosController::class, 'create']);   
+    Route::post('/', [BansosController::class, 'store']);         
+    Route::get('/{id}', [BansosController::class, 'show']);       
+    Route::get('/{id}/edit', [BansosController::class, 'edit']);  
+    Route::put('/{id}', [BansosController::class, 'update']);     
+    Route::delete('/{id}', [BansosController::class, 'destroy']); 
+});
+
+// Route untuk Pengajuan Bansos
+Route::group(['prefix' => 'pengajuan-bansos'], function() {
+    Route::get('/', [PenerimaController::class, 'index']);          
+    Route::post('/list', [PenerimaController::class, 'list']);      
+    Route::get('/create', [PenerimaController::class, 'create']);   
+    Route::post('/', [PenerimaController::class, 'store']);         
+    Route::get('/{id}', [PenerimaController::class, 'show']);       
+    Route::get('/{id}/edit', [PenerimaController::class, 'edit']);  
+    Route::put('/{id}', [PenerimaController::class, 'update']);     
+    Route::delete('/{id}', [PenerimaController::class, 'destroy']); 
 });
