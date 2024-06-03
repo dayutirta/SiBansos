@@ -171,7 +171,7 @@
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a href="{{ url('/bansos') }}" class="nav-link">
+                        <a href="{{ url('/setting') }}" class="nav-link">
                             <i class="fas fa-cog nav-icon"></i>
                             <p>Pengaturan Akun</p>
                         </a>

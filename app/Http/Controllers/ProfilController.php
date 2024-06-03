@@ -4,23 +4,25 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Carbon\Carbon;
+
 
 class ProfilController extends Controller
 {
     public function show()
     {
-        $user = Auth::user(); // Mendapatkan pengguna yang sedang login
+        $user = Auth::user(); 
 
         $breadcrumb = (object) [
-            'title' => 'Profil Pengguna', // Ganti judul sesuai kebutuhan
-            'list'  => ['Home', 'Profil'] // Sesuaikan breadcrumb dengan kebutuhan
+            'title' => 'Profil Pengguna', 
+            'list'  => ['Home', 'Profil'] 
         ];
 
         $page = (object) [
-            'title' => 'Profil Pengguna' // Sesuaikan judul halaman dengan kebutuhan
+            'title' => 'Selamat Datang' 
         ];
 
-        $activeMenu = 'profil'; // Ubah menu aktif sesuai kebutuhan
+        $activeMenu = 'profil'; 
 
         return view('pengaturan.show', ['breadcrumb' => $breadcrumb, 'page' => $page, 'user' => $user, 'activeMenu' => $activeMenu]);
     }

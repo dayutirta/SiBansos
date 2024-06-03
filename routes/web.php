@@ -7,6 +7,8 @@ use App\Http\Controllers\BansosController;
 use App\Http\Controllers\PenerimaController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\ProfilController;
+use App\Http\Controllers\SettingController;
+use App\Http\Controllers\PenerimaController;
 use Illuminate\Support\Facades\Route;
 
 //route index testing tampilan
@@ -59,9 +61,15 @@ Route::group(['prefix' => 'profil'], function() {
     Route::get('/', [ProfilController::class, 'show']);
     Route::get('/{id}/edit', [ProfilController::class, 'edit']); 
     Route::put('/{id}', [ProfilController::class, 'update']);
+});
 
-//route bantuan
-Route::group(['prefix' => 'bantuan'], function() {
+//router setting
+Route::group(['prefix' => 'setting'], function() {
+    Route::get('/', [SettingController::class, 'index']);
+});
+
+// Route untuk Pengajuan Dokumen
+Route::group(['prefix' => 'pengajuan-dokumen'], function() {
     Route::get('/', [BansosController::class, 'index']);          
     Route::post('/list', [BansosController::class, 'list']);      
     Route::get('/create', [BansosController::class, 'create']);   
@@ -72,8 +80,8 @@ Route::group(['prefix' => 'bantuan'], function() {
     Route::delete('/{id}', [BansosController::class, 'destroy']); 
 });
 
-//route penerima
-Route::group(['prefix' => 'penerima'], function() {
+// Route untuk Pengajuan Bansos
+Route::group(['prefix' => 'pengajuan-bansos'], function() {
     Route::get('/', [PenerimaController::class, 'index']);          
     Route::post('/list', [PenerimaController::class, 'list']);      
     Route::get('/create', [PenerimaController::class, 'create']);   

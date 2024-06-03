@@ -6,7 +6,7 @@ use App\Models\BantuanModel;
 use Illuminate\Http\Request;
 use Yajra\DataTables\Facades\DataTables;
 
-class PenerimaController extends Controller
+class BansosController extends Controller
 {
     public function index()
     {
@@ -23,7 +23,7 @@ class PenerimaController extends Controller
 
         $bantuan = BantuanModel::all();
 
-        return view('pengajuan.bansos.index', ['breadcrumb' => $breadcrumb, 'page' => $page, 'bantuan' => $bantuan, 'activeMenu' => $activeMenu]);
+        return view('admin.bansos.index', ['breadcrumb' => $breadcrumb, 'page' => $page, 'bantuan' => $bantuan, 'activeMenu' => $activeMenu]);
     }
 
     public function list(Request $request) 
