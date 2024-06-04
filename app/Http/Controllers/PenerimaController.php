@@ -16,7 +16,7 @@ class PenerimaController extends Controller
         ];
 
         $page = (object) [
-            'title' => 'Silahkan Daftar'
+            'title' => 'Silahkan Daftar Terlebih Dahulu'
         ];
 
         $activeMenu = 'bansos';
@@ -33,18 +33,23 @@ class PenerimaController extends Controller
         if ($request->id_bantuan) {
             $bansos->where('id_bantuan', $request->id_bantuan);
         }
-    
+
         return DataTables::of($bansos)
             ->addIndexColumn()
             ->addColumn('aksi', function ($bansoss) {
-                $btn = '<a href="'.url('/bansos/' . $bansoss->id_bansos).'" class="btn btn-info btn-sm">Detail</a>';
-                return $btn;
+                if ( $bansoss->tanggal_akhir <= now()) {
+                    return '';
+                }
+                else {
+                    $btn = '<a href="'.url('/bansos/create').'" class="btn btn-primary btn-sm">Daftar</a>';
+                    return $btn;
+                }
+                
             })
             ->rawColumns(['aksi'])
             ->make(true);
     }
     
-
     public function create()
     {
         $breadcrumb = (object) [
