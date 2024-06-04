@@ -66,7 +66,7 @@
         var dataUser = $('#table_bansos').DataTable({
             serverSide: true,
             ajax: {
-                "url": "{{ url('bansos/list') }}",
+                "url": "{{ url('pengajuan-bansos/list') }}",
                 "type": "POST",
                 "data": function (d) {
                     d.id_bantuan = $('#id_bantuan').val();

@@ -8,7 +8,6 @@ use App\Http\Controllers\PenerimaController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\ProfilController;
 use App\Http\Controllers\SettingController;
-use App\Http\Controllers\PenerimaController;
 use Illuminate\Support\Facades\Route;
 
 //route index testing tampilan
