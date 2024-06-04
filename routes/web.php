@@ -84,9 +84,5 @@ Route::group(['prefix' => 'pengajuan-bansos'], function() {
     Route::get('/', [PenerimaController::class, 'index']);          
     Route::post('/list', [PenerimaController::class, 'list']);      
     Route::get('/create', [PenerimaController::class, 'create']);   
-    Route::post('/', [PenerimaController::class, 'store']);         
-    Route::get('/{id}', [PenerimaController::class, 'show']);       
-    Route::get('/{id}/edit', [PenerimaController::class, 'edit']);  
-    Route::put('/{id}', [PenerimaController::class, 'update']);     
-    Route::delete('/{id}', [PenerimaController::class, 'destroy']); 
+    Route::post('/', [PenerimaController::class, 'store']);
 });
