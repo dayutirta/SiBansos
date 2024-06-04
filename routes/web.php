@@ -83,6 +83,6 @@ Route::group(['prefix' => 'pengajuan-dokumen'], function() {
 Route::group(['prefix' => 'pengajuan-bansos'], function() {
     Route::get('/', [PenerimaController::class, 'index']);          
     Route::post('/list', [PenerimaController::class, 'list']);      
-    Route::get('/create', [PenerimaController::class, 'create']);   
+    Route::get('/create/{id}', [PenerimaController::class, 'create']);   
     Route::post('/', [PenerimaController::class, 'store']);
 });
