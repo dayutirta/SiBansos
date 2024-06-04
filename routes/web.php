@@ -72,11 +72,7 @@ Route::group(['prefix' => 'pengajuan-dokumen'], function() {
     Route::get('/', [BansosController::class, 'index']);          
     Route::post('/list', [BansosController::class, 'list']);      
     Route::get('/create', [BansosController::class, 'create']);   
-    Route::post('/', [BansosController::class, 'store']);         
-    Route::get('/{id}', [BansosController::class, 'show']);       
-    Route::get('/{id}/edit', [BansosController::class, 'edit']);  
-    Route::put('/{id}', [BansosController::class, 'update']);     
-    Route::delete('/{id}', [BansosController::class, 'destroy']); 
+    Route::post('/', [BansosController::class, 'store']);
 });
 
 // Route untuk Pengajuan Bansos

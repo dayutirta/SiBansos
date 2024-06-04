@@ -140,7 +140,7 @@
                 </a>
                 <ul class="nav nav-treeview">
                     <li class="nav-item">
-                        <a href="{{ url('/pengajuan-dokumen') }}" class="nav-link">
+                        <a href="{{ url('/setting') }}" class="nav-link">
                             <i class="far fa-file-alt nav-icon"></i>
                             <p>Pengajuan Dokumen</p>
                         </a>
