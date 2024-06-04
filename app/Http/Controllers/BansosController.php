@@ -5,31 +5,52 @@ use App\Models\BansosModel;
 use App\Models\BantuanModel;
 use Illuminate\Http\Request;
 use Yajra\DataTables\Facades\DataTables;
+use Illuminate\Support\Facades\Auth;
 
 class BansosController extends Controller
 {
     public function index()
     {
-        $breadcrumb = (object) [
-            'title' => 'Daftar Bansos',
-            'list'  => ['Home', 'Bansos']
-        ];
-
-        $page = (object) [
-            'title' => 'Daftar bansos yang terdaftar dalam sistem'
-        ];
-
-        $activeMenu = 'bansos';
-
-        $bantuan = BantuanModel::all();
-
-        return view('admin.bansos.index', ['breadcrumb' => $breadcrumb, 'page' => $page, 'bantuan' => $bantuan, 'activeMenu' => $activeMenu]);
+        $user = Auth::user();
+        if ($user->id_level == '1') {
+            $breadcrumb = (object) [
+                'title' => 'Daftar Bansos',
+                'list'  => ['Home', 'Bansos']
+            ];
+    
+            $page = (object) [
+                'title' => 'Daftar bansos yang terdaftar dalam sistem'
+            ];
+    
+            $activeMenu = 'bansos';
+    
+            $bantuan = BantuanModel::all();
+    
+            return view('admin.bansos.index', ['breadcrumb' => $breadcrumb, 'page' => $page, 'bantuan' => $bantuan, 'activeMenu' => $activeMenu]);
+        } 
+        
+        elseif ($user->id_level == '2') {
+            $breadcrumb = (object) [
+                'title' => 'Daftar Data Bansos ',
+                'list'  => ['Home', 'Bansos']
+            ];
+    
+            $page = (object) [
+                'title' => 'Daftar bansos yang terdaftar dalam sistem'
+            ];
+    
+            $activeMenu = 'bansos';
+    
+            $bantuan = BantuanModel::all();
+    
+            return view('rt.bansos.index', ['breadcrumb' => $breadcrumb, 'page' => $page, 'bantuan' => $bantuan, 'activeMenu' => $activeMenu]);
+        }
     }
 
     public function list(Request $request) 
     {
         $bansos = BansosModel::with('bantuan');
-
+        
         if ($request->id_bantuan) {
             $bansos->where('id_bantuan', $request->id_bantuan);
         }
