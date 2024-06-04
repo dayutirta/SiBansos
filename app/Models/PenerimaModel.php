@@ -17,12 +17,11 @@ class PenerimaModel extends Authenticatable
     protected $fillable = [
         'id_bansos',
         'id_warga',
-        'nama',
-        'usia',
+        'pln',
+        'pdam',
         'pendapatan',
         'status_kesehatan',
-        'pekerjaan',
-        'notelp',
+        'status_rumah',
     ];
 
     public function bansos()
