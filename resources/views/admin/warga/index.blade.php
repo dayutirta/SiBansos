@@ -18,15 +18,15 @@
             <div class="row">
                 <div class="col-md-12">
                     <div class="form-group row">
-                        <label class="col-1 control-label col-form-label">Filter:</label>
+                        <label class="col-1 control-label col-form-label">Filter RT:</label>
                         <div class="col-3">
-                            <select class="form-control" id="id_level" name="id_level" required>
+                            <select class="form-control" id="rt" name="rt" required>
                                 <option value="">- Semua -</option>
-                                @foreach ($warga as $item)
-                                    <option value="{{ $item->warga }}">{{ $item->nama_level }}</option>
+                                @foreach ($rts as $rt)
+                                    <option value="{{ $rt->rt }}">{{ $rt->rt }}</option>
                                 @endforeach
                             </select>
-                            <small class="form-text text-muted"></small>
+                            <small class="form-text text-muted">RT</small>
                         </div>
                     </div>
                 </div>
@@ -41,7 +41,7 @@
                         <th>RT</th>
                         <th>RW</th>
                         <th>Level</th>
-                        <th>Agama</th>
+                        <th>Status</th>
                         <th>Aksi</th>
                     </tr>
                 </thead>
@@ -69,7 +69,7 @@
                     "url": "{{ url('warga/list') }}",
                     "type": 'POST',
                     "data": function(d) {
-                        d.id_level = $('#id_level').val();
+                        d.rt = $('#rt').val();
                     }
                 },
                 columns: [{
@@ -115,8 +115,8 @@
                         searchable: true
                     },
                     {
-                        data: 'agama',
-                        name: 'agama',
+                        data: 'status',
+                        name: 'status',
                         orderable: false,
                         searchable: true
                     },
@@ -129,7 +129,7 @@
                 ]
             });
 
-            $('#id_level').on('change', function() {
+            $('#rt').on('change', function() {
                 dataWarga.ajax.reload();
             });
         });
