@@ -39,9 +39,9 @@ class WargaController extends Controller
         return DataTables::of($warga)
             ->addIndexColumn()
             ->addColumn('aksi', function ($wargas) {
-                $btn = '<a href="' . url('/warga/' . $wargas->nik) . '" class="btn btn-info btn-sm">Detail</a> ';
-                $btn .= '<a href="' . url('/warga/' . $wargas->nik . '/edit') . '" class="btn btn-warning btn-sm">Edit</a> ';
-                $btn .= '<form class="d-inline-block" method="POST" action="' . url('/warga/' . $wargas->nik) . '">' . csrf_field() . method_field('DELETE') .
+                $btn = '<a href="' . url('/warga/' . $wargas->id_warga) . '" class="btn btn-info btn-sm">Detail</a> ';
+                $btn .= '<a href="' . url('/warga/' . $wargas->id_warga . '/edit') . '" class="btn btn-warning btn-sm">Edit</a> ';
+                $btn .= '<form class="d-inline-block" method="POST" action="' . url('/warga/' . $wargas->id_warga) . '">' . csrf_field() . method_field('DELETE') .
                     '<button type="submit" class="btn btn-danger btn-sm" onclick="return confirm(\'Apakah Anda yakin menghapus data ini?\');">Hapus</button></form>';
                 return $btn;
             })
@@ -92,7 +92,9 @@ class WargaController extends Controller
             'kewarganegaraan' => 'required|string',
             'pekerjaan' => 'required|string',
             'pendidikan' => 'required|string',
-            'status_pernikahan' => 'required|string'
+            'status_pernikahan' => 'required|string',
+            'rt' => 'required|string',
+            'rw' => 'required|string',
         ]);
 
         WargaModel::create([
@@ -109,14 +111,16 @@ class WargaController extends Controller
             'kewarganegaraan' => $request->kewarganegaraan,
             'pekerjaan' => $request->pekerjaan,
             'pendidikan' => $request->pendidikan,
-            'status_pernikahan' => $request->status_pernikahan
+            'status_pernikahan' => $request->status_pernikahan,
+            'rt' => $request->rt,
+            'rw' => $request->rw,
         ]);
 
         return redirect('/warga')->with('success', 'Data berhasil ditambahkan');
     }
 
-    public function show(String $nik){
-        $warga = WargaModel::with('level')->where('nik', $nik)->first();
+    public function show(String $id_warga){
+        $warga = WargaModel::with('level')->where('id_warga', $id_warga)->first();
     
         $breadcrumb = (object) [
             'title' => 'Detail Warga',
@@ -141,9 +145,9 @@ class WargaController extends Controller
         ]);
     }
 
-    public function edit($nik)
+    public function edit($id_warga)
     {
-        $warga = WargaModel::where('nik', $nik)->first();
+        $warga = WargaModel::where('id_warga', $id_warga)->first();
         $level = LevelModel::all();
 
         $breadcrumb = (object) [
@@ -171,7 +175,7 @@ class WargaController extends Controller
     }
 
 
-    public function update(Request $request, String $nik)
+    public function update(Request $request, String $id_warga)
     {
         $request->validate([
             'id_level' => 'required|integer',
@@ -187,10 +191,12 @@ class WargaController extends Controller
             'kewarganegaraan' => 'required|string',
             'pekerjaan' => 'required|string',
             'pendidikan' => 'required|string',
-            'status_pernikahan' => 'required|string'
+            'status_pernikahan' => 'required|string',
+            'rt' => 'required|string',
+            'rw' => 'required|string',
         ]);
 
-        $warga = WargaModel::where('nik', $nik)->first();
+        $warga = WargaModel::where('id_warga', $id_warga)->first();
 
         if ($warga) {
             $warga->update([
@@ -207,7 +213,9 @@ class WargaController extends Controller
                 'kewarganegaraan' => $request->kewarganegaraan,
                 'pekerjaan' => $request->pekerjaan,
                 'pendidikan' => $request->pendidikan,
-                'status_pernikahan' => $request->status_pernikahan
+                'status_pernikahan' => $request->status_pernikahan,
+                'rt' => $request->rt,
+                'rw' => $request->rw,
             ]);
         }
 

@@ -26,7 +26,7 @@
                                     <option value="{{ $item->warga }}">{{ $item->nama_level }}</option>
                                 @endforeach
                             </select>
-                            <small class="form-text text-muted">nik</small>
+                            <small class="form-text text-muted"></small>
                         </div>
                     </div>
                 </div>
@@ -38,8 +38,8 @@
                         <th>NIK</th>
                         <th>Nama</th>
                         <th>Alamat</th>
-                        {{-- <th>RT</th>
-                        <th>RW</th> --}}
+                        <th>RT</th>
+                        <th>RW</th>
                         <th>Level</th>
                         <th>Agama</th>
                         <th>Aksi</th>
@@ -96,18 +96,18 @@
                         orderable: false,
                         searchable: false
                     },
-                    // {
-                    //     data: 'rt',
-                    //     name: 'rt',
-                    //     orderable: true,
-                    //     searchable: true
-                    // },
-                    // {
-                    //     data: 'rw',
-                    //     name: 'rw',
-                    //     orderable: true,
-                    //     searchable: true
-                    // },
+                    {
+                        data: 'rt',
+                        name: 'rt',
+                        orderable: true,
+                        searchable: true
+                    },
+                    {
+                        data: 'rw',
+                        name: 'rw',
+                        orderable: true,
+                        searchable: true
+                    },
                     {
                         data: 'level.nama_level',
                         name: 'level.nama_level',
