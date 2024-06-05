@@ -2,10 +2,12 @@
 namespace App\Http\Controllers;
 
 use App\Models\BansosModel;
+use App\Models\WargaModel;
 use App\Models\PenerimaModel;
 use App\Models\BantuanModel;
 use Illuminate\Http\Request;
 use Yajra\DataTables\Facades\DataTables;
+use Illuminate\Support\Facades\Auth;
 
 class PenerimaController extends Controller
 {
@@ -116,10 +118,77 @@ class PenerimaController extends Controller
             'status_kesehatan' => $request->status_kesehatan,
             'status_rumah' => $request->status_rumah,
             'id_bansos'=> $request->input('id_bansos'),
+            'status'=> $request->input('status'),
             'id_warga' => $id_warga,
         ]);
     
         return redirect('/pengajuan-bansos')->with('success', 'Pendaftaran sukses harap menunggu data selesai di verifikasi');
+    }
+
+    public function show()
+    {
+        $breadcrumb = (object) [
+            'title' => 'Data Pendaftar Bansos',
+            'list'  => ['Home', 'Bansos','Pendaftar']
+        ];
+
+        $page = (object) [
+            'title' => 'Data Para Pendaftar Bansos'
+        ];
+
+        $activeMenu = 'penerima';
+
+        $bansos = BansosModel::all();
+
+        return view('admin.penerima.index', ['breadcrumb' => $breadcrumb, 'page' => $page, 'bansos' => $bansos, 'activeMenu' => $activeMenu]);
+    }
+
+    public function showup(Request $request) 
+    {
+        
+        $user = Auth::user();
+        $userRt = $user->rt; 
+        $penerima = PenerimaModel::with(['bansos', 'user'])
+        ->whereHas('user', function ($query) use ($userRt) {
+            $query->where('rt', $userRt);
+        });
+
+    
+        if ($request->id_bansos) {
+            $penerima->where('id_bansos', $request->id_bansos);
+        }
+
+        return DataTables::of($penerima)
+            ->addIndexColumn()
+            ->addColumn('aksi', function ($penerimas) {
+                $btn = '<a href="' . url('/penerima/accept/' . $penerimas->id_penerima) . '" class="btn btn-success btn-sm">Terima</a> ';
+                $btn .= '<a href="' . url('/penerima/reject/' . $penerimas->id_penerima) . '" class="btn btn-danger btn-sm onclick="return confirm(\'Apakah Anda yakin menghapus data ini?\');">Tolak</a> ';
+                return $btn;
+            })
+            ->rawColumns(['aksi'])
+            ->make(true);
+    }
+
+        public function accept($id)
+    {
+        $penerima = PenerimaModel::find($id);
+        if ($penerima) {
+            $penerima->status = 'Diterima';
+            $penerima->save();
+        }
+
+        return redirect()->back()->with('success', 'Data penerimma sudah diterima');
+    }
+
+    public function reject($id)
+    {
+        $penerima = PenerimaModel::find($id);
+        if ($penerima) {
+            $penerima->status = 'Ditolak';
+            $penerima->save();
+        }
+
+        return redirect()->back()->with('success', 'Data penerimma sudah ditolak');
     }
     
 }
