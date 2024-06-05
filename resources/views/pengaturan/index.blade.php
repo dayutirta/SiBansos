@@ -14,30 +14,34 @@
     </div>
 </div>
 @endsection
-<style>
-.maintenance-message {
-    background-color: #f8f9fa;
-    padding: 20px;
-    border-radius: 10px;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-}
 
-.maintenance-message h3 {
-    color: #333;
-    font-size: 24px;
-}
+@push('css')
+    <style>
+        .maintenance-message {
+            background-color: #f8f9fa;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        
+        .maintenance-message h3 {
+            color: #333;
+            font-size: 24px;
+        }
+        
+        .maintenance-message p {
+            color: #666;
+            font-size: 16px;
+        }
+        
+        .spinner-icons {
+            margin-top: 20px;
+        }
+        
+        .spinner-icon {
+            display: inline-block;
+            margin: 0 10px;
+        }
+        </style>
+@endpush
 
-.maintenance-message p {
-    color: #666;
-    font-size: 16px;
-}
-
-.spinner-icons {
-    margin-top: 20px;
-}
-
-.spinner-icon {
-    display: inline-block;
-    margin: 0 10px;
-}
-</style>

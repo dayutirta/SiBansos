@@ -19,7 +19,7 @@ return new class extends Migration
             $table->integer('pln');
             $table->integer('pdam');
             $table->integer('status_kesehatan');
-            $table->integer('Status_rumah');
+            $table->integer('status_rumah');
             $table->timestamps();
 
             $table->foreign('id_bansos')->references('id_bansos')->on('m_bansos');

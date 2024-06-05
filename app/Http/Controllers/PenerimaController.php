@@ -2,6 +2,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\BansosModel;
+use App\Models\PenerimaModel;
 use App\Models\BantuanModel;
 use Illuminate\Http\Request;
 use Yajra\DataTables\Facades\DataTables;
@@ -16,7 +17,7 @@ class PenerimaController extends Controller
         ];
 
         $page = (object) [
-            'title' => 'Daftar bansos yang terdaftar dalam sistem'
+            'title' => 'Silahkan Daftar Terlebih Dahulu'
         ];
 
         $activeMenu = 'bansos';
@@ -29,7 +30,7 @@ class PenerimaController extends Controller
     public function list(Request $request) 
     {
         $bansos = BansosModel::with('bantuan');
-
+    
         if ($request->id_bantuan) {
             $bansos->where('id_bantuan', $request->id_bantuan);
         }
@@ -37,35 +38,36 @@ class PenerimaController extends Controller
         return DataTables::of($bansos)
             ->addIndexColumn()
             ->addColumn('aksi', function ($bansoss) {
-                $btn = '<a href="'.url('/bansos/' . $bansoss->id_bansos).'" class="btn btn-info btn-sm">Detail</a> ';
-                $btn .= '<a href="'.url('/bansos/' . $bansoss->id_bansos . '/edit').'" class="btn btn-warning btn-sm">Edit</a> ';
-                $btn .= '<form class="d-inline-block" method="POST" action="'. url('/bansos/'.$bansoss->id_bansos).'">'. csrf_field() . method_field('DELETE') .
-                    '<button type="submit" class="btn btn-danger btn-sm" onclick="return confirm(\'Apakah Anda yakin menghapus data ini?\');">Hapus</button></form>';
-                return $btn;
+                if ( $bansoss->tanggal_akhir <= now()) {
+                    return '';
+                }
+                else {
+                    $btn = '<a href="'.url('/pengajuan-bansos/create/'.$bansoss->id_bansos).'" class="btn btn-primary btn-sm">Daftar</a>';
+                    return $btn;
+                }
+                
             })
             ->rawColumns(['aksi'])
             ->make(true);
     }
-
+    
     public function create()
     {
         $breadcrumb = (object) [
-            'title' => 'Tambah Bansos',
-            'list' => ['Home','Bansos','Tambah Bansos']
+            'title' => 'Daftar menjadi Penerima Bansos',
+            'list' => ['Home','Bansos','Daftar Penerima']
         ];
 
         $page = (object) [
-            'title' => 'Tambah Bansos',
+            'title' => 'Isi Formulir Berikut :',
         ];
-
-        $bantuan = BantuanModel::all();
-
+        
         $activeMenu = 'bansos';
-
-        return view('admin.bansos.create', [
+        $id_bansos = request()->segment(3); 
+        return view('pengajuan.bansos.create', [
             'breadcrumb' => $breadcrumb,
             'page' => $page,
-            'bantuan' => $bantuan,
+            'id_bansos' => $id_bansos,
             'activeMenu' => $activeMenu
         ]);
     }
@@ -73,110 +75,51 @@ class PenerimaController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'id_bantuan' => 'required|integer',
-            'nama_program' => 'required|string',
-            'tanggal_mulai' => 'required|date',
-            'tanggal_akhir' => 'required|date',
-            'jumlah_penerima' => 'required|int',
-            'anggaran' => 'required|int',
-            'lokasi' => 'required|string'
+            //verifikasi data
+            'nik' => 'required|string',
+            'nokk' => 'required|string',
+            'nama' => 'required|string', 
+            'pekerjaanx' => 'required|string',
+            'pekerjaany' => 'required|string',
+            'gajix' => 'required|integer',
+            'gajiy' => 'required|integer',
+            'kewarganegaraan' => 'required|string',
+            //data penerima
+            'pln' => 'required|integer',
+            'pdam' => 'required|integer',
+            'status_kesehatan' => 'required|integer',
+            'status_rumah' => 'required|integer',
         ]);
-
-        BansosModel::create([
-            'id_bantuan' => $request->id_bantuan,
-            'nama_program' => $request->nama_program,
-            'tanggal_mulai' => $request->tanggal_mulai,
-            'tanggal_akhir' => $request->tanggal_akhir,
-            'jumlah_penerima' => $request->jumlah_penerima,
-            'anggaran' => $request->anggaran,
-            'lokasi' => $request->lokasi
-        ]);
-
-        return redirect('/bansos')->with('success', 'Data berhasil ditambahkan');
-    }
-
-    public function show(String $id_bansos){
-        $bansos = BansosModel::with('bantuan')->where('id_bansos', $id_bansos)->first();
+        
+        // Hitung nilai pendapatan berdasarkan gajix dan gajiy
+        $gajix = $request->input('gajix');
+        $gajiy = $request->input('gajiy');
+        $average_gaji = ($gajix + $gajiy) / 2;
     
-        $breadcrumb = (object) [
-            'title' => 'Detail Bansos',
-            'list' => [
-                'Home',
-                'Bansos',
-                'Detail Bansos'
-            ]
-        ];
-    
-        $page = (object) [
-            'title' => 'Detail Bansos',
-        ];
-    
-        $activeMenu = 'bansos';
-    
-        return view('admin.bansos.detail', [
-            'breadcrumb' => $breadcrumb,
-            'page' => $page,
-            'bansos' => $bansos,
-            'activeMenu' => $activeMenu
-        ]);
-    }
-
-    public function edit($id_bansos)
-    {
-        $bansos = BansosModel::where('id_bansos', $id_bansos)->first();
-        $bantuan = BantuanModel::all();
-
-        $breadcrumb = (object) [
-            'title' => 'Edit Bansos',
-            'list' => [
-                'Home',
-                'Bansos',
-                'Edit Bansos'
-            ]
-        ];
-
-        $page = (object) [
-            'title' => 'Edit Bansos',
-        ];
-
-        $activeMenu = 'bansos';
-
-        return view('admin.bansos.edit', [
-            'breadcrumb' => $breadcrumb,
-            'page' => $page,
-            'bansos' => $bansos,
-            'bantuan' => $bantuan,
-            'activeMenu' => $activeMenu
-        ]);
-    }
-
-
-    public function update(Request $request, String $id_bansos)
-    {
-        $request->validate([
-            'id_bantuan' => 'required|integer',
-            'nama_program' => 'required|string',
-            'tanggal_mulai' => 'required|date',
-            'tanggal_akhir' => 'required|date',
-            'jumlah_penerima' => 'required|int',
-            'anggaran' => 'required|int',
-            'lokasi' => 'required|string'
-        ]);
-
-        $bansos = BansosModel::where('id_bansos', $id_bansos)->first();
-
-        if ($bansos) {
-            $bansos->update([
-            'id_bantuan' => $request->id_bantuan,
-            'nama_program' => $request->nama_program,
-            'tanggal_mulai' => $request->tanggal_mulai,
-            'tanggal_akhir' => $request->tanggal_akhir,
-            'jumlah_penerima' => $request->jumlah_penerima,
-            'anggaran' => $request->anggaran,
-            'lokasi' => $request->lokasi
-            ]);
+        if ($average_gaji <= 1000000) {
+            $pendapatan = 5;
+        } elseif ($average_gaji >= 1000000 && $average_gaji <= 1500000) {
+            $pendapatan = 4;
+        } elseif ($average_gaji >= 1500000 && $average_gaji <= 2000000) {
+            $pendapatan = 3;
+        } elseif ($average_gaji >= 2000000 && $average_gaji <= 2500000) {
+            $pendapatan = 2;
+        } else {
+            $pendapatan = 1;
         }
-
-        return redirect('/bansos')->with('success', 'Data berhasil diubah');
+        $id_warga = auth()->user()->id_warga;
+        // Simpan data ke database
+        PenerimaModel::create([
+            'pendapatan' => $pendapatan,
+            'pln' => $request->pln,
+            'pdam' => $request->pdam,
+            'status_kesehatan' => $request->status_kesehatan,
+            'status_rumah' => $request->status_rumah,
+            'id_bansos'=> $request->input('id_bansos'),
+            'id_warga' => $id_warga,
+        ]);
+    
+        return redirect('/pengajuan-bansos')->with('success', 'Pendaftaran sukses harap menunggu data selesai di verifikasi');
     }
+    
 }
