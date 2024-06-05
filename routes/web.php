@@ -86,3 +86,18 @@ Route::group(['prefix' => 'pengajuan-bansos'], function() {
     Route::get('/create/{id}', [PenerimaController::class, 'create']);   
     Route::post('/', [PenerimaController::class, 'store']);
 });
+
+// Route untuk Pengajuan Dokumen
+Route::group(['prefix' => 'penerima'], function() {
+    Route::get('/', [PenerimaController::class, 'show']);          
+    Route::post('/showup', [PenerimaController::class, 'showup']);
+    Route::get('/accept/{id}', [PenerimaController::class, 'accept']);
+    Route::get('/reject/{id}', [PenerimaController::class, 'reject']);  
+    
+    Route::get('/create', [PenerimaController::class, 'create']);   
+    Route::post('/', [PenerimaController::class, 'store']);         
+    Route::get('/{id}', [PenerimaController::class, 'show']);       
+    Route::get('/{id}/edit', [PenerimaController::class, 'edit']);  
+    Route::put('/{id}', [PenerimaController::class, 'update']);     
+    Route::delete('/{id}', [PenerimaController::class, 'destroy']); 
+});
