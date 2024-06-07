@@ -37,11 +37,18 @@ Route::group(['prefix' => 'warga'], function() {
     Route::post('/list', [WargaController::class, 'list']);      
     Route::get('/create', [WargaController::class, 'create']);   
     Route::post('/', [WargaController::class, 'store']);         
-    Route::get('/{id}', [WargaController::class, 'show']);       
+    Route::get('/{id}', [WargaController::class, 'show']);
     Route::get('/{id}/edit', [WargaController::class, 'edit']);  
     Route::put('/{id}', [WargaController::class, 'update']);     
     Route::get('/{id}/ubah_status', [WargaController::class, 'ubahStatus']);
     Route::put('/{id}/update_status', [WargaController::class, 'updateStatus']);
+});
+
+// Route untuk Riwayat Warga
+Route::group(['prefix' => 'riwayat'], function() {
+    Route::get('/', [WargaController::class, 'riwayat']);          
+    Route::post('/list', [WargaController::class, 'listRiwayat']);
+    Route::get('/{id}', [WargaController::class, 'show']);
 });
 
 //route bansos
