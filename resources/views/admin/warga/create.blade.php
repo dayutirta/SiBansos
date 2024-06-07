@@ -204,10 +204,14 @@
             </div>
             <div class="form-group row">
                 <label class="col-1 col-form-label control-label">
-                RT
+                    RT
                 </label>
                 <div class="col-11">
-                    <input type="text" name="rt" class="form-control" id="rt" value="{{ old('rt') }}" required>
+                    @if($rt)
+                        <input type="text" name="rt" class="form-control" id="rt" value="{{ $rt }}" readonly required>
+                    @else
+                        <input type="text" name="rt" class="form-control" id="rt" value="{{ old('rt') }}" required>
+                    @endif
                     @error('rt')
                         <small class="form-text text-danger">
                             {{ $message }}
@@ -220,7 +224,7 @@
                 RW
                 </label>
                 <div class="col-11">
-                    <input type="text" name="rw" class="form-control" id="rw" value="{{ old('rw') }}" required>
+                    <input type="text" name="rw" class="form-control" id="rw" value="{{ old('rw', '6') }}" readonly required>
                     @error('rw')
                         <small class="form-text text-danger">
                             {{ $message }}
