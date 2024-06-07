@@ -22,6 +22,7 @@ class PenerimaModel extends Authenticatable
         'pendapatan',
         'status_kesehatan',
         'status_rumah',
+        'status',
     ];
 
     public function bansos()
