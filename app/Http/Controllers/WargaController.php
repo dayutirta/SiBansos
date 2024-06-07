@@ -23,17 +23,33 @@ class WargaController extends Controller
 
         $activeMenu = 'warga';
 
-        $warga = WargaModel::all();
+        $rts = WargaModel::select('rt')->distinct()->get();
 
-        return view('admin.warga.index', ['breadcrumb' => $breadcrumb, 'page' => $page, 'warga' => $warga, 'activeMenu' => $activeMenu]);
+        return view('admin.warga.index', ['breadcrumb' => $breadcrumb, 'page' => $page, 'rts' => $rts, 'activeMenu' => $activeMenu]);
     }
 
     public function list(Request $request)
     {
+        $user = Auth::user();
+        $userLevel = $user->id_level;
+        $userRt = $user->rt;
+
         $warga = WargaModel::with('level');
 
-        if ($request->id_level) {
-            $warga->where('id_level', $request->id_level);
+        if ($userLevel == 1) {
+            // Level RW: dapat melihat semua data
+            if ($request->rt) {
+                $warga->where('rt', $request->rt);
+            }
+        } elseif ($userLevel == 2) {
+            // Level RT: dapat melihat data dirinya sendiri dan data warga dengan RT yang sama
+            $warga->where(function ($query) use ($user, $userRt) {
+                $query->where('id_warga', $user->id_warga)
+                    ->orWhere('rt', $userRt);
+            });
+        } elseif ($userLevel == 3) {
+            // Level Warga: dapat melihat data dirinya sendiri
+            $warga->where('id_warga', $user->id_warga);
         }
 
         return DataTables::of($warga)
@@ -68,13 +84,59 @@ class WargaController extends Controller
 
         $activeMenu = 'warga';
 
+        $user = Auth::user();
+        $rt = null;
+
+        if ($user->id_level == 2) {
+            $rt = $user->rt;
+        }
+
+        // dd($rt);
+
         return view('admin.warga.create', [
             'breadcrumb' => $breadcrumb,
             'page' => $page,
             'level' => $level,
-            'activeMenu' => $activeMenu
+            'activeMenu' => $activeMenu,
+            'rt' => $rt
         ]);
     }
+
+    // public function create()
+    // {
+    //     $breadcrumb = (object) [
+    //         'title' => 'Tambah Warga',
+    //         'list' => [
+    //             'Home',
+    //             'Warga',
+    //             'Tambah Warga'
+    //         ]
+    //     ];
+
+    //     $page = (object) [
+    //         'title' => 'Tambah Warga',
+    //     ];
+
+    //     $level = LevelModel::all();
+
+    //     $activeMenu = 'warga';
+
+    //     $user = Auth::user(); // Ambil data pengguna yang login
+    //     $rt = null;
+
+    //     if ($user->id_level == 2) { // Jika pengguna adalah level RT
+    //         $rt = $user->rt; // Misalnya, pengguna memiliki atribut 'rt'
+    //     }
+
+    //     return view('admin.warga.create', [
+    //         'breadcrumb' => $breadcrumb,
+    //         'page' => $page,
+    //         'level' => $level,
+    //         'activeMenu' => $activeMenu,
+    //         'rt' => $rt // Kirim data 'rt' ke view
+    //     ]);
+    // }
+
 
     public function store(Request $request)
     {
@@ -119,9 +181,10 @@ class WargaController extends Controller
         return redirect('/warga')->with('success', 'Data berhasil ditambahkan');
     }
 
-    public function show(String $id_warga){
+    public function show(String $id_warga)
+    {
         $warga = WargaModel::with('level')->where('id_warga', $id_warga)->first();
-    
+
         $breadcrumb = (object) [
             'title' => 'Detail Warga',
             'list' => [
@@ -130,13 +193,13 @@ class WargaController extends Controller
                 'Detail Warga'
             ]
         ];
-    
+
         $page = (object) [
             'title' => 'Detail Warga',
         ];
-    
+
         $activeMenu = 'warga';
-    
+
         return view('admin.warga.detail', [
             'breadcrumb' => $breadcrumb,
             'page' => $page,
@@ -187,7 +250,6 @@ class WargaController extends Controller
             'tanggal_lahir' => 'required|date',
             'alamat' => 'required|string',
             'agama' => 'required|string',
-            'status' => 'required|string',
             'kewarganegaraan' => 'required|string',
             'pekerjaan' => 'required|string',
             'pendidikan' => 'required|string',
@@ -209,7 +271,6 @@ class WargaController extends Controller
                 'tanggal_lahir' => $request->tanggal_lahir,
                 'alamat' => $request->alamat,
                 'agama' => $request->agama,
-                'status' => $request->status,
                 'kewarganegaraan' => $request->kewarganegaraan,
                 'pekerjaan' => $request->pekerjaan,
                 'pendidikan' => $request->pendidikan,
