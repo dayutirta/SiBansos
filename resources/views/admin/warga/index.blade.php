@@ -4,6 +4,7 @@
     <div class="card card-outline card-primary">
         <div class="card-header">
             <h3 class="card-title">{{ $page->title }}</h3>
+            {{-- Button Tambah --}}
             <div class="card-tools">
                 <a class="btn btn-sm btn-primary mt-1" href="{{ url('warga/create') }}">Tambah</a>
             </div>
@@ -15,22 +16,26 @@
             @if (session('error'))
                 <div class="alert alert-danger">{{ session('error') }}</div>
             @endif
-            <div class="row">
-                <div class="col-md-12">
-                    <div class="form-group row">
-                        <label class="col-1 control-label col-form-label">Filter RT:</label>
-                        <div class="col-3">
-                            <select class="form-control" id="rt" name="rt" required>
-                                <option value="">- Semua -</option>
-                                @foreach ($rts as $rt)
-                                    <option value="{{ $rt->rt }}">{{ $rt->rt }}</option>
-                                @endforeach
-                            </select>
-                            <small class="form-text text-muted">RT</small>
+            {{-- Filter RT --}}
+            @if ($userLevel != 2)
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="form-group row">
+                            <label class="col-1 control-label col-form-label">Filter RT:</label>
+                            <div class="col-3">
+                                <select class="form-control" id="rt" name="rt" required>
+                                    <option value="">- Semua -</option>
+                                    @foreach ($rts as $rt)
+                                        <option value="{{ $rt->rt }}">{{ $rt->rt }}</option>
+                                    @endforeach
+                                </select>
+                                <small class="form-text text-muted">RT</small>
+                            </div>
                         </div>
                     </div>
                 </div>
-            </div>
+            @endif
+            {{-- Tabel Warga --}}
             <table class="table table-bordered table-striped table-hover table-sm" id="table_warga">
                 <thead>
                     <tr>
