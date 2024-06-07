@@ -25,7 +25,9 @@ class WargaController extends Controller
 
         $rts = WargaModel::select('rt')->distinct()->get();
 
-        return view('admin.warga.index', ['breadcrumb' => $breadcrumb, 'page' => $page, 'rts' => $rts, 'activeMenu' => $activeMenu]);
+        $userLevel = Auth::user()->id_level;
+
+        return view('admin.warga.index', ['breadcrumb' => $breadcrumb, 'page' => $page, 'rts' => $rts, 'activeMenu' => $activeMenu, 'userLevel' => $userLevel]);
     }
 
     public function list(Request $request)
@@ -37,18 +39,15 @@ class WargaController extends Controller
         $warga = WargaModel::with('level');
 
         if ($userLevel == 1) {
-            // Level RW: dapat melihat semua data
             if ($request->rt) {
                 $warga->where('rt', $request->rt);
             }
         } elseif ($userLevel == 2) {
-            // Level RT: dapat melihat data dirinya sendiri dan data warga dengan RT yang sama
             $warga->where(function ($query) use ($user, $userRt) {
                 $query->where('id_warga', $user->id_warga)
                     ->orWhere('rt', $userRt);
             });
         } elseif ($userLevel == 3) {
-            // Level Warga: dapat melihat data dirinya sendiri
             $warga->where('id_warga', $user->id_warga);
         }
 
@@ -57,8 +56,7 @@ class WargaController extends Controller
             ->addColumn('aksi', function ($wargas) {
                 $btn = '<a href="' . url('/warga/' . $wargas->id_warga) . '" class="btn btn-info btn-sm">Detail</a> ';
                 $btn .= '<a href="' . url('/warga/' . $wargas->id_warga . '/edit') . '" class="btn btn-warning btn-sm">Edit</a> ';
-                $btn .= '<form class="d-inline-block" method="POST" action="' . url('/warga/' . $wargas->id_warga) . '">' . csrf_field() . method_field('DELETE') .
-                    '<button type="submit" class="btn btn-danger btn-sm" onclick="return confirm(\'Apakah Anda yakin menghapus data ini?\');">Hapus</button></form>';
+                $btn .= '<a href="' . url('/warga/' . $wargas->id_warga . '/ubah_status') . '" class="btn btn-danger btn-sm">Ubah Status</a>';
                 return $btn;
             })
             ->rawColumns(['aksi'])
@@ -101,42 +99,6 @@ class WargaController extends Controller
             'rt' => $rt
         ]);
     }
-
-    // public function create()
-    // {
-    //     $breadcrumb = (object) [
-    //         'title' => 'Tambah Warga',
-    //         'list' => [
-    //             'Home',
-    //             'Warga',
-    //             'Tambah Warga'
-    //         ]
-    //     ];
-
-    //     $page = (object) [
-    //         'title' => 'Tambah Warga',
-    //     ];
-
-    //     $level = LevelModel::all();
-
-    //     $activeMenu = 'warga';
-
-    //     $user = Auth::user(); // Ambil data pengguna yang login
-    //     $rt = null;
-
-    //     if ($user->id_level == 2) { // Jika pengguna adalah level RT
-    //         $rt = $user->rt; // Misalnya, pengguna memiliki atribut 'rt'
-    //     }
-
-    //     return view('admin.warga.create', [
-    //         'breadcrumb' => $breadcrumb,
-    //         'page' => $page,
-    //         'level' => $level,
-    //         'activeMenu' => $activeMenu,
-    //         'rt' => $rt // Kirim data 'rt' ke view
-    //     ]);
-    // }
-
 
     public function store(Request $request)
     {
@@ -281,5 +243,49 @@ class WargaController extends Controller
         }
 
         return redirect('/warga')->with('success', 'Data berhasil diubah');
+    }
+
+    public function ubahStatus($id_warga)
+    {
+        $breadcrumb = (object) [
+            'title' => 'Ubah Status Warga',
+            'list' => [
+                'Home',
+                'Warga',
+                'Ubah Status Warga'
+            ]
+        ];
+
+        $page = (object) [
+            'title' => 'Ubah Status Warga',
+        ];
+
+        $warga = WargaModel::where('id_warga', $id_warga)->first();
+
+        $activeMenu = 'warga';
+
+        return view('admin.warga.status', [
+            'breadcrumb' => $breadcrumb,
+            'page' => $page,
+            'warga' => $warga,
+            'activeMenu' => $activeMenu
+        ]);
+    }
+
+    public function updateStatus(Request $request, $id_warga)
+    {
+        $request->validate([
+            'status' => 'required|string'
+        ]);
+
+        $warga = WargaModel::where('id_warga', $id_warga)->first();
+
+        if ($warga) {
+            $warga->update([
+                'status' => $request->status
+            ]);
+        }
+
+        return redirect('/warga')->with('success', 'Status warga berhasil diubah');
     }
 }
