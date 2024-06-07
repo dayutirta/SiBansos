@@ -40,7 +40,8 @@ Route::group(['prefix' => 'warga'], function() {
     Route::get('/{id}', [WargaController::class, 'show']);       
     Route::get('/{id}/edit', [WargaController::class, 'edit']);  
     Route::put('/{id}', [WargaController::class, 'update']);     
-    Route::delete('/{id}', [WargaController::class, 'destroy']); 
+    Route::get('/{id}/ubah_status', [WargaController::class, 'ubahStatus']);
+    Route::put('/{id}/update_status', [WargaController::class, 'updateStatus']);
 });
 
 //route bansos
