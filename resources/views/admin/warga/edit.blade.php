@@ -22,7 +22,7 @@
                     Kembali
                 </a>
             @else
-                <form action="{{ url('/warga/' . $warga->nik) }}" method="POST" class="form-horizontal">
+                <form action="{{ url('/warga/' . $warga->id_warga) }}" method="POST" class="form-horizontal">
                     @csrf
                     @method('PUT') <!-- Lebih prefer untuk menggunakan @method('PUT') -->
                     <div class="form-group row">
@@ -47,9 +47,19 @@
                     <div class="form-group row">
                         <label class="col-1 control-label col-form-label">NIK</label>
                         <div class="col-11">
-                            <input type="text" name="nik" id="nik" class="form-control" value="{{ $warga->nik }}"
-                                required>
+                            <input type="text" name="nik" id="nik" class="form-control" 
+                            value="{{ old('nik') ?? $warga->nik }}" required>
                             @error('nik')
+                                <small class="form-text text-danger">{{ $message }}</small>
+                            @enderror
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label class="col-1 control-label col-form-label">NO. KK</label>
+                        <div class="col-11">
+                            <input type="text" name="nokk" id="nokk" class="form-control" 
+                            value="{{ old('nokk') ?? $warga->nokk }}" required>
+                            @error('nokk')
                                 <small class="form-text text-danger">{{ $message }}</small>
                             @enderror
                         </div>
@@ -111,16 +121,6 @@
                             <input type="text" name="agama" id="agama" class="form-control"
                                 value="{{ old('agama') ?? $warga->agama }}" required>
                             @error('agama')
-                                <small class="form-text text-danger">{{ $message }}</small>
-                            @enderror
-                        </div>
-                    </div>
-                    <div class="form-group row">
-                        <label class="col-1 control-label col-form-label">Status</label>
-                        <div class="col-11">
-                            <input type="text" name="status" id="status" class="form-control"
-                                value="{{ old('status') ?? $warga->status }}" required>
-                            @error('status')
                                 <small class="form-text text-danger">{{ $message }}</small>
                             @enderror
                         </div>
