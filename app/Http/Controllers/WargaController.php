@@ -36,7 +36,7 @@ class WargaController extends Controller
         $userLevel = $user->id_level;
         $userRt = $user->rt;
 
-        $warga = WargaModel::with('level');
+        $warga = WargaModel::with('level')->where('status', '!=', 'Tidak Aktif');
 
         if ($userLevel == 1) {
             if ($request->rt) {
@@ -47,8 +47,6 @@ class WargaController extends Controller
                 $query->where('id_warga', $user->id_warga)
                     ->orWhere('rt', $userRt);
             });
-        } elseif ($userLevel == 3) {
-            $warga->where('id_warga', $user->id_warga);
         }
 
         return DataTables::of($warga)
@@ -143,9 +141,9 @@ class WargaController extends Controller
         return redirect('/warga')->with('success', 'Data berhasil ditambahkan');
     }
 
-    public function show(String $id_warga)
+    public function show(String $id)
     {
-        $warga = WargaModel::with('level')->where('id_warga', $id_warga)->first();
+        $warga = WargaModel::with('level')->where('id_warga', $id)->first();
 
         $breadcrumb = (object) [
             'title' => 'Detail Warga',
@@ -170,9 +168,9 @@ class WargaController extends Controller
         ]);
     }
 
-    public function edit($id_warga)
+    public function edit(String $id)
     {
-        $warga = WargaModel::where('id_warga', $id_warga)->first();
+        $warga = WargaModel::where('id_warga', $id)->first();
         $level = LevelModel::all();
 
         $breadcrumb = (object) [
@@ -199,8 +197,7 @@ class WargaController extends Controller
         ]);
     }
 
-
-    public function update(Request $request, String $id_warga)
+    public function update(Request $request, String $id)
     {
         $request->validate([
             'id_level' => 'required|integer',
@@ -220,7 +217,7 @@ class WargaController extends Controller
             'rw' => 'required|string',
         ]);
 
-        $warga = WargaModel::where('id_warga', $id_warga)->first();
+        $warga = WargaModel::where('id_warga', $id)->first();
 
         if ($warga) {
             $warga->update([
@@ -245,7 +242,7 @@ class WargaController extends Controller
         return redirect('/warga')->with('success', 'Data berhasil diubah');
     }
 
-    public function ubahStatus($id_warga)
+    public function ubahStatus(String $id)
     {
         $breadcrumb = (object) [
             'title' => 'Ubah Status Warga',
@@ -260,7 +257,7 @@ class WargaController extends Controller
             'title' => 'Ubah Status Warga',
         ];
 
-        $warga = WargaModel::where('id_warga', $id_warga)->first();
+        $warga = WargaModel::where('id_warga', $id)->first();
 
         $activeMenu = 'warga';
 
@@ -272,13 +269,13 @@ class WargaController extends Controller
         ]);
     }
 
-    public function updateStatus(Request $request, $id_warga)
+    public function updateStatus(Request $request, String $id)
     {
         $request->validate([
-            'status' => 'required|string'
+            'status' => 'required|string|in:Tidak Aktif,Meninggal'
         ]);
 
-        $warga = WargaModel::where('id_warga', $id_warga)->first();
+        $warga = WargaModel::where('id_warga', $id)->first();
 
         if ($warga) {
             $warga->update([
