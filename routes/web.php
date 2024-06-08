@@ -7,6 +7,7 @@ use App\Http\Controllers\BansosController;
 use App\Http\Controllers\PenerimaController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\ProfilController;
+use App\Http\Controllers\RiwayatController;
 use App\Http\Controllers\SettingController;
 use Illuminate\Support\Facades\Route;
 
@@ -46,9 +47,9 @@ Route::group(['prefix' => 'warga'], function() {
 
 // Route untuk Riwayat Warga
 Route::group(['prefix' => 'riwayat'], function() {
-    Route::get('/', [WargaController::class, 'riwayat']);          
-    Route::post('/list', [WargaController::class, 'listRiwayat']);
-    Route::get('/{id}', [WargaController::class, 'show']);
+    Route::get('/', [RiwayatController::class, 'index']);          
+    Route::post('/list', [RiwayatController::class, 'list']);
+    Route::get('/{id}', [RiwayatController::class, 'show']);
 });
 
 //route bansos
