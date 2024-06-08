@@ -224,7 +224,7 @@
                 RW
                 </label>
                 <div class="col-11">
-                    <input type="text" name="rw" class="form-control" id="rw" value="{{ old('rw', '6') }}" readonly required>
+                    <input type="text" name="rw" class="form-control" id="rw" value="{{ old('rw', '1') }}" readonly required>
                     @error('rw')
                         <small class="form-text text-danger">
                             {{ $message }}
