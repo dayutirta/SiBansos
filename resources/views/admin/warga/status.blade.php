@@ -22,17 +22,14 @@
                     Kembali
                 </a>
             @else
-                <form action="{{ url('/warga/' . $warga->id_warga) }}" method="POST" class="form-horizontal">
+                <form action="{{ url('/warga/' . $warga->id_warga . '/update_status') }}" method="POST" class="form-horizontal">
                     @csrf
-                    @method('PUT') <!-- Lebih prefer untuk menggunakan @method('PUT') -->
+                    @method('PUT')
                     <div class="form-group row">
                         <label class="col-1 control-label col-form-label">Status</label>
                         <div class="col-11">
-                            <select name="status" id="status" class="form-control" required>
-                                <option value="">-- Pilih Status --</option>
-                                <option value="Tidak Aktif" {{ $warga->status == 'Tidak Aktif' ? 'selected' : '' }}>Tidak Aktif</option>
-                                <option value="Meninggal" {{ $warga->status == 'Meninggal' ? 'selected' : '' }}>Meninggal</option>
-                            </select>
+                            <input type="text" name="status" id="status" class="form-control" 
+                            value="{{ old('status') ?? $warga->status }}" required>
                             @error('status')
                                 <small class="form-text text-danger">{{ $message }}</small>
                             @enderror
