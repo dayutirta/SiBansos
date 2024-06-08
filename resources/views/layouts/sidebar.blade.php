@@ -38,6 +38,12 @@
                             </a>
                         </li>
                         <li class="nav-item">
+                            <a href="{{ url('/riwayat') }}" class="nav-link">
+                                <i class="fas fa-user-edit nav-icon"></i>
+                                <p>Riwayat Data Warga</p>
+                            </a>
+                        </li>
+                        <li class="nav-item">
                             <a href="{{ url('/level') }}" class="nav-link">
                                 <i class="fas fa-print nav-icon"></i>
                                 <p>Cetak Data Warga</p>
@@ -98,6 +104,12 @@
                             <a href="{{ url('/warga') }}" class="nav-link">
                                 <i class="fas fa-user-edit nav-icon"></i>
                                 <p>Data Warga</p>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="{{ url('/riwayat') }}" class="nav-link">
+                                <i class="fas fa-user-edit nav-icon"></i>
+                                <p>Riwayat Data Warga</p>
                             </a>
                         </li>
                         <li class="nav-item">
