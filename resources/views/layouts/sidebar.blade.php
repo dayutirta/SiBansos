@@ -139,7 +139,7 @@
                     </ul>
                     <ul class="nav nav-treeview">
                         <li class="nav-item">
-                            <a href="{{ url('/penerima') }}" class="nav-link">
+                            <a href="{{ url('/setting') }}" class="nav-link">
                                 <i class="fas fa-database nav-icon"></i>
                                 <p>Data Penerima</p>
                             </a>

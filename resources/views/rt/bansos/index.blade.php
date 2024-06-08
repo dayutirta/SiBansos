@@ -37,9 +37,7 @@
                         <th>Tanggal Berakhir</th>
                         <th>Tipe Bantuan</th>
                         <th>Jumlah Penerima</th>
-                        <th>Anggaran</th>
                         <th>Lokasi</th>
-                        <th>Aksi</th>
                     </tr>
                 </thead>
             </table>
@@ -76,9 +74,7 @@
                 { data: "tanggal_akhir", className: "", orderable: true, searchable: true },
                 { data: "bantuan.nama_bantuan", className: "", orderable: false, searchable: false },
                 { data: "jumlah_penerima", className: "", orderable: true, searchable: true },
-                { data: "anggaran", className: "", orderable: true, searchable: true },
-                { data: "lokasi", className: "", orderable: true, searchable: true },
-                { data: "aksi", className: "", orderable: false, searchable: false }
+                { data: "lokasi", className: "", orderable: true, searchable: true }
             ]
         });
 
