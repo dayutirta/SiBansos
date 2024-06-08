@@ -64,7 +64,7 @@
                         <li class="nav-item">
                             <a href="{{ url('/bantuan') }}" class="nav-link">
                                 <i class="fas fa-users nav-icon"></i>
-                                <p>Lisr Daftar Bantuan</p>
+                                <p>List Daftar Bantuan</p>
                             </a>
                         </li>
                         <li class="nav-item">
