@@ -11,6 +11,7 @@ use Illuminate\Support\Facades\Auth;
 
 class PenerimaController extends Controller
 {
+    // Function Pengajuan Bansos
     public function index()
     {
         $breadcrumb = (object) [
@@ -125,6 +126,7 @@ class PenerimaController extends Controller
         return redirect('/pengajuan-bansos')->with('success', 'Pendaftaran sukses harap menunggu data selesai di verifikasi');
     }
 
+    // Function Penerima Bansos
     public function show()
     {
         $breadcrumb = (object) [
@@ -147,37 +149,180 @@ class PenerimaController extends Controller
     {
         
         $user = Auth::user();
-        $userRt = $user->rt; 
-        $penerima = PenerimaModel::with(['bansos', 'user'])
-        ->whereHas('user', function ($query) use ($userRt) {
-            $query->where('rt', $userRt);
-        });
+        $level = $user->id_level;
+        if($level == 2){
+            $userRt = $user->rt;
+            $penerima1 = PenerimaModel::with(['bansos', 'user'])
+            ->whereHas('user', function ($query) use ($userRt) {
+            $query->where('rt', $userRt);});
 
-    
-        if ($request->id_bansos) {
-            $penerima->where('id_bansos', $request->id_bansos);
-        }
-
-        return DataTables::of($penerima)
+        return DataTables::of($penerima1)
             ->addIndexColumn()
             ->addColumn('aksi', function ($penerimas) {
                 $btn = '<a href="' . url('/penerima/accept/' . $penerimas->id_penerima) . '" class="btn btn-success btn-sm">Terima</a> ';
                 $btn .= '<a href="' . url('/penerima/reject/' . $penerimas->id_penerima) . '" class="btn btn-danger btn-sm onclick="return confirm(\'Apakah Anda yakin menghapus data ini?\');">Tolak</a> ';
-                return $btn;
-            })
+                return $btn;})
             ->rawColumns(['aksi'])
             ->make(true);
-    }
+        }
+        elseif($level == 1){
+            $userRw = $user->rw;
+            $penerima2 = PenerimaModel::with(['bansos', 'user'])
+            ->whereHas('user', function ($query) use ($userRw) {
+            $query->where('rw', $userRw);});
 
-        public function accept($id)
+        return DataTables::of($penerima2)
+            ->addIndexColumn()
+            ->addColumn('aksi', function ($penerimas) {
+                $btn = '<a href="' . url('/penerima/accept/' . $penerimas->id_penerima) . '" class="btn btn-success btn-sm">Terima</a> ';
+                $btn .= '<a href="' . url('/penerima/reject/' . $penerimas->id_penerima) . '" class="btn btn-danger btn-sm onclick="return confirm(\'Apakah Anda yakin menghapus data ini?\');">Tolak</a> ';
+                return $btn;})
+            ->rawColumns(['aksi'])
+            ->make(true);
+        }
+        
+
+        $penerima = PenerimaModel::with(['bansos', 'user']);
+        if ($request->id_bansos) {
+            $penerima->where('id_bansos', $request->id_bansos);
+        }  
+    }
+    
+    public function accept($id)
     {
+        // Mengambil data penerima berdasarkan ID
         $penerima = PenerimaModel::find($id);
+    
         if ($penerima) {
             $penerima->status = 'Diterima';
+    
+            // Mengambil semua data penerima
+            $penerimas = PenerimaModel::all();
+    
+            // Memastikan bahwa tidak ada data penerima yang kosong
+            if ($penerimas->isEmpty()) {
+                return redirect()->back()->with('error', 'Tidak ada data penerima untuk dihitung.');
+            }
+    
+            // Membuat matriks keputusan
+            $matrix = [];
+            foreach ($penerimas as $item) {
+                $matrix[] = [
+                    intval($item->pendapatan),
+                    intval($item->status_rumah),
+                    intval($item->pln),
+                    intval($item->pdam),
+                    intval($item->status_kesehatan)
+                ];
+            }
+    
+            // Bobot kriteria
+            $bobot = [0.30, 0.20, 0.15, 0.20, 0.15];
+    
+            // Memanggil function Normalisasi
+            $Nmatrix = $this->normalisasi($matrix);
+    
+            // Menghitung nilai EDAS
+            $edas = $this->menghitung_edas($Nmatrix, $bobot);
+            // Menghitung nilai SAW
+            $saw = $this->menghitung_saw($Nmatrix, $bobot);
+
+           // Menyimpan skor ke dalam model
+            foreach ($penerimas as $index => $item) {
+                $item->skoredas = $edas[$index];
+                $item->skoresaw = $saw[$index];
+                $item->save();
+            }
+    
+            // Simpan status penerima
             $penerima->save();
+    
+            return redirect()->back()->with('success', 'Data penerima sudah diterima');
+        } else {
+            return redirect()->back()->with('error', 'Data penerima tidak ditemukan');
+        }
+    }
+    
+    // Function menormalisasi matrix
+    private function normalisasi($matrix)
+    {
+        $kriteria = count($matrix[0]);
+        $Nmatrix = [];
+    
+        for ($j = 0; $j < $kriteria; $j++) {
+            $column = array_column($matrix, $j);
+            $max_value = max($column);
+    
+            foreach ($column as $i => $value) {
+                $Nmatrix[$i][$j] = $value / $max_value;
+            }
+        }
+        return $Nmatrix;
+    }
+
+    // Function hitung skor edas
+    private function menghitung_edas($Nmatrix, $bobot)
+    {
+        $alternatif = count($Nmatrix);
+        $kriteria = count($bobot);
+        $rata = $this->menghitung_rata($Nmatrix);
+        $edas = [];
+    
+        for ($i = 0; $i < $alternatif; $i++) {
+            $pda_sum = 0;
+            $nda_sum = 0;
+    
+            for ($j = 0; $j < $kriteria; $j++) {
+                $pda = max(0, $Nmatrix[$i][$j] - $rata[$j]);
+                $nda = max(0, $rata[$j] - $Nmatrix[$i][$j]);
+    
+                $pda_sum += $pda * $bobot[$j];
+             $nda_sum += $nda * $bobot[$j];
+         }
+    
+            // Menghitung skor EDAS sebagai rata-rata dari PDA dan NDA
+            $edas[$i] = ($pda_sum + (1 - $nda_sum)) / 2;
+        }
+    
+        return $edas;
+    }
+
+    // Function hitung skor saw
+    private function menghitung_saw($Nmatrix, $bobot)
+    {
+        $alternatif = count($Nmatrix);
+        $kriteria = count($bobot);
+        $saw_scores = [];
+
+        for ($i = 0; $i < $alternatif; $i++) {
+            $score = 0;
+
+            for ($j = 0; $j < $kriteria; $j++) {
+                $score += $Nmatrix[$i][$j] * $bobot[$j];
+            }
+
+            $saw_scores[$i] = $score;
         }
 
-        return redirect()->back()->with('success', 'Data penerimma sudah diterima');
+        return $saw_scores;
+    }
+
+    // Function hitung rata rata
+    private function menghitung_rata($Nmatrix)
+    {
+        $kriteria = count($Nmatrix[0]);
+        $alternatif = count($Nmatrix);
+        $rata = [];
+    
+        for ($j = 0; $j < $kriteria; $j++) {
+            $sum = 0;
+            for ($i = 0; $i < $alternatif; $i++) {
+                $sum += $Nmatrix[$i][$j];
+            }
+            $rata[$j] = $sum / $alternatif;
+        }
+    
+        return $rata;
     }
 
     public function reject($id)
@@ -190,5 +335,4 @@ class PenerimaController extends Controller
 
         return redirect()->back()->with('success', 'Data penerimma sudah ditolak');
     }
-    
 }

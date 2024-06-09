@@ -4,9 +4,6 @@
     <div class="card card-outline card-primary">
         <div class="card-header">
             <h3 class="card-title">{{ $page->title }}</h3>
-            <div class="card-tools">
-                <a class="btn btn-sm btn-primary mt-1" href="{{ url('bansos/create')}}">Tambah</a>
-            </div>
         </div>
         <div class="card-body">
             @if (session('success'))
@@ -40,9 +37,7 @@
                         <th>Tanggal Berakhir</th>
                         <th>Tipe Bantuan</th>
                         <th>Jumlah Penerima</th>
-                        <th>Anggaran</th>
                         <th>Lokasi</th>
-                        <th>Aksi</th>
                     </tr>
                 </thead>
             </table>
@@ -79,9 +74,7 @@
                 { data: "tanggal_akhir", className: "", orderable: true, searchable: true },
                 { data: "bantuan.nama_bantuan", className: "", orderable: false, searchable: false },
                 { data: "jumlah_penerima", className: "", orderable: true, searchable: true },
-                { data: "anggaran", className: "", orderable: true, searchable: true },
-                { data: "lokasi", className: "", orderable: true, searchable: true },
-                { data: "aksi", className: "", orderable: false, searchable: false }
+                { data: "lokasi", className: "", orderable: true, searchable: true }
             ]
         });
 

@@ -24,10 +24,15 @@ class WargaController extends Controller
         $activeMenu = 'warga';
 
         $rts = WargaModel::select('rt')->distinct()->get();
-
-        $userLevel = Auth::user()->id_level;
-
-        return view('admin.warga.index', ['breadcrumb' => $breadcrumb, 'page' => $page, 'rts' => $rts, 'activeMenu' => $activeMenu, 'userLevel' => $userLevel]);
+        $warga = WargaModel::all();
+        $user = Auth::user();
+        $level = $user->id_level;
+        if ($level == 1){
+            return view('admin.warga.index', ['breadcrumb' => $breadcrumb, 'page' => $page, 'warga' => $warga, 'activeMenu' => $activeMenu]);    
+        }
+        elseif($level == 2){
+            return view('rt.warga.index', ['breadcrumb' => $breadcrumb, 'page' => $page, 'rts' => $rts, 'activeMenu' => $activeMenu]);    
+        }
     }
 
     public function list(Request $request)
