@@ -9,7 +9,8 @@
     <!-- Google Font: Source Sans Pro -->
     <link rel="stylesheet"
         href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback">
-        <link href="https://fonts.googleapis.com/css?family=Lato:300,400,700,300italic,400italic,700italic" rel="stylesheet" type="text/css" />
+    <link href="https://fonts.googleapis.com/css?family=Lato:300,400,700,300italic,400italic,700italic" rel="stylesheet" type="text/css" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
     <!-- Font Awesome -->
     <link rel="stylesheet" href="{{ asset('adminlte/plugins/fontawesome-free/css/all.min.css') }}">
     <!-- Font Bootstrap -->
@@ -37,15 +38,6 @@
                     <div class="text-center text-white">
                         <!-- Page heading-->
                         <h1 class="mb-5">Selamat datang di web SIBANSOS</h1>
-                        <!-- Signup form-->
-                        <!-- * * * * * * * * * * * * * * *-->
-                        <!-- * * SB Forms Contact Form * *-->
-                        <!-- * * * * * * * * * * * * * * *-->
-                        <!-- This form is pre-integrated with SB Forms.-->
-                        <!-- To make this form functional, sign up at-->
-                        <!-- https://startbootstrap.com/solution/contact-forms-->
-                        <!-- to get an API token!-->
-                        
                     </div>
                 </div>
             </div>
@@ -86,21 +78,54 @@
             </div>
         </div>
     </section>
+    <section class="features-icons bg-light text-center">
+        <div class="container">
+            <h2 class="mb-5">Contact</h2>
+            <div class="row">
+                <div class="col-lg-4">
+                    <div class="features-icons-item mx-auto mb-5 mb-lg-0 mb-lg-3">
+                        <div class="features-icons-icon d-flex"><i class="bi-envelope-at-fill m-auto text-secondary"></i></div>
+                        <h5>Email</h5>
+                        <p class="lead mb-0">example@gmail.com</p>
+                    </div>
+                </div>
+                <div class="col-lg-4">
+                    <div class="features-icons-item mx-auto mb-5 mb-lg-0 mb-lg-3">
+                        <div class="features-icons-icon d-flex"><i class="bi-telephone-fill m-auto text-secondary"></i></div>
+                        <h5>Phone Number</h5>
+                        <p class="lead mb-0">(000) 0000-0000</p>
+                    </div>
+                </div>
+                <div class="col-lg-4">
+                    <div class="features-icons-item mx-auto mb-0 mb-lg-3">
+                        <div class="features-icons-icon d-flex"><i class="bi-phone-fill m-auto text-secondary"></i></div>
+                        <h5>Mobile</h5>
+                        <p class="lead mb-0">0000-0000-0000</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
     <footer class="footer bg-secondary bg-opacity-10">
         <div class="container">
             <div class="row">
-                <div class="col-lg-6 h-100 text-center text-lg-start my-auto">
-                    <ul class="mb-2" style="list-style-type: none;">
-                        <li class="text-black mb-1 opacity-75">Contact</li>
-                        <li class="text-black opacity-50">Email: example@gmail.com</li>    
-                        <li class="text-black opacity-50">Phone: (000) 0000-0000</li>  
-                        <li class="text-black opacity-50">Mobile: 0000-0000-0000</li>
+                <div class="h-100 text-lg-center my-auto">
+                    <ul class="list-inline mb-0">
+                        <li class="list-inline-item me-4">
+                            <a href="#!"><i class="bi-facebook fs-3 text-secondary"></i></a>
+                        </li>
+                        <li class="list-inline-item me-4">
+                            <a href="#!"><i class="bi-twitter fs-3 text-secondary"></i></a>
+                        </li>
+                        <li class="list-inline-item">
+                            <a href="#!"><i class="bi-instagram fs-3 text-secondary"></i></a>
+                        </li>
                     </ul>
                 </div>
             </div>
             <div class="d-flex justify-content-center align-items-center">
                 <div class="h-100 text-center text-lg-start my-auto">
-                    <p class="text-muted small mt-3 mb-4 mb-lg-0">&copy; Your Website 2023. All Rights Reserved.</p>
+                    <p class="text-muted small mt-3 mb-4 mb-lg-0">&copy; Your Website 2024. All Rights Reserved.</p>
                 </div>
             </div>
         </div>
