@@ -3,7 +3,7 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>AdminLTE 3 | Log in</title>
+    <title>Login</title>
 
     <!-- Google Font: Source Sans Pro -->
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback">
@@ -17,7 +17,7 @@
 <body class="hold-transition login-page">
 <div class="login-box">
     <div class="login-logo">
-        <a href="{{ asset('adminlte/index2.html') }}"><b>Admin</b>LTE</a>
+        <a href="{{ asset('adminlte/index2.html') }}"><b>SI</b>BANSOS</a>
     </div>
     <!-- /.login-logo -->
     <div class="card">
@@ -56,15 +56,14 @@
                     <div class="col-12">
                         <button type="submit" class="btn btn-primary btn-block">Sign In</button>
                     </div>
+                    <div class="col-12">
+                        <a href="{{ url('/') }}" class="btn btn-secondary btn-block mt-2">Kembali</a>
+                    </div>
                     <!-- /.col -->
                 </div>
                 <!-- ... -->
             </form>
             <br>
-            <!-- /.social-auth-links -->
-            <p class="mb-0">
-                <a href="" class="text-center">Register a new membership</a>
-            </p>
         </div>
         <!-- /.login-card-body -->
     </div>
