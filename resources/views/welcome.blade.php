@@ -10,11 +10,12 @@
     <link rel="stylesheet"
         href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback">
     <link href="https://fonts.googleapis.com/css?family=Lato:300,400,700,300italic,400italic,700italic" rel="stylesheet" type="text/css" />
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+    <!-- Bootstrap Icons -->
+    <link rel="stylesheet" href="{{ asset('adminlte/plugins/bootstrap-icons/font/bootstrap-icons.min.css') }}">
     <!-- Font Awesome -->
     <link rel="stylesheet" href="{{ asset('adminlte/plugins/fontawesome-free/css/all.min.css') }}">
-    <!-- Font Bootstrap -->
-    {{-- <link rel="stylesheet" href="{{ asset('adminlte/plugins/font/') }}"> --}}
+    <!-- Leaflet -->
+    <link rel="stylesheet" href="{{ asset('adminlte/dist/css/leaflet.css') }}">
     <!-- Theme style -->
     <link rel="stylesheet" href="{{ asset('adminlte/dist/css/adminlte.min.css') }}">
     <link rel="stylesheet" href="{{ asset('adminlte/dist/css/styles.css') }}">
@@ -104,6 +105,15 @@
                     </div>
                 </div>
             </div>
+            <h2 class="mb-5 mt-5">Location</h2>
+            <div class="card card-outline card-primary">
+                {{-- <div class="card-header">
+                    <h3 class="card-title">Peta Lokasi</h3>
+                </div> --}}
+                <div class="card-body">
+                    <div id="map" style="height: 500px;"></div>
+                </div>
+            </div>
         </div>
     </section>
     <footer class="footer bg-secondary bg-opacity-10">
@@ -134,6 +144,25 @@
     <script src="{{ asset('adminlte/plugins/jquery/jquery.min.js') }}"></script>
     <!-- Bootstrap 4 -->
     <script src="{{ asset('adminlte/plugins/bootstrap/js/bootstrap.bundle.min.js') }}"></script>
+    <!-- Leaflet -->
+    <script src="{{ asset('adminlte/dist/js/leaflet.js') }}"></script>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            // Inisialisasi peta
+            var map = L.map('map').setView([-6.1754, 106.8272], 13); // Menyesuaikan ke koordinat Jakarta
+
+            // Menambahkan tile layer ke peta
+            L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+                attribution: '© OpenStreetMap contributors'
+            }).addTo(map);
+
+            // Menambahkan marker ke lokasi tertentu
+            var marker = L.marker([-6.1754, 106.8272]).addTo(map)
+                .bindPopup('Ini Jakarta.')
+                .openPopup();
+        });
+    </script>
 </body>
 
 </html>
