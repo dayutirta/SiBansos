@@ -150,7 +150,7 @@
     <script>
         document.addEventListener('DOMContentLoaded', function () {
             // Inisialisasi peta
-            var map = L.map('map').setView([-6.1754, 106.8272], 13); // Menyesuaikan ke koordinat Jakarta
+            var map = L.map('map').setView([-7.921090, 112.640879], 17); // Menyesuaikan ke koordinat Jakarta
 
             // Menambahkan tile layer ke peta
             L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
@@ -158,8 +158,8 @@
             }).addTo(map);
 
             // Menambahkan marker ke lokasi tertentu
-            var marker = L.marker([-6.1754, 106.8272]).addTo(map)
-                .bindPopup('Ini Jakarta.')
+            var marker = L.marker([-7.921090, 112.640879]).addTo(map)
+                .bindPopup('Ini Lokasinya')
                 .openPopup();
         });
     </script>
