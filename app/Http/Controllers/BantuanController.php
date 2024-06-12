@@ -22,10 +22,7 @@ class BantuanController extends Controller
 
         $activeMenu = 'bantuan';
 
-        $bantuan = BantuanModel::all();
-
         return view('admin.bantuan.index', [
-            'bantuan' => $bantuan,
             'breadcrumb' => $breadcrumb,
             'page' => $page,
             'activeMenu' => $activeMenu
@@ -34,27 +31,27 @@ class BantuanController extends Controller
 
     public function list(Request $request)
     {
-        $bantuans = BantuanModel::all();
+        $bantuan = BantuanModel::all();     
 
-        if ($request->id_bantuan){
-            $bantuans->where('id_bantuan',$request->id_bantuan);
-        }
-
-        return DataTables::of($bantuans)
+        return DataTables::of($bantuan)
         ->addIndexColumn()
-        ->addColumn('aksi', function ($bantuan) {
-            $btn = '<a href="' . url('/bantuan/' . $bantuan->id_bantuan) . '" class="btn btn-info btn-sm">Detail</a> ';
-            $btn .= '<a href="' . url('/bantuan/' . $bantuan->id_bantuan . '/edit') . '" class="btn btn-warning btn-sm">Edit</a> ';
-            $btn .= '<form class="d-inline-block" method="POST" action="' . url('/bantuan/' . $bantuan->id_bantuan) . '">' . csrf_field() . method_field('DELETE') .
+        ->addColumn('aksi', function ($bantuans) {
+            $btn = '<a href="'.url('/bantuan/' . $bantuans->id_bantuan . '/edit').'" class="btn btn-warning btn-sm">Edit</a> ';
+            $btn .= '<form class="d-inline-block" method="POST" action="'. url('/bantuan/'.$bantuans->id_bantuan).'">'. csrf_field() . method_field('DELETE') .
                 '<button type="submit" class="btn btn-danger btn-sm" onclick="return confirm(\'Apakah Anda yakin menghapus data ini?\');">Hapus</button></form>';
             return $btn;
+           
         })
         ->rawColumns(['aksi'])
         ->make(true);
-    }
+        }
+
 
     public function create()
     {
+        $page = (object) [
+            'title' => 'Daftar bantuan yang terdaftar dalam sistem'
+        ];
         $breadcrumb = (object) [
             'title' => 'Tambah Bantuan',
             'list' => [
@@ -70,7 +67,9 @@ class BantuanController extends Controller
 
         $activeMenu = 'bantuan';
 
-        return view('admin.bantuan.create');
+        return view('admin.bantuan.create',[            'breadcrumb' => $breadcrumb,
+        'page' => $page,
+        'activeMenu' => $activeMenu]);
     }
 
     public function store(Request $request)
