@@ -12,26 +12,29 @@ class WargaController extends Controller
 {
     public function index()
     {
-        $breadcrumb = (object) [
-            'title' => 'Daftar Warga',
-            'list'  => ['Home', 'Warga']
-        ];
-
         $page = (object) [
             'title' => 'Daftar warga yang terdaftar dalam sistem'
         ];
 
         $activeMenu = 'warga';
 
-        $rts = WargaModel::select('rt')->distinct()->get();
-        $warga = WargaModel::all();
+        
         $user = Auth::user();
+        $nokk = WargaModel::select('nokk')->where('rt', $user->rt)->distinct()->get();
         $level = $user->id_level;
         if ($level == 1){
-            return view('admin.warga.index', ['breadcrumb' => $breadcrumb, 'page' => $page, 'warga' => $warga, 'activeMenu' => $activeMenu]);    
+            $nokkrw = WargaModel::select('nokk')->distinct()->get();
+            $breadcrumb = (object) [
+                'title' => 'Daftar Warga',
+                'list'  => ['Home', 'Warga']
+            ];
+            return view('admin.warga.index', ['breadcrumb' => $breadcrumb, 'page' => $page, 'nokkrw' => $nokkrw, 'activeMenu' => $activeMenu]);    
         }
-        elseif($level == 2){
-            return view('rt.warga.index', ['breadcrumb' => $breadcrumb, 'page' => $page, 'rts' => $rts, 'activeMenu' => $activeMenu]);    
+        elseif($level == 2){$breadcrumb = (object) [
+            'title' => 'Daftar Warga RT',
+            'list'  => ['Home', 'Warga']
+        ];
+            return view('rt.warga.index', ['breadcrumb' => $breadcrumb, 'page' => $page, 'nokk' => $nokk, 'activeMenu' => $activeMenu]);    
         }
     }
 
@@ -41,20 +44,14 @@ class WargaController extends Controller
         $userLevel = $user->id_level;
         $userRt = $user->rt;
 
-        $warga = WargaModel::with('level')->where('status', '!=', 'Tidak Aktif');
+        $warga = WargaModel::with('level')->where('status', '=', 'Aktif');
 
-        if ($userLevel == 1) {
-            if ($request->rt) {
-                $warga->where('rt', $request->rt);
-            }
-        } elseif ($userLevel == 2) {
+        if ($userLevel == 2) {
             $warga->where(function ($query) use ($user, $userRt) {
                 $query->where('id_warga', $user->id_warga)
                     ->orWhere('rt', $userRt);
             });
-        }
-
-        return DataTables::of($warga)
+            return DataTables::of($warga)
             ->addIndexColumn()
             ->addColumn('aksi', function ($wargas) {
                 $btn = '<a href="' . url('/warga/' . $wargas->id_warga) . '" class="btn btn-info btn-sm">Detail</a> ';
@@ -64,6 +61,20 @@ class WargaController extends Controller
             })
             ->rawColumns(['aksi'])
             ->make(true);
+        } else {
+            return DataTables::of($warga)
+            ->addIndexColumn()
+            ->addColumn('aksi', function ($wargas) {
+                $btn = '<a href="' . url('/warga/' . $wargas->id_warga) . '" class="btn btn-info btn-sm">Detail</a> ';
+                $btn .= '<a href="' . url('/warga/' . $wargas->id_warga . '/edit') . '" class="btn btn-warning btn-sm">Edit</a> ';
+                $btn .= '<a href="' . url('/warga/' . $wargas->id_warga . '/ubah_status') . '" class="btn btn-danger btn-sm">Ubah Status</a>';
+                return $btn;
+            })
+            ->rawColumns(['aksi'])
+            ->make(true);
+        }
+
+        
     }
 
     public function create()
@@ -91,8 +102,6 @@ class WargaController extends Controller
         if ($user->id_level == 2) {
             $rt = $user->rt;
         }
-
-        // dd($rt);
 
         return view('admin.warga.create', [
             'breadcrumb' => $breadcrumb,
@@ -205,7 +214,7 @@ class WargaController extends Controller
     public function update(Request $request, String $id)
     {
         $request->validate([
-            'id_level' => 'required|integer',
+            // 'id_level' => 'required|integer',
             'nik' => 'required|string',
             'nokk' => 'required|string',
             'nama' => 'required|string',
@@ -226,7 +235,7 @@ class WargaController extends Controller
 
         if ($warga) {
             $warga->update([
-                'id_level' => $request->id_level,
+                // 'id_level' => $request->id_level,
                 'nik' => $request->nik,
                 'nokk' => $request->nokk,
                 'nama' => $request->nama,
@@ -276,18 +285,17 @@ class WargaController extends Controller
 
     public function updateStatus(Request $request, String $id)
     {
-        $request->validate([
-            'status' => 'required|string|in:Tidak Aktif,Meninggal'
-        ]);
-
-        $warga = WargaModel::where('id_warga', $id)->first();
-
-        if ($warga) {
-            $warga->update([
-                'status' => $request->status
+            $request->validate([
+                'status' => 'required|string',
             ]);
-        }
-
+    
+            $warga = WargaModel::where('id_warga', $id)->first();
+    
+            if ($warga) {
+                $warga->update([
+                    'status' => $request->status,
+                ]);
+            }
         return redirect('/warga')->with('success', 'Status warga berhasil diubah');
     }
 }
