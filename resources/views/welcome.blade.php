@@ -4,12 +4,13 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Welcome</title>
+    <title>SiBansos</title>
 
     <!-- Google Font: Source Sans Pro -->
     <link rel="stylesheet"
         href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback">
-    <link href="https://fonts.googleapis.com/css?family=Lato:300,400,700,300italic,400italic,700italic" rel="stylesheet" type="text/css" />
+    <link href="https://fonts.googleapis.com/css?family=Lato:300,400,700,300italic,400italic,700italic" rel="stylesheet"
+        type="text/css" />
     <!-- Bootstrap Icons -->
     <link rel="stylesheet" href="{{ asset('adminlte/plugins/bootstrap-icons/font/bootstrap-icons.min.css') }}">
     <!-- Font Awesome -->
@@ -19,7 +20,11 @@
     <!-- Theme style -->
     <link rel="stylesheet" href="{{ asset('adminlte/dist/css/adminlte.min.css') }}">
     <link rel="stylesheet" href="{{ asset('adminlte/dist/css/styles.css') }}">
+
+    <!-- Logo Icon -->
+    <link rel="icon" type="image/png" href="{{ asset('adminlte/dist/img/SiB_new.png') }}">
 </head>
+
 
 <body>
     <nav class="navbar navbar-light bg-secondary bg-opacity-10 static-top">
