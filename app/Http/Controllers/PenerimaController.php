@@ -37,23 +37,35 @@ class PenerimaController extends Controller
         if ($request->id_bantuan) {
             $bansos->where('id_bantuan', $request->id_bantuan);
         }
-
+    
         return DataTables::of($bansos)
             ->addIndexColumn()
             ->addColumn('aksi', function ($bansoss) {
-                if ( $bansoss->tanggal_akhir <= now()) {
-                    return '';
+
+                $nokk = auth()->user()->nokk; 
+    
+                $sudahdaftar = PenerimaModel::whereHas('user', function($query) use ($nokk) {
+                    $query->where('nokk', $nokk);
+                })->where('id_bansos', $bansoss->id_bansos)->exists();
+                
+                if ($sudahdaftar) {
+                    return '<span>Sudah Terdaftar</span>';
                 }
-                else {
-                    $btn = '<a href="'.url('/pengajuan-bansos/create/'.$bansoss->id_bansos).'" class="btn btn-primary btn-sm">Daftar</a>';
-                    return $btn;
+                if ($bansoss->tanggal_akhir <= now()) {
+                    return '';
+                } else {
+                    if ($sudahdaftar) {
+                        return '<span>Sudah Terdaftar</span>';
+                    } else {
+                        return '<a href="'.url('/pengajuan-bansos/create/'.$bansoss->id_bansos).'" class="btn btn-primary btn-sm">Daftar</a>';
+                    }
                 }
                 
             })
             ->rawColumns(['aksi'])
             ->make(true);
     }
-    
+     
     public function create()
     {
         $breadcrumb = (object) [
@@ -152,7 +164,7 @@ class PenerimaController extends Controller
         $level = $user->id_level;
         if($level == 2){
             $userRt = $user->rt;
-            $penerima1 = PenerimaModel::with(['bansos', 'user'])
+            $penerima1 = PenerimaModel::with(['bansos', 'user'])->where('status','Pending')
             ->whereHas('user', function ($query) use ($userRt) {
             $query->where('rt', $userRt);});
 
@@ -167,7 +179,7 @@ class PenerimaController extends Controller
         }
         elseif($level == 1){
             $userRw = $user->rw;
-            $penerima2 = PenerimaModel::with(['bansos', 'user'])
+            $penerima2 = PenerimaModel::with(['bansos', 'user'])->where('status','Pending')
             ->whereHas('user', function ($query) use ($userRw) {
             $query->where('rw', $userRw);});
 
