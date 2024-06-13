@@ -4,6 +4,7 @@ use App\Http\Controllers\AuthController;
 use App\Http\Controllers\WargaController;
 use App\Http\Controllers\WelcomeController;
 use App\Http\Controllers\BansosController;
+use App\Http\Controllers\BantuanController;
 use App\Http\Controllers\PenerimaController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\ProfilController;
@@ -18,6 +19,8 @@ Route::get('/', [WelcomeController::class, 'index']);
 Route::get('login', [AuthController::class, 'index'])->name('login');
 Route::post('login', [AuthController::class, 'proses_login'])->name('proses_login');
 Route::get('logout', [AuthController::class, 'logout'])->name('logout');
+Route::get('registrasi', [AuthController::class, 'register'])->name('registrasi');
+
 
 //route autentikasi berdasarkan levelnya
 Route::group(['middleware' => ['auth']], function () {
@@ -60,8 +63,21 @@ Route::group(['prefix' => 'bansos'], function() {
     Route::post('/', [BansosController::class, 'store']);         
     Route::get('/{id}', [BansosController::class, 'show']);       
     Route::get('/{id}/edit', [BansosController::class, 'edit']);  
+    Route::get('/cek/{id}', [BansosController::class, 'cek']);  
     Route::put('/{id}', [BansosController::class, 'update']);     
     Route::delete('/{id}', [BansosController::class, 'destroy']); 
+});
+
+//route Bantuan
+Route::group(['prefix' => 'bantuan'], function() {
+    Route::get('/', [BantuanController::class, 'index']);          
+    Route::post('/list', [BantuanController::class, 'list']);      
+    Route::get('/create', [BantuanController::class, 'create']);   
+    Route::post('/', [BantuanController::class, 'store']);         
+    Route::get('/{id}', [BantuanController::class, 'show']);       
+    Route::get('/{id}/edit', [BantuanController::class, 'edit']);  
+    Route::put('/{id}', [BantuanController::class, 'update']);     
+    Route::delete('/{id}', [BantuanController::class, 'destroy']); 
 });
 
 //router profil
@@ -92,17 +108,10 @@ Route::group(['prefix' => 'pengajuan-bansos'], function() {
     Route::post('/', [PenerimaController::class, 'store']);
 });
 
-// Route untuk Pengajuan Dokumen
+// Route untuk Penerima Bansos
 Route::group(['prefix' => 'penerima'], function() {
     Route::get('/', [PenerimaController::class, 'show']);          
     Route::post('/showup', [PenerimaController::class, 'showup']);
     Route::get('/accept/{id}', [PenerimaController::class, 'accept']);
     Route::get('/reject/{id}', [PenerimaController::class, 'reject']);  
-    
-    Route::get('/create', [PenerimaController::class, 'create']);   
-    Route::post('/', [PenerimaController::class, 'store']);         
-    Route::get('/{id}', [PenerimaController::class, 'show']);       
-    Route::get('/{id}/edit', [PenerimaController::class, 'edit']);  
-    Route::put('/{id}', [PenerimaController::class, 'update']);     
-    Route::delete('/{id}', [PenerimaController::class, 'destroy']); 
 });
