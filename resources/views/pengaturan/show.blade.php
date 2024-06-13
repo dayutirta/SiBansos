@@ -8,9 +8,9 @@
             <!-- Bagian Profil -->
             <div class="col-md-4">
                 <div class="text-center mb-4">
-                    <!-- Tambahkan gambar profil -->
+                    
                     <img src="{{ asset('adminlte/dist/img/1.png') }}" alt="SiBansos Logo" class="img-fluid rounded-circle" style="max-width: 100%; height: auto; box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.5);">
-                    <!-- Ganti ukuran gambar sesuai kebutuhan -->
+                    
                 </div>
             </div>
             <div class="col-md-8">
@@ -20,15 +20,15 @@
                         <table class="table table-bordered table-hover">
                             <tbody>
                                 <tr>
-                                    <th class="bg-primary text-white rounded-start px-4">NIK</th>
+                                    <th class="bg-primary text-white rounded-start px-8">NIK</th>
                                     <td class="rounded-end px-4">{{ $user->nik }}</td>
                                 </tr>
                                 <tr>
-                                    <th class="bg-primary text-white rounded-start px-4">No KK</th>
+                                    <th class="bg-primary text-white rounded-start px-8">No KK</th>
                                     <td class="rounded-end px-4">{{ $user->nokk }}</td>
                                 </tr>
                                 <tr>
-                                    <th class="bg-primary text-white rounded-start px-4">Nama Lengkap</th>
+                                    <th class="bg-primary text-white rounded-start px-8">Nama Lengkap</th>
                                     <td class="rounded-end px-4">{{ $user->nama }}</td>
                                 </tr>
                             </tbody>
@@ -41,31 +41,32 @@
         <!-- Bagian Informasi Tambahan -->
         <div class="row mt-4">
             <!-- Bagian 1 -->
-            <div class="col-md-6">
+            <div class="col-md-7">
                 <div class="profile-details">
                     <div class="table-responsive">
                         <table class="table table-bordered table-hover">
                             <tbody>
                                 <tr>
-                                    <th class="bg-primary text-white rounded-start px-4">Jenis Kelamin</th>
+                                    <th class="bg-primary text-white rounded-start px-8">Jenis Kelamin</th>
                                     <td class="rounded-end px-4">{{ $user->jenis_kelamin }}</td>
                                 </tr>
                                 <tr>
-                                    <th class="bg-primary text-white rounded-start px-4">Tempat, Tanggal Lahir</th>
+                                    <th class="bg-primary text-white rounded-start px-8">Tempat, Tanggal Lahir</th>
                                     <td class="rounded-end px-4">
                                         {{ $user->tempat_lahir }}, {{ \Carbon\Carbon::parse($user->tanggal_lahir)->format('d-m-Y') }}
                                     </td>
                                 </tr>
                                 <tr>
-                                    <th class="bg-primary text-white rounded-start px-4">Agama</th>
-                                    <td class="rounded-end px-4">{{ $user->agama }}</td>
+                                    <th class="bg-primary text-white rounded-start px-8">Status Pernikahan</th>
+                                    <td class="rounded-end px-4">{{ $user->status_pernikahan }}</td>
                                 </tr>
+                               
                                 <tr>
-                                    <th class="bg-primary text-white rounded-start px-4">Alamat</th>
+                                    <th class="bg-primary text-white rounded-start px-8">Alamat</th>
                                     <td class="rounded-end px-4">{{ $user->alamat }}</td>
                                 </tr>
                                 <tr>
-                                    <th class="bg-primary text-white rounded-start px-4">RT/RW</th>
+                                    <th class="bg-primary text-white rounded-start px-8">RT/RW</th>
                                     <td class="rounded-end px-4">
                                         {{ $user->rt }}/{{ $user->rw }}
                                     </td>
@@ -76,32 +77,31 @@
                 </div>
             </div>
             <!-- Bagian 2 -->
-            <div class="col-md-6">
+            <div class="col-md-5">
                 <div class="profile-details">
                     <div class="table-responsive">
                         <table class="table table-bordered table-hover">
                             <tbody>
                                 <tr>
-                                    <th class="bg-primary text-white rounded-start px-4">Status</th>
+                                    <th class="bg-primary text-white rounded-start px-8">Status</th>
                                     <td class="rounded-end px-4">{{ $user->status }}</td>
                                 </tr>
                                 <tr>
-                                    <th class="bg-primary text-white rounded-start px-4">Status Pernikahan</th>
-                                    <td class="rounded-end px-4">{{ $user->status_pernikahan }}</td>
+                                    <th class="bg-primary text-white rounded-start px-8">Agama</th>
+                                    <td class="rounded-end px-4">{{ $user->agama }}</td>
                                 </tr>
                                 <tr>
-                                    <th class="bg-primary text-white rounded-start px-4">Pekerjaan</th>
+                                    <th class="bg-primary text-white rounded-start px-8">Pekerjaan</th>
                                     <td class="rounded-end px-4">{{ $user->pekerjaan }}</td>
                                 </tr>
                                 <tr>
-                                    <th class="bg-primary text-white rounded-start px-4">Pendidikan</th>
+                                    <th class="bg-primary text-white rounded-start px-8">Pendidikan</th>
                                     <td class="rounded-end px-4">{{ $user->pendidikan }}</td>
                                 </tr>
                                 <tr>
-                                    <th class="bg-primary text-white rounded-start px-4">Kewarganegaraan</th>
+                                    <th class="bg-primary text-white rounded-start px-8">Kewarganegaraan</th>
                                     <td class="rounded-end px-4">{{ $user->kewarganegaraan }}</td>
                                 </tr>
-                                <!-- Tambahkan baris informasi tambahan lainnya -->
                             </tbody>
                         </table>
                     </div>
@@ -133,8 +133,8 @@
             width: 60%;
         }
 
-        .profile-details table tbody tr:nth-child(even) {
-            background-color: #f9f9f9;
+        .profile-details table tbody tr {
+            background-color: #dee2e6;
         }
 
         .profile-details table tbody tr:hover {
@@ -155,7 +155,7 @@
 
         
         .profile-details table tbody tr {
-            border-bottom: 4px solid #dee2e6;
+            border-bottom: 4px solid #f9f9f9;
         }
 
 

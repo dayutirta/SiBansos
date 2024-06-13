@@ -13,10 +13,10 @@
                 <div class="alert alert-danger">{{ session('error') }}</div>
             @endif
             <div class="row">
-                <div class="col-md-12">
+                <div class="col-md-6 col-sm-12"> 
                     <div class="form-group row">
-                        <label class="col-1 control-label col-form-label">Filter:</label>
-                        <div class="col-3">
+                        <label class="col-3 col-sm-2 control-label col-form-label">Filter:</label> 
+                        <div class="col-6 col-sm-6">
                             <select class="form-control" id="id_bansos" name="id_bansos" required>
                                 <option value="">- Semua -</option>
                                 @foreach ($bansos as $item)
@@ -28,19 +28,21 @@
                     </div>
                 </div>
             </div>
-            <table class="table table-bordered table-striped table-hover table-sm" id="table_penerima">
-                <thead>
-                    <tr>
-                        <th>Nomor</th>
-                        <th>Nama Program</th>
-                        <th>No KK</th>
-                        <th>Nama</th>
-                        <th>Alamat</th>
-                        <th>RT/RW</th>
-                        <th>Aksi</th>
-                    </tr>
-                </thead>
-            </table>
+            <div class="table-responsive"> 
+                <table class="table table-bordered table-striped table-hover table-sm" id="table_penerima">
+                    <thead>
+                        <tr>
+                            <th>Nomor</th>
+                            <th>Nama Program</th>
+                            <th>No KK</th>
+                            <th>Nama</th>
+                            <th>Alamat</th>
+                            <th>RT/RW</th>
+                            <th>Aksi</th>
+                        </tr>
+                    </thead>
+                </table>
+            </div>
         </div>
     </div>
 @endsection
@@ -88,6 +90,15 @@
 
             $('#id_bansos').on('change', function() {
                 dataPenerima.ajax.reload();
+            });
+
+            // Auto-refresh when screen size changes
+            var resizeTimer;
+            $(window).on('resize', function(e) {
+                clearTimeout(resizeTimer);
+                resizeTimer = setTimeout(function() {
+                    dataPenerima.columns.adjust().draw(); 
+                }, 200); 
             });
         });
     </script>

@@ -7,7 +7,7 @@
                 {{ $page->title }}
             </h3>
             <div class="card-tools">
-                <!-- Any additional tools or buttons can be placed here -->
+               
             </div>
         </div>
         <div class="card-body">
@@ -25,22 +25,13 @@
                 <form action="{{ url('/warga/' . $warga->id_warga . '/update_status') }}" method="POST" class="form-horizontal">
                     @csrf
                     @method('PUT')
-                    {{-- <div class="form-group row">
-                        <label class="col-1 control-label col-form-label">Status</label>
-                        <div class="col-11">
-                            <input type="text" name="status" id="status" class="form-control" 
-                            value="{{ old('status') ?? $warga->status }}" required>
-                            @error('status')
-                                <small class="form-text text-danger">{{ $message }}</small>
-                            @enderror
-                        </div>
-                    </div> --}}
+
                     <div class="form-group row">
-                        <label class="col-1 control-label col-form-label">Status</label>
-                        <div class="col-11">
+                        <label for="status" class="col-sm-2 col-form-label">Status</label>
+                        <div class="col-sm-10">
                             <select name="status" id="status" class="form-control" required>
                                 <option value="">-- Pilih Status --</option>
-                                <option value="Tidak Aktif" {{ $warga->status == 'Tidak Aktif' ? 'selected' : '' }}>Tidak Aktif</option>
+                                <option value="Nonaktif" {{ $warga->status == 'Nonaktif' ? 'selected' : '' }}>Tidak Aktif</option>
                                 <option value="Meninggal" {{ $warga->status == 'Meninggal' ? 'selected' : '' }}>Meninggal</option>
                             </select>
                             @error('status')
@@ -48,9 +39,9 @@
                             @enderror
                         </div>
                     </div>
+
                     <div class="form-group row">
-                        <label class="col-1 control-label col-form-label"></label>
-                        <div class="col-11">
+                        <div class="col-sm-10 offset-sm-2">
                             <button type="submit" class="btn btn-primary btn-sm">Simpan</button>
                             <a href="{{ url('warga') }}" class="btn btn-default btn-sm ml-1">Kembali</a>
                         </div>

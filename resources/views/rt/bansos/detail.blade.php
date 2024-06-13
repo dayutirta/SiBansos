@@ -7,7 +7,6 @@
             {{ $page->title }}
         </h3>
         <div class="card-tools">
-
         </div>
     </div>
     <div class="card-body">
@@ -21,35 +20,52 @@
                 </h5>
             </div>
         @else
-            <table class="table table-bordered table-striped table-hover table-sm" id="table_penerima">
-                <thead>
-                    <tr>
-                        <th>Nomor</th>
-                        <th>Nama Program</th>
-                        <th>No KK</th>
-                        <th>Nama</th>
-                        <th>Alamat</th>
-                        <th>RT/RW</th>
-                        <th>Skor EDAS</th>
-                        <th>Skor SAW</th>
-                        
-                    </tr>
-                </thead>
-                <tbody>
-                    @foreach($penerima as $index => $data)
+            <div class="table-responsive">
+                <table class="table table-bordered table-striped table-hover table-sm" id="table_penerima">
+                    <thead>
                         <tr>
-                            <td>{{ $index + 1 }}</td>
-                            <td>{{ $data->bansos->nama_program }}</td>
-                            <td>{{ $data->user->nokk }}</td>
-                            <td>{{ $data->user->nama }}</td>
-                            <td>{{ $data->user->alamat }}</td>
-                            <td>{{ $data->user->rt }}/{{ $data->user->rw }}</td>
-                            <td>{{ $data->skoredas }}</td>
-                            <td>{{ $data->skoresaw }}</td>
+                            <th>No</th>
+                            <th>Nama Program</th>
+                            <th>No KK</th>
+                            <th>Nama</th>
+                            <th>Alamat</th>
+                            <th>RT/RW</th>
+                            <th>Skor EDAS</th>
+                            <th>Rank EDAS</th> 
+                            <th>Skor SAW</th>
+                            <th>Rank SAW</th> 
                         </tr>
-                    @endforeach
-                </tbody>
-            </table>
+                    </thead>
+                    <tbody>
+                        @php
+                            $sorted_edas = $penerima->sortByDesc('skoredas')->values();
+                            $sorted_saw = $penerima->sortByDesc('skoresaw')->values();
+                            
+                            $rank_edas = $sorted_edas->mapWithKeys(function ($item, $key) {
+                                return [$item->id_penerima => $key + 1];
+                            });
+
+                            $rank_saw = $sorted_saw->mapWithKeys(function ($item, $key) {
+                                return [$item->id_penerima => $key + 1];
+                            });
+                        @endphp
+                        @foreach($penerima as $index => $data)
+                            <tr>
+                                <td>{{ $index + 1 }}</td>
+                                <td>{{ $data->bansos->nama_program }}</td>
+                                <td>{{ $data->user->nokk }}</td>
+                                <td>{{ $data->user->nama }}</td>
+                                <td>{{ $data->user->alamat }}</td>
+                                <td>{{ $data->user->rt }}/{{ $data->user->rw }}</td>
+                                <td>{{ $data->skoredas }}</td>
+                                <td>{{ $rank_edas[$data->id_penerima] }}</td>
+                                <td>{{ $data->skoresaw }}</td>
+                                <td>{{ $rank_saw[$data->id_penerima] }}</td>
+                            </tr>
+                        @endforeach
+                    </tbody>
+                </table>
+            </div>
         @endempty
         <a href="{{ url('bansos') }}" class="btn btn-sm btn-default mt-2">
             Kembali
@@ -58,10 +74,31 @@
 </div>
 @endsection
 
+@push('css')
+<style>
+    .table-responsive {
+        overflow-x: auto;
+    }
+    .fit-column {
+        white-space: nowrap;
+    }
+</style>
+@endpush
+
 @push('js')
-    <script>
-        $(document).ready(function() {
-            $('#table_penerima').DataTable();
+<script>
+    $(document).ready(function() {
+        $('#table_penerima').DataTable({
+           
         });
-    </script>
+
+        var resizeTimer;
+            $(window).on('resize', function(e) {
+                clearTimeout(resizeTimer);
+                resizeTimer = setTimeout(function() {
+                    table.ajax.reload(null, false); 
+                }, 200); 
+            });
+    });
+</script>
 @endpush
