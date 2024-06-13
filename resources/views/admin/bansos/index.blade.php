@@ -16,10 +16,10 @@
                 <div class="alert alert-danger">{{ session('error') }}</div>
             @endif
             <div class="row">
-                <div class="col-md-12">
+                <div class="col-md-6 col-sm-12"> 
                     <div class="form-group row">
-                        <label class="col-sm-2 col-md-2 col-lg-1 col-form-label">Filter:</label>
-                        <div class="col-sm-10 col-md-4 col-lg-3">
+                        <label class="col-3 col-sm-2 control-label col-form-label">Filter:</label> 
+                        <div class="col-5 col-sm-5"> 
                             <select class="form-control" id="id_bantuan" name="id_bantuan" required>
                                 <option value="">- Semua -</option>
                                 @foreach ($bantuan as $item)
@@ -31,23 +31,23 @@
                     </div>
                 </div>
             </div>
-            <div class="table-responsive">
-            <table class="table table-bordered table-striped table-hover table-sm" id="table_bansos">
-                <thead>
-                    <tr>
-                        <th>Nomor</th>
-                        <th>Nama Program</th>
-                        <th>Tanggal Mulai</th>
-                        <th>Tanggal Berakhir</th>
-                        <th>Tipe Bantuan</th>
-                        <th>Jumlah Penerima</th>
-                        <th>Anggaran</th>
-                        <th>Lokasi</th>
-                        <th>Aksi</th>
-                    </tr>
-                </thead>
-            </table>
-        </div>
+
+            <div class="table-responsive"> 
+                <table class="table table-bordered table-striped table-hover table-sm" id="table_bansos">
+                    <thead>
+                        <tr>
+                            <th>Nomor</th>
+                            <th>Nama Program</th>
+                            <th>Tanggal Mulai</th>
+                            <th>Tanggal Berakhir</th>
+                            <th>Tipe Bantuan</th>
+                            <th>Jumlah Penerima</th>
+                            <th>Lokasi</th>
+                            <th>Aksi</th>
+                        </tr>
+                    </thead>
+                </table>
+            </div>
         </div>
     </div>
 @endsection
@@ -81,14 +81,22 @@
                 { data: "tanggal_akhir", className: "", orderable: true, searchable: true },
                 { data: "bantuan.nama_bantuan", className: "", orderable: false, searchable: false },
                 { data: "jumlah_penerima", className: "", orderable: true, searchable: true },
-                { data: "anggaran", className: "", orderable: true, searchable: true },
                 { data: "lokasi", className: "", orderable: true, searchable: true },
-                { data: "aksi", className: "", orderable: false, searchable: false }
+                { data: 'aksi', name: 'aksi', orderable: false, searchable: false }
             ]
         });
 
         $('#id_bantuan').on('change', function() {
             dataUser.ajax.reload();
+        });
+
+        
+        var resizeTimer;
+        $(window).on('resize', function(e) {
+            clearTimeout(resizeTimer);
+            resizeTimer = setTimeout(function() {
+                dataUser.columns.adjust().draw(); 
+            }, 200); 
         });
     });
 </script>
