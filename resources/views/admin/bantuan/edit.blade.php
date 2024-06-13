@@ -23,15 +23,15 @@
             <a href="{{ url('bantuan') }}" class="btn btn-sm btn-default mt-2">
                 Kembali
             </a>
-            @else
+        @else
             <form action="{{ url('/bantuan/' . $bantuan->id_bantuan) }}" method="POST" class="form-horizontal">
                 @csrf
                 {!! method_field('PUT') !!}
                 <div class="form-group row">
-                    <label class="col-1 control-label col-form-label">
+                    <label class="col-sm-12 col-md-2 control-label col-form-label">
                         Kode Bantuan
                     </label>
-                    <div class="col-11">
+                    <div class="col-sm-12 col-md-10">
                         <input type="text" name="kode_bantuan" id="kode_bantuan" class="form-control" value="{{ old('kode_bantuan') ?? $bantuan->kode_bantuan }}" required>
                         @error('kode_bantuan')
                             <small class="form-text text-danger">
@@ -41,10 +41,10 @@
                     </div>
                 </div>
                 <div class="form-group row">
-                    <label class="col-1 control-label col-form-label">
+                    <label class="col-sm-12 col-md-2 control-label col-form-label">
                         Nama Bantuan
                     </label>
-                    <div class="col-11">
+                    <div class="col-sm-12 col-md-10">
                         <input type="text" name="nama_bantuan" id="nama_bantuan" class="form-control" value="{{ old('nama_bantuan') ?? $bantuan->nama_bantuan }}" required>
                         @error('nama_bantuan')
                             <small class="form-text text-danger">
@@ -54,10 +54,7 @@
                     </div>
                 </div>
                 <div class="form-group row">
-                    <label class="col-1 control-label col-form-label">
-                        
-                    </label>
-                    <div class="col-11">
+                    <div class="col-12 text-right">
                         <button type="submit" class="btn btn-primary btn-sm">
                             Simpan
                         </button>

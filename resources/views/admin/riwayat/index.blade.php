@@ -13,126 +13,106 @@
                 <div class="alert alert-danger">{{ session('error') }}</div>
             @endif
             {{-- Filter RT --}}
-            @if ($userLevel != 2)
-                <div class="row">
-                    <div class="col-md-12">
-                        <div class="form-group row">
-                            <label class="col-1 control-label col-form-label">Filter RT:</label>
-                            <div class="col-3">
-                                <select class="form-control" id="rt" name="rt" required>
-                                    <option value="">- Semua -</option>
-                                    @foreach ($rts as $rt)
-                                        <option value="{{ $rt->rt }}">{{ $rt->rt }}</option>
-                                    @endforeach
-                                </select>
-                                <small class="form-text text-muted">RT</small>
-                            </div>
+            <div class="row">
+                <div class="col-md-6 col-sm-12"> 
+                    <div class="form-group row">
+                        <label class="col-3 col-sm-2 control-label col-form-label">Filter:</label> 
+                        <div class="col-5 col-sm-5"> 
+                            <select class="form-control" id="nokk" name="nokk" required>
+                                <option value="">- Semua -</option>
+                                @foreach ($nokk as $rt)
+                                    <option value="{{ $rt->nokk }}">{{ $rt->nokk }}</option>
+                                @endforeach
+                            </select>
+                            <small class="form-text text-muted">Per KK</small>
                         </div>
                     </div>
                 </div>
-            @endif
+            </div>
             {{-- Tabel Warga --}}
-            <table class="table table-bordered table-striped table-hover table-sm" id="table_riwayat">
-                <thead>
-                    <tr>
-                        <th>Nomor</th>
-                        <th>NIK</th>
-                        <th>Nama</th>
-                        <th>Alamat</th>
-                        <th>RT</th>
-                        <th>RW</th>
-                        <th>Level</th>
-                        <th>Status</th>
-                        <th>Aksi</th>
-                    </tr>
-                </thead>
-            </table>
+            <div class="table-responsive"> 
+                <table class="table table-bordered table-striped table-hover table-sm" id="table_warga">
+                    <thead>
+                        <tr>
+                            <th>Nomor</th>
+                            <th>NoKK</th>
+                            <th>NIK</th>
+                            <th>Nama</th>
+                            <th>Alamat</th>
+                            <th>RT/RW</th>
+                            <th>Tempat, Tanggal Lahir</th>
+                            <th>Aksi</th>
+                        </tr>
+                    </thead>
+                </table>
+            </div>
         </div>
     </div>
 @endsection
 
 @push('css')
-    <meta name="csrf-token" content="{{ csrf_token() }}">
+    <style>
+        
+        @media (max-width: 575.98px) { 
+            .col-form-label {
+                text-align: left !important;
+            }
+        }
+    </style>
 @endpush
 
 @push('js')
     <script>
-        $.ajaxSetup({
-            headers: {
-                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+$(document).ready(function() {
+    var table = $('#table_warga').DataTable({
+        serverSide: true,
+        ajax: {
+            "url": "{{ url('riwayat/list') }}",
+            "type": 'POST',
+            "data": function(d) {
+                d.rt = $('#nokk').val(); // Correct the selector to match the filter input
             }
-        });
+        },
+        columns: [
+            { data: 'DT_RowIndex', name: 'DT_RowIndex', orderable: false, searchable: false },
+            { data: 'nokk', name: 'nokk', orderable: false, searchable: true },
+            { data: 'nik', name: 'nik', orderable: false, searchable: true },
+            { data: 'nama', name: 'nama', orderable: false, searchable: true },
+            { data: 'alamat', name: 'alamat', orderable: false, searchable: false },
+            {
+                data: null,
+                name: 'rt_rw',
+                orderable: false,
+                searchable: true,
+                render: function(data, type, row) {
+                    return row.rt + '/' + row.rw;
+                }
+            },
+            {
+                data: null,
+                name: 'tempat_tanggal_lahir',
+                orderable: false,
+                searchable: false,
+                render: function(data, type, row) {
+                    return row.tempat_lahir + ', ' + row.tanggal_lahir;
+                }
+            },
+            { data: 'aksi', name: 'aksi', orderable: false, searchable: false }
+        ]
+    });
 
-        $(document).ready(function() {
-            var dataRiwayat = $('#table_riwayat').DataTable({
-                serverSide: true,
-                ajax: {
-                    "url": "{{ url('riwayat/list') }}",
-                    "type": 'POST',
-                    "data": function(d) {
-                        d.rt = $('#rt').val();
-                    }
-                },
-                columns: [{
-                        data: 'DT_RowIndex',
-                        name: 'DT_RowIndex',
-                        orderable: false,
-                        searchable: false
-                    },
-                    {
-                        data: 'nik',
-                        name: 'nik',
-                        orderable: false,
-                        searchable: true
-                    },
-                    {
-                        data: 'nama',
-                        name: 'nama',
-                        orderable: false,
-                        searchable: true
-                    },
-                    {
-                        data: 'alamat',
-                        name: 'alamat',
-                        orderable: false,
-                        searchable: false
-                    },
-                    {
-                        data: 'rt',
-                        name: 'rt',
-                        orderable: true,
-                        searchable: true
-                    },
-                    {
-                        data: 'rw',
-                        name: 'rw',
-                        orderable: true,
-                        searchable: true
-                    },
-                    {
-                        data: 'level.nama_level',
-                        name: 'level.nama_level',
-                        orderable: false,
-                        searchable: true
-                    },
-                    {
-                        data: 'status',
-                        name: 'status',
-                        orderable: false,
-                        searchable: true
-                    },
-                    {
-                        data: 'aksi',
-                        name: 'aksi',
-                        orderable: false,
-                        searchable: false
-                    }
-                ]
-            });
+    $('#nokk').on('change', function() {
+        table.ajax.reload();
+    });
 
-            $('#rt').on('change', function() {
-                dataRiwayat.ajax.reload();
-            });
-        });
+    var resizeTimer;
+    $(window).on('resize', function(e) {
+        clearTimeout(resizeTimer);
+        resizeTimer = setTimeout(function() {
+            table.columns.adjust().draw();
+        }, 200); 
+    });
+});
+
     </script>
 @endpush

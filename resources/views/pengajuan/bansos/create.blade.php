@@ -82,43 +82,75 @@
                     @enderror
                 </div>
             </div>
-            <!-- Data Penerima -->
-            <div class="form-group row">
-                <label class="col-md-2 col-form-label control-label">PLN</label>
-                <div class="col-md-10">
-                    <input type="text" name="pln" class="form-control" value="{{ old('pln') }}" required>
-                    @error('pln')
-                        <small class="form-text text-danger">{{ $message }}</small>
-                    @enderror
-                </div>
-            </div>
-            <div class="form-group row">
-                <label class="col-md-2 col-form-label control-label">PDAM</label>
-                <div class="col-md-10">
-                    <input type="number" name="pdam" class="form-control" value="{{ old('pdam') }}" required>
-                    @error('pdam')
-                        <small class="form-text text-danger">{{ $message }}</small>
-                    @enderror
-                </div>
-            </div>
-            <div class="form-group row">
-                <label class="col-md-2 col-form-label control-label">Status Kesehatan</label>
-                <div class="col-md-10">
-                    <input type="number" name="status_kesehatan" class="form-control" value="{{ old('status_kesehatan') }}" required>
-                    @error('status_kesehatan')
-                        <small class="form-text text-danger">{{ $message }}</small>
-                    @enderror
-                </div>
-            </div>
-            <div class="form-group row">
-                <label class="col-md-2 col-form-label control-label">Status Rumah</label>
-                <div class="col-md-10">
-                    <input type="number" name="status_rumah" class="form-control" value="{{ old('status_rumah') }}" required>
-                    @error('status_rumah')
-                        <small class="form-text text-danger">{{ $message }}</small>
-                    @enderror
-                </div>
-            </div>
+<!-- Data Penerima -->
+<div class="form-group row">
+    <label class="col-md-2 col-form-label control-label">Bahan Tembok</label>
+    <div class="col-md-10">
+        <select name="status_rumah" class="form-control" required>
+            <option value="" selected disabled>--- Pilih sesuai dengan kondisi Anda ---</option>
+            <option value="5">Bambu/Kayu (Diperlukan perbaikan besar-besaran)</option>
+            <option value="4">Asbes (Diperlukan perbaikan besar-besaran)</option>
+            <option value="3">Bata dengan banyak retakan (Diperlukan perbaikan)</option>
+            <option value="2">Bata (Diperlukan perbaikan kecil)</option>
+            <option value="1">Batako/Bahan solid/Cor (Kondisi baik)</option>
+        </select>
+        @error('status_rumah')
+            <small class="form-text text-danger">{{ $message }}</small>
+        @enderror
+    </div>
+</div>
+
+<div class="form-group row">
+    <label class="col-md-2 col-form-label control-label">Lampu/PLN</label>
+    <div class="col-md-10">
+        <select name="pln" class="form-control" required>
+            <option value="" selected disabled>--- Pilih sesuai dengan kondisi Anda ---</option>
+            <option value="5">Nonlistrik (obor/cemplon/kompor bakar) (Tidak tersedia listrik PLN)</option>
+            <option value="4">Daya <= 450 VA (Listrik rumah tangga)</option>
+            <option value="3">Daya > 450 VA <= 900 VA (Listrik rumah tangga)</option>
+            <option value="2">Daya > 900 VA <= 1300 VA (Listrik rumah tangga)</option>
+            <option value="1">Daya > 1300 VA (Listrik rumah tangga)</option>
+        </select>
+        @error('pln')
+            <small class="form-text text-danger">{{ $message }}</small>
+        @enderror
+    </div>
+</div>
+
+<div class="form-group row">
+    <label class="col-md-2 col-form-label control-label">PDAM</label>
+    <div class="col-md-10">
+        <select name="pdam" class="form-control" required>
+            <option value="" selected disabled>--- Pilih sesuai dengan kondisi Anda ---</option>
+            <option value="5">Sumur, sungai, bendungan (Tidak tersedia akses PDAM)</option>
+            <option value="4">Kubik <= 10m3 (Penggunaan air terbatas)</option>
+            <option value="3">Kubik > 10m3 <= 15m3 (Penggunaan air terbatas)</option>
+            <option value="2">Kubik > 15m3 <= 20m3 (Penggunaan air terbatas)</option>
+            <option value="1">Kubik > 20m3 (Penggunaan air terbatas)</option>
+        </select>
+        @error('pdam')
+            <small class="form-text text-danger">{{ $message }}</small>
+        @enderror
+    </div>
+</div>
+
+<div class="form-group row">
+    <label class="col-md-2 col-form-label control-label">Kesehatan</label>
+    <div class="col-md-10">
+        <select name="status_kesehatan" class="form-control" required>
+            <option value="" selected disabled>--- Pilih sesuai dengan kondisi Anda ---</option>
+            <option value="5">Tidak memiliki jaminan kesehatan (Tidak ada jaminan)</option>
+            <option value="4">Memiliki Asuransi BPJS (Jaminan kesehatan utama)</option>
+            <option value="3">Memiliki Asuransi selain BPJS (minimal 1) (Jaminan kesehatan tambahan)</option>
+            <option value="2">Memiliki Asuransi selain BPJS (lebih dari 1) (Jaminan kesehatan tambahan)</option>
+            <option value="1">Memiliki Asuransi selain BPJS dan BPJS juga (Jaminan kesehatan lengkap)</option>
+        </select>
+        @error('status_kesehatan')
+            <small class="form-text text-danger">{{ $message }}</small>
+        @enderror
+    </div>
+</div>
+
             <input type="hidden" name="id_bansos" value="{{ $id_bansos }}">
             <input type="hidden" name="status" value="Pending">
             <div class="form-group row">

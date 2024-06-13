@@ -39,16 +39,16 @@
                         </li>
                         <li class="nav-item">
                             <a href="{{ url('/riwayat') }}" class="nav-link">
-                                <i class="fas fa-user-edit nav-icon"></i>
+                                <i class="fas fa-history nav-icon"></i>
                                 <p>Riwayat Data Warga</p>
                             </a>
                         </li>
-                        <li class="nav-item">
+                        {{-- <li class="nav-item">
                             <a href="{{ url('/level') }}" class="nav-link">
                                 <i class="fas fa-print nav-icon"></i>
                                 <p>Cetak Data Warga</p>
                             </a>
-                        </li>
+                        </li> --}}
                     </ul>
                 </li>
                 <li class="nav-header">Menu Bantuan Sosial</li>
@@ -69,22 +69,22 @@
                         </li>
                         <li class="nav-item">
                             <a href="{{ url('/bantuan') }}" class="nav-link">
-                                <i class="fas fa-users nav-icon"></i>
+                                <i class="fas fa-list nav-icon"></i>
                                 <p>List Daftar Bantuan</p>
                             </a>
                         </li>
                         <li class="nav-item">
                             <a href="{{ url('/penerima') }}" class="nav-link">
-                                <i class="fas fa-users nav-icon"></i>
+                                <i class="fas fa-user-check nav-icon"></i>
                                 <p>Data Penerima</p>
                             </a>
                         </li>
-                        <li class="nav-item">
+                        {{-- <li class="nav-item">
                             <a href="{{ url('/stok') }}" class="nav-link">
                                 <i class="fas fa-print nav-icon"></i>
                                 <p>Cetak Data Penerima</p>
                             </a>
-                        </li>
+                        </li> --}}
                     </ul>
                 </li>
             @elseif (Auth::user()->id_level == 2)
@@ -108,16 +108,16 @@
                         </li>
                         <li class="nav-item">
                             <a href="{{ url('/riwayat') }}" class="nav-link">
-                                <i class="fas fa-user-edit nav-icon"></i>
+                                <i class="fas fa-history nav-icon"></i>
                                 <p>Riwayat Data Warga</p>
                             </a>
                         </li>
-                        <li class="nav-item">
+                        {{-- <li class="nav-item">
                             <a href="{{ url('/level') }}" class="nav-link">
                                 <i class="fas fa-print nav-icon"></i>
                                 <p>Cetak Data Warga</p>
                             </a>
-                        </li>
+                        </li> --}}
                     </ul>
                 </li>
                 <li class="nav-header">Menu Bantuan Sosial</li>
@@ -139,8 +139,8 @@
                     </ul>
                     <ul class="nav nav-treeview">
                         <li class="nav-item">
-                            <a href="{{ url('/setting') }}" class="nav-link">
-                                <i class="fas fa-database nav-icon"></i>
+                            <a href="{{ url('/penerima') }}" class="nav-link">
+                                <i class="fas fa-user-check nav-icon"></i>
                                 <p>Data Penerima</p>
                             </a>
                         </li>

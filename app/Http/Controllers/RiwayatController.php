@@ -11,28 +11,36 @@ class RiwayatController extends Controller
 {
     public function index()
     {
-        $breadcrumb = (object) [
-            'title' => 'Daftar Riwayat Warga',
-            'list'  => ['Home', 'Riwayat']
-        ];
-
         $page = (object) [
-            'title' => 'Riwayat warga yang terdaftar dalam sistem'
+            'title' => 'Riwayat warga yang pernah terdaftar dalam sistem'
         ];
 
         $activeMenu = 'riwayat';
 
-        $rts = WargaModel::select('rt')->distinct()->get();
-
-        $userLevel = Auth::user()->id_level;
-
-        return view('admin.riwayat.index', [
-            'breadcrumb' => $breadcrumb,
-            'page' => $page,
-            'rts' => $rts,
-            'activeMenu' => $activeMenu,
-            'userLevel' => $userLevel
-        ]);
+        $user = Auth::user();
+        
+        $level = $user->id_level;
+        if ($level == 1){
+            $nokk = WargaModel::select('nokk')
+        ->where('status', '!=', 'Aktif')
+        ->distinct()->get();
+            $breadcrumb = (object) [
+                'title' => 'Daftar Riwayat Warga',
+                'list'  => ['Home', 'Riwayat']
+            ];
+            return view('admin.riwayat.index', ['breadcrumb' => $breadcrumb, 'page' => $page, 'nokk' => $nokk, 'activeMenu' => $activeMenu]);    
+        }
+        elseif($level == 2){
+            $nokk = WargaModel::select('nokk')
+        ->where('rt', $user->rt)
+        ->where('status', '!=', 'Aktif')
+        ->distinct()->get();
+            $breadcrumb = (object) [
+                'title' => 'Daftar Riwayat Warga per RT',
+                'list'  => ['Home', 'Riwayat']
+        ];
+            return view('admin.riwayat.index', ['breadcrumb' => $breadcrumb, 'page' => $page, 'nokk' => $nokk, 'activeMenu' => $activeMenu]);    
+        }
     }
 
     public function list(Request $request)

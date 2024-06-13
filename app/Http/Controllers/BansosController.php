@@ -52,6 +52,7 @@ class BansosController extends Controller
                     $btn .= '<a href="'.url('/bansos/' . $bansoss->id_bansos . '/edit').'" class="btn btn-warning btn-sm">Edit</a> ';
                     $btn .= '<form class="d-inline-block" method="POST" action="'. url('/bansos/'.$bansoss->id_bansos).'">'. csrf_field() . method_field('DELETE') .
                         '<button type="submit" class="btn btn-danger btn-sm" onclick="return confirm(\'Apakah Anda yakin menghapus data ini?\');">Hapus</button></form>';
+                    $btn .= '<a href="'.url('/bansos/cek/' . $bansoss->id_bansos ).'" class="btn btn-primary  btn-sm">Cek Penerima</a> ';
                     return $btn;
                 })
                 ->rawColumns(['aksi'])
@@ -165,7 +166,34 @@ class BansosController extends Controller
             ]);
         }
     }
+ 
+    public function cek(String $id_bansos){
+        $bansos = BansosModel::with('bantuan')->where('id_bansos', $id_bansos)->first();
     
+        $penerima = PenerimaModel::with(['user', 'bansos'])->where('id_bansos', $id_bansos)->get();
+    
+        $breadcrumb = (object) [
+            'title' => 'Detail Bansos',
+            'list' => [
+                'Home',
+                'Bansos',
+                'Detail Bansos'
+            ]
+        ];
+    
+        $page = (object) [
+            'title' => 'Detail Bansos',
+        ];
+    
+        $activeMenu = 'bansos';
+        return view('rt.bansos.detail', [
+            'breadcrumb' => $breadcrumb,
+            'page' => $page,
+            'bansos' => $bansos,
+            'penerima' => $penerima,
+            'activeMenu' => $activeMenu
+        ]);
+    }
 
     public function edit($id_bansos)
     {

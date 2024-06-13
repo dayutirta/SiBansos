@@ -4,7 +4,7 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>{{ config('app.name', 'PWL Laravel Starter Code') }}</title>
+    <title>SiBansos</title>
 
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <link rel="stylesheet"
@@ -14,6 +14,8 @@
     <link rel="stylesheet" href="{{ asset('adminlte/plugins/datatables-responsive/css/responsive.bootstrap4.min.css') }}">
     <link rel="stylesheet" href="{{ asset('adminlte/plugins/datatables-buttons/css/buttons.bootstrap4.min.css') }}">
     <link rel="stylesheet" href="{{ asset('adminlte/dist/css/adminlte.min.css') }}">
+    <!-- Logo Icon -->
+    <link rel="icon" type="image/png" href="{{ asset('adminlte/dist/img/SiB_new.png') }}">
     @stack('css')
 </head>
 
@@ -26,7 +28,7 @@
                     <img src="{{ asset('adminlte/dist/img/SiB_new.png') }}" alt="SiBansos Logo"
                         class="brand-image img-circle elevation-3"
                         style="opacity: .5; max-height: 40px; margin-right: 10px;">
-                    <span class="brand-text font-weight-bold">SiBansos</span>
+                    <span class="brand-text font-weight-bold" style="color: white;">SiBansos</span>
                 </a>
                 
             </div>
@@ -57,6 +59,9 @@
     <script src="{{ asset('adminlte/plugins/datatables-buttons/js/buttons.print.min.js') }}"></script>
     <script src="{{ asset('adminlte/plugins/datatables-buttons/js/buttons.colVis.min.js') }}"></script>
     <script src="{{ asset('adminlte/dist/js/adminlte.min.js') }}"></script>
+    <script src="{{ asset('adminlte/plugins/chart.js/Chart.min.js') }}"></script>
+    <script src="{{ asset('adminlte/dist/js/pages/barchart.js') }}"></script>
+    
     <script>
         $.ajaxSetup({
             headers: {
