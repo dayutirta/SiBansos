@@ -87,21 +87,21 @@
                     <div class="features-icons-item mx-auto mb-5 mb-lg-0 mb-lg-3">
                         <div class="features-icons-icon d-flex"><i class="bi-envelope-at-fill m-auto text-secondary"></i></div>
                         <h5>Email</h5>
-                        <p class="lead mb-0">example@gmail.com</p>
+                        <p class="lead mb-0">rwgriyadamai@gmail.com</p>
                     </div>
                 </div>
                 <div class="col-lg-4">
                     <div class="features-icons-item mx-auto mb-5 mb-lg-0 mb-lg-3">
                         <div class="features-icons-icon d-flex"><i class="bi-telephone-fill m-auto text-secondary"></i></div>
                         <h5>Phone Number</h5>
-                        <p class="lead mb-0">(000) 0000-0000</p>
+                        <p class="lead mb-0">(022) 9821-0441</p>
                     </div>
                 </div>
                 <div class="col-lg-4">
                     <div class="features-icons-item mx-auto mb-0 mb-lg-3">
                         <div class="features-icons-icon d-flex"><i class="bi-phone-fill m-auto text-secondary"></i></div>
                         <h5>Mobile</h5>
-                        <p class="lead mb-0">0000-0000-0000</p>
+                        <p class="lead mb-0">0821-4891-6303</p>
                     </div>
                 </div>
             </div>
