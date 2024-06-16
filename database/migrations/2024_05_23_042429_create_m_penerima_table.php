@@ -21,8 +21,8 @@ return new class extends Migration
             $table->integer('status_kesehatan');
             $table->integer('status_rumah');
             $table->string('status');
-            $table->double('skoredas');
-            $table->double('skoresaw');
+            $table->double('skoredas')->nullable();
+            $table->double('skoresaw')->nullable();
             $table->timestamps();
 
             $table->foreign('id_bansos')->references('id_bansos')->on('m_bansos');
