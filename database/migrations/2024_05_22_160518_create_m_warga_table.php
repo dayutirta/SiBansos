@@ -15,7 +15,7 @@ return new class extends Migration
             $table->id('id_warga');
             $table->string('nik')->unique();
             $table->unsignedBigInteger('id_level')->index();
-            $table->string('nokk',20)->unique();
+            $table->string('nokk',20);
             $table->string('nama',100);
             $table->string('jenis_kelamin',10);
             $table->string('tempat_lahir',100);
