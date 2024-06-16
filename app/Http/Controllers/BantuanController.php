@@ -36,9 +36,9 @@ class BantuanController extends Controller
         return DataTables::of($bantuan)
         ->addIndexColumn()
         ->addColumn('aksi', function ($bantuans) {
-            $btn = '<a href="'.url('/bantuan/' . $bantuans->id_bantuan . '/edit').'" class="btn btn-warning btn-sm">Edit</a> ';
+            $btn = '<a href="'.url('/bantuan/' . $bantuans->id_bantuan . '/edit').'" class="btn btn-warning btn-sm"><i class="fas fa-edit"></i></a> ';
             $btn .= '<form class="d-inline-block" method="POST" action="'. url('/bantuan/'.$bantuans->id_bantuan).'">'. csrf_field() . method_field('DELETE') .
-                '<button type="submit" class="btn btn-danger btn-sm" onclick="return confirm(\'Apakah Anda yakin menghapus data ini?\');">Hapus</button></form>';
+                '<button type="submit" class="btn btn-danger btn-sm" onclick="return confirm(\'Apakah Anda yakin menghapus data ini?\');"><i class="fas fa-trash-alt"></i></button></form>';
             return $btn;
            
         })

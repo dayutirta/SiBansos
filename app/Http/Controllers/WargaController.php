@@ -15,13 +15,11 @@ class WargaController extends Controller
         $page = (object) [
             'title' => 'Daftar warga yang terdaftar dalam sistem'
         ];
-
-        $activeMenu = 'warga';
-
-        
+        $activeMenu = 'warga'; 
         $user = Auth::user();
         $nokk = WargaModel::select('nokk')->where('rt', $user->rt)->distinct()->get();
         $level = $user->id_level;
+
         if ($level == 1){
             $nokkrw = WargaModel::select('nokk')->distinct()->get();
             $breadcrumb = (object) [
@@ -30,11 +28,12 @@ class WargaController extends Controller
             ];
             return view('admin.warga.index', ['breadcrumb' => $breadcrumb, 'page' => $page, 'nokkrw' => $nokkrw, 'activeMenu' => $activeMenu]);    
         }
-        elseif($level == 2){$breadcrumb = (object) [
+        elseif($level == 2){
+            $breadcrumb = (object) [
             'title' => 'Daftar Warga RT',
             'list'  => ['Home', 'Warga']
         ];
-            return view('rt.warga.index', ['breadcrumb' => $breadcrumb, 'page' => $page, 'nokk' => $nokk, 'activeMenu' => $activeMenu]);    
+            return view('rt.warga.index', ['breadcrumb' => $breadcrumb, 'page' => $page,'nokk' => $nokk, 'activeMenu' => $activeMenu]);    
         }
     }
 
@@ -45,18 +44,23 @@ class WargaController extends Controller
         $userRt = $user->rt;
 
         $warga = WargaModel::with('level')->where('status', '=', 'Aktif');
-
+        if ($request->nokk) {
+            $warga->where('nokk', $request->nokk);
+        }
         if ($userLevel == 2) {
             $warga->where(function ($query) use ($user, $userRt) {
                 $query->where('id_warga', $user->id_warga)
                     ->orWhere('rt', $userRt);
             });
+            if ($request->nokk) {
+                $warga->where('nokk', $request->nokk);
+            }
             return DataTables::of($warga)
             ->addIndexColumn()
             ->addColumn('aksi', function ($wargas) {
-                $btn = '<a href="' . url('/warga/' . $wargas->id_warga) . '" class="btn btn-info btn-sm">Detail</a> ';
-                $btn .= '<a href="' . url('/warga/' . $wargas->id_warga . '/edit') . '" class="btn btn-warning btn-sm">Edit</a> ';
-                $btn .= '<a href="' . url('/warga/' . $wargas->id_warga . '/ubah_status') . '" class="btn btn-danger btn-sm">Ubah Status</a>';
+                $btn = '<a href="' . url('/warga/' . $wargas->id_warga) . '" class="btn btn-info btn-sm"><i class="fas fa-eye"></i></a> ';
+                $btn .= '<a href="' . url('/warga/' . $wargas->id_warga . '/edit') . '" class="btn btn-warning btn-sm"><i class="fas fa-edit"></i></a> ';
+                $btn .= '<a href="' . url('/warga/' . $wargas->id_warga . '/ubah_status') . '" class="btn btn-danger btn-sm"><i class="fas fa-trash-alt"></i></a>';
                 return $btn;
             })
             ->rawColumns(['aksi'])
@@ -65,16 +69,14 @@ class WargaController extends Controller
             return DataTables::of($warga)
             ->addIndexColumn()
             ->addColumn('aksi', function ($wargas) {
-                $btn = '<a href="' . url('/warga/' . $wargas->id_warga) . '" class="btn btn-info btn-sm">Detail</a> ';
-                $btn .= '<a href="' . url('/warga/' . $wargas->id_warga . '/edit') . '" class="btn btn-warning btn-sm">Edit</a> ';
-                $btn .= '<a href="' . url('/warga/' . $wargas->id_warga . '/ubah_status') . '" class="btn btn-danger btn-sm">Ubah Status</a>';
+                $btn = '<a href="' . url('/warga/' . $wargas->id_warga) . '" class="btn btn-info btn-sm"><i class="fas fa-eye"></i></a> ';
+                $btn .= '<a href="' . url('/warga/' . $wargas->id_warga . '/edit') . '" class="btn btn-warning btn-sm"><i class="fas fa-edit"></i></a> ';
+                $btn .= '<a href="' . url('/warga/' . $wargas->id_warga . '/ubah_status') . '" class="btn btn-danger btn-sm"><i class="fas fa-trash-alt"></i></a>';
                 return $btn;
             })
             ->rawColumns(['aksi'])
             ->make(true);
         }
-
-        
     }
 
     public function create()
@@ -157,8 +159,11 @@ class WargaController extends Controller
 
     public function show(String $id)
     {
+        
         $warga = WargaModel::with('level')->where('id_warga', $id)->first();
+        $nokk=$warga->nokk;
 
+        $keluarga = WargaModel::with('level')->where('nokk', $nokk)->get();
         $breadcrumb = (object) [
             'title' => 'Detail Warga',
             'list' => [
@@ -169,7 +174,7 @@ class WargaController extends Controller
         ];
 
         $page = (object) [
-            'title' => 'Detail Warga',
+            'title' => 'Detail Keluarga Warga',
         ];
 
         $activeMenu = 'warga';
@@ -177,6 +182,7 @@ class WargaController extends Controller
         return view('admin.warga.detail', [
             'breadcrumb' => $breadcrumb,
             'page' => $page,
+            'keluarga' => $keluarga,
             'warga' => $warga,
             'activeMenu' => $activeMenu
         ]);

@@ -44,15 +44,18 @@ class BansosController extends Controller
             $bansos->where('id_bantuan', $request->id_bantuan);
         }
     
+        $today = now(); // Get the current date and time
+    
         if ($level == '1') {
             return DataTables::of($bansos)
                 ->addIndexColumn()
-                ->addColumn('aksi', function ($bansoss) {
-                    $btn = '<a href="'.url('/bansos/' . $bansoss->id_bansos).'" class="btn btn-info btn-sm">Detail</a> ';
-                    $btn .= '<a href="'.url('/bansos/' . $bansoss->id_bansos . '/edit').'" class="btn btn-warning btn-sm">Edit</a> ';
-                    $btn .= '<form class="d-inline-block" method="POST" action="'. url('/bansos/'.$bansoss->id_bansos).'">'. csrf_field() . method_field('DELETE') .
-                        '<button type="submit" class="btn btn-danger btn-sm" onclick="return confirm(\'Apakah Anda yakin menghapus data ini?\');">Hapus</button></form>';
-                    $btn .= '<a href="'.url('/bansos/cek/' . $bansoss->id_bansos ).'" class="btn btn-primary  btn-sm">Cek Penerima</a> ';
+                ->addColumn('aksi', function ($bansoss) use ($today) {
+                    $btn = '<a href="'.url('/bansos/cek/' . $bansoss->id_bansos ).'" class="btn btn-info btn-sm"><i class="fas fa-eye"></i></a> ';
+                    if ($bansoss->tanggal_akhir >= $today) {
+                        $btn .= '<a href="'.url('/bansos/' . $bansoss->id_bansos . '/edit').'" class="btn btn-warning btn-sm"><i class="fas fa-edit"></i></a> ';
+                        $btn .= '<form class="d-inline-block" method="POST" action="'. url('/bansos/'.$bansoss->id_bansos).'">'. csrf_field() . method_field('DELETE') .
+                            '<button type="submit" class="btn btn-danger btn-sm" onclick="return confirm(\'Apakah Anda yakin menghapus data ini?\');"><i class="fas fa-trash-alt"></i></button></form>';
+                    }
                     return $btn;
                 })
                 ->rawColumns(['aksi'])
@@ -61,7 +64,7 @@ class BansosController extends Controller
             return DataTables::of($bansos)
                 ->addIndexColumn()
                 ->addColumn('aksi', function ($bansossi) {
-                    $btn = '<a href="'.url('/bansos/' . $bansossi->id_bansos).'" class="btn btn-info btn-sm">Detail</a> ';
+                    $btn = '<a href="'.url('/bansos/' . $bansossi->id_bansos).'" class="btn btn-info btn-sm"><i class="fas fa-eye"></i></a> ';
                     return $btn;
                 })
                 ->rawColumns(['aksi'])
@@ -70,6 +73,8 @@ class BansosController extends Controller
             return DataTables::of($bansos)->make(true);
         }
     }
+    
+
     
     public function create()
     {
@@ -127,6 +132,7 @@ class BansosController extends Controller
     
         $penerima = PenerimaModel::with(['user', 'bansos'])
             ->where('id_bansos', $id_bansos)
+            ->where('status', 'Diterima')
             ->whereHas('user', function ($query) use ($userRt) {
                 $query->where('rt', $userRt);
             })
@@ -170,7 +176,10 @@ class BansosController extends Controller
     public function cek(String $id_bansos){
         $bansos = BansosModel::with('bantuan')->where('id_bansos', $id_bansos)->first();
     
-        $penerima = PenerimaModel::with(['user', 'bansos'])->where('id_bansos', $id_bansos)->get();
+        $penerima = PenerimaModel::with(['user', 'bansos'])
+        ->where('id_bansos', $id_bansos)
+        ->where('status', 'Diterima')
+        ->get();
     
         $breadcrumb = (object) [
             'title' => 'Detail Bansos',
@@ -261,3 +270,9 @@ class BansosController extends Controller
         return redirect('bansos');
     }
 }
+
+// $btn = '<a href="'.url('/bansos/' . $bansoss->id_bansos).'" class="btn btn-outline-primary btn-sm"><i class="fas fa-eye"></i></a> '; // Detail
+// $btn .= '<a href="'.url('/bansos/' . $bansoss->id_bansos . '/edit').'" class="btn btn-outline-warning btn-sm"><i class="fas fa-edit"></i></a> '; 
+// $btn .= '<form class="d-inline-block" method="POST" action="'. url('/bansos/'.$bansoss->id_bansos).'">'. csrf_field() . method_field('DELETE') .
+//         '<button type="submit" class="btn btn-outline-danger btn-sm" onclick="return confirm(\'Apakah Anda yakin menghapus data ini?\');"><i class="fas fa-trash-alt"></i></button></form>'; 
+// $btn .= '<a href="'.url('/bansos/cek/' . $bansoss->id_bansos ).'" class="btn btn-outline-success  btn-sm"><i class="fas fa-user-check"></i> Cek Penerima</a> '; 
