@@ -14,32 +14,29 @@ class RiwayatController extends Controller
         $page = (object) [
             'title' => 'Riwayat warga yang pernah terdaftar dalam sistem'
         ];
-
         $activeMenu = 'riwayat';
-
         $user = Auth::user();
-        
+        $nokkrw = WargaModel::select('nokk')
+        ->where('rt', $user->rt)
+        ->where('status', '!=', 'Aktif')
+        ->distinct()->get();
         $level = $user->id_level;
         if ($level == 1){
-            $nokk = WargaModel::select('nokk')
+            $nokkrw = WargaModel::select('nokk')
         ->where('status', '!=', 'Aktif')
         ->distinct()->get();
             $breadcrumb = (object) [
                 'title' => 'Daftar Riwayat Warga',
                 'list'  => ['Home', 'Riwayat']
             ];
-            return view('admin.riwayat.index', ['breadcrumb' => $breadcrumb, 'page' => $page, 'nokk' => $nokk, 'activeMenu' => $activeMenu]);    
+            return view('admin.riwayat.index', ['breadcrumb' => $breadcrumb, 'page' => $page, 'nokkrw' => $nokkrw, 'activeMenu' => $activeMenu]);    
         }
         elseif($level == 2){
-            $nokk = WargaModel::select('nokk')
-        ->where('rt', $user->rt)
-        ->where('status', '!=', 'Aktif')
-        ->distinct()->get();
             $breadcrumb = (object) [
                 'title' => 'Daftar Riwayat Warga per RT',
                 'list'  => ['Home', 'Riwayat']
         ];
-            return view('admin.riwayat.index', ['breadcrumb' => $breadcrumb, 'page' => $page, 'nokk' => $nokk, 'activeMenu' => $activeMenu]);    
+            return view('admin.riwayat.index', ['breadcrumb' => $breadcrumb, 'page' => $page, 'nokkrw' => $nokkrw, 'activeMenu' => $activeMenu]);    
         }
     }
 
@@ -50,26 +47,32 @@ class RiwayatController extends Controller
         $userRt = $user->rt;
 
         $warga = WargaModel::with('level')->where('status', '!=', 'Aktif');
-
-        if ($userLevel == 1) {
-            if ($request->rt) {
-                $warga->where('rt', $request->rt);
-            }
-        } elseif ($userLevel == 2) {
+        if ($request->nokk) {
+            $warga->where('nokk', $request->nokk);
+        }
+        if ($userLevel == 2) {
             $warga->where(function ($query) use ($user, $userRt) {
                 $query->where('id_warga', $user->id_warga)
                     ->orWhere('rt', $userRt);
             });
-        }
-
-        return DataTables::of($warga)
+            return DataTables::of($warga)
             ->addIndexColumn()
             ->addColumn('aksi', function ($wargas) {
-                $btn = '<a href="' . url('/riwayat/' . $wargas->id_warga) . '" class="btn btn-info btn-sm">Detail</a> ';
+                $btn = '<a href="' . url('/riwayat/' . $wargas->id_warga) . '" class="btn btn-info btn-sm"><i class="fas fa-eye"></i></a> ';
                 return $btn;
             })
             ->rawColumns(['aksi'])
             ->make(true);
+        }else{
+            return DataTables::of($warga)
+            ->addIndexColumn()
+            ->addColumn('aksi', function ($wargas) {
+                $btn = '<a href="' . url('/riwayat/' . $wargas->id_warga) . '" class="btn btn-info btn-sm"><i class="fas fa-eye"></i></a> ';
+                return $btn;
+            })
+            ->rawColumns(['aksi'])
+            ->make(true);
+        }
     }
 
     public function show(String $id)
