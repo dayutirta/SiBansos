@@ -20,7 +20,7 @@
                         <div class="col-5 col-sm-5"> 
                             <select class="form-control" id="nokk" name="nokk" required>
                                 <option value="">- Semua -</option>
-                                @foreach ($nokk as $rt)
+                                @foreach ($nokkrw as $rt)
                                     <option value="{{ $rt->nokk }}">{{ $rt->nokk }}</option>
                                 @endforeach
                             </select>
@@ -35,7 +35,6 @@
                     <thead>
                         <tr>
                             <th>Nomor</th>
-                            <th>NoKK</th>
                             <th>NIK</th>
                             <th>Nama</th>
                             <th>Alamat</th>
@@ -70,36 +69,35 @@ $(document).ready(function() {
             "url": "{{ url('riwayat/list') }}",
             "type": 'POST',
             "data": function(d) {
-                d.rt = $('#nokk').val(); // Correct the selector to match the filter input
+                d.nokk = $('#nokk').val(); // Correct the selector to match the filter input
             }
         },
         columns: [
-            { data: 'DT_RowIndex', name: 'DT_RowIndex', orderable: false, searchable: false },
-            { data: 'nokk', name: 'nokk', orderable: false, searchable: true },
-            { data: 'nik', name: 'nik', orderable: false, searchable: true },
-            { data: 'nama', name: 'nama', orderable: false, searchable: true },
-            { data: 'alamat', name: 'alamat', orderable: false, searchable: false },
-            {
-                data: null,
-                name: 'rt_rw',
-                orderable: false,
-                searchable: true,
-                render: function(data, type, row) {
-                    return row.rt + '/' + row.rw;
-                }
-            },
-            {
-                data: null,
-                name: 'tempat_tanggal_lahir',
-                orderable: false,
-                searchable: false,
-                render: function(data, type, row) {
-                    return row.tempat_lahir + ', ' + row.tanggal_lahir;
-                }
-            },
-            { data: 'aksi', name: 'aksi', orderable: false, searchable: false }
-        ]
-    });
+                    { data: 'DT_RowIndex', name: 'DT_RowIndex', orderable: false, searchable: false },
+                    { data: 'nik', name: 'nik', orderable: false, searchable: true },
+                    { data: 'nama', name: 'nama', orderable: false, searchable: true },
+                    { data: 'alamat', name: 'alamat', orderable: false, searchable: true },
+                    {
+                        data: null,
+                        name: 'rt',
+                        orderable: false,
+                        searchable: true,
+                        render: function(data, type, row) {
+                            return row.rt + '/' + row.rw;
+                        }
+                    },
+                    {
+                        data: null,
+                        name: 'tempat_tanggal_lahir',
+                        orderable: false,
+                        searchable: false,
+                        render: function(data, type, row) {
+                            return row.tempat_lahir + ', ' + row.tanggal_lahir;
+                        }
+                    },
+                    { data: 'aksi', name: 'aksi', orderable: false, searchable: false }
+                ]
+            });
 
     $('#nokk').on('change', function() {
         table.ajax.reload();

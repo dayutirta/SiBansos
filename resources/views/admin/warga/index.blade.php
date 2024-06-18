@@ -39,7 +39,6 @@
                     <thead>
                         <tr>
                             <th>Nomor</th>
-                            <th>NoKK</th>
                             <th>NIK</th>
                             <th>Nama</th>
                             <th>Alamat</th>
@@ -50,6 +49,7 @@
                     </thead>
                 </table>
             </div>
+            
         </div>
     </div>
 @endsection
@@ -74,18 +74,17 @@
                     "url": "{{ url('warga/list') }}",
                     "type": 'POST',
                     "data": function(d) {
-                        d.rt = $('#rt').val();
+                        d.nokk = $('#nokk').val();
                     }
                 },
                 columns: [
                     { data: 'DT_RowIndex', name: 'DT_RowIndex', orderable: false, searchable: false },
-                    { data: 'nokk', name: 'nokk', orderable: false, searchable: true },
                     { data: 'nik', name: 'nik', orderable: false, searchable: true },
                     { data: 'nama', name: 'nama', orderable: false, searchable: true },
-                    { data: 'alamat', name: 'alamat', orderable: false, searchable: false },
+                    { data: 'alamat', name: 'alamat', orderable: false, searchable: true },
                     {
                         data: null,
-                        name: 'rt_rw',
+                        name: 'rt',
                         orderable: false,
                         searchable: true,
                         render: function(data, type, row) {
@@ -96,16 +95,18 @@
                         data: null,
                         name: 'tempat_tanggal_lahir',
                         orderable: false,
-                        searchable: true,
+                        searchable: false,
                         render: function(data, type, row) {
                             return row.tempat_lahir + ', ' + row.tanggal_lahir;
                         }
                     },
                     { data: 'aksi', name: 'aksi', orderable: false, searchable: false }
-                ]
+                ],
+                "autoWidth": false,
+                "responsive": true,
             });
 
-            $('#rt').on('change', function() {
+            $('#nokk').on('change', function() {
                 table.ajax.reload();
             });
 
@@ -115,7 +116,7 @@
                 clearTimeout(resizeTimer);
                 resizeTimer = setTimeout(function() {
                     table.ajax.reload(null, false); 
-                }, 200); 
+                }, 1); 
             });
         });
     </script>
