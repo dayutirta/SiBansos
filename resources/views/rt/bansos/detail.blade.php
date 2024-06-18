@@ -26,7 +26,7 @@
                         <tr>
                             <th>No</th>
                             <th>Nama Program</th>
-                            <th>No KK</th>
+                            <th>NoKK</th>
                             <th>Nama</th>
                             <th>Alamat</th>
                             <th>RT/RW</th>
@@ -89,6 +89,18 @@
 <script>
     $(document).ready(function() {
         $('#table_penerima').DataTable({
+            columns: [
+                { data: "DT_RowIndex", className: "text-center", orderable: true, searchable: false },
+                { data: "nama_program", className: "", orderable: false, searchable: false },
+                { data: "nokk", className: "text-center", orderable: false, searchable: true },
+                { data: "nama", className: "", orderable: false, searchable: true },
+                { data: "alamat", className: "", orderable: false, searchable: true },
+                { data: "rt_rw", className: "text-center", orderable: false, searchable: false },
+                { data: "skoredas", className: "", orderable: false, searchable: false },
+                { data: "rank_edas", className: "text-center", orderable: true, searchable: false },
+                { data: "skoresaw", className: "", orderable: false, searchable: false },
+                { data: "rank_saw", className: "text-center", orderable: true, searchable: false }
+            ],
            
         });
 

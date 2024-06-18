@@ -73,14 +73,15 @@
             },
             columns: [
                 { data: "DT_RowIndex", className: "text-center", orderable: false, searchable: false },
-                { data: "nama_program", className: "", orderable: true, searchable: true },
-                { data: "tanggal_mulai", className: "", orderable: true, searchable: true },
-                { data: "tanggal_akhir", className: "", orderable: true, searchable: true },
+                { data: "nama_program", className: "", orderable: false, searchable: true },
+                { data: "tanggal_mulai", className: "", orderable: false, searchable: true },
+                { data: "tanggal_akhir", className: "", orderable: false, searchable: true },
                 { data: "bantuan.nama_bantuan", className: "", orderable: false, searchable: false },
-                { data: "jumlah_penerima", className: "", orderable: true, searchable: true },
-                { data: "lokasi", className: "", orderable: true, searchable: true },
+                { data: "jumlah_penerima", className: "", orderable: false, searchable: true },
+                { data: "lokasi", className: "", orderable: false, searchable: true },
                 { data: 'aksi', name: 'aksi', orderable: false, searchable: false }
-            ]
+            ],
+            ordering:false
         });
 
         $('#id_bantuan').on('change', function() {
