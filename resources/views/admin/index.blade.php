@@ -6,14 +6,12 @@
             <div class="col-12">
                 <div class="card">
                     <div class="card-body">
-                        <div class="row align-items-center">
-                            <div class="col-12 col-sm-4 col-md-3 text-center text-md-left">
+                        <div class="row align-items-center d-flex flex-column flex-md-row text-center">
+                            <div class="col-12 col-md-4  mb-3 mb-md-0">
                                 <img src="{{ asset('adminlte/dist/img/1.png') }}" alt="SiBansos Logo" class="img-fluid rounded-circle" style="max-width: 100%; height: auto; box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.5);">
-                            </div>                       
-                            <div class="col-12 col-sm-8 col-md-9">
-                                <h1 class="display-4 mb-4">Selamat Datang, {{ Auth::user()->nama }}</h1>
-                                <p class="lead">Silahkan klik menu yang tersedia.</p>
-                                <a href="{{ route('logout') }}" class="btn btn-danger">Logout</a>
+                            </div>
+                            <div class="col-12 col-md-8  text-md-left custom-margin">
+                                <h1 class="display-5 mb-2">Selamat Datang, {{ Auth::user()->nama }}</h1>
                             </div>
                         </div>
                     </div>
@@ -112,29 +110,29 @@
     
     @push('js')
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels"></script>
     <script>
         $(function () {
-            function randomColor() {
-                return '#' + Math.floor(Math.random() * 16777215).toString(16);
-            }
-    
             // Bar Chart
             var ctx = document.getElementById('barChart').getContext('2d');
+
+            var datasets = [];
+
+            @foreach($dataSets as $dataSet)
+                datasets.push({
+                    label: '{{ $dataSet['label'] }}',
+                    backgroundColor: 'rgba(106, 90, 205, 0.7)',  // Default color or you can set your own fixed color
+                    borderColor: 'rgba(0, 0, 0, 0.7)',       // Border color to match the background color'rgba(255, 127, 80, 0.7)',
+                    borderWidth: 2,
+                    data: @json($dataSet['data'])
+                });
+            @endforeach
+
             var barChart = new Chart(ctx, {
                 type: 'bar',
                 data: {
                     labels: @json($labels),
-                    datasets: [
-                        @foreach($dataSets as $dataSet)
-                        {
-                            label: '{{ $dataSet['label'] }}',
-                            backgroundColor: randomColor(), 
-                             borderColor: 'rgba(0, 0, 0, 1)',
-                            borderWidth: 1,
-                            data: @json($dataSet['data'])
-                        },
-                        @endforeach
-                    ]
+                    datasets: datasets
                 },
                 options: {
                     indexAxis: 'x', 
@@ -162,9 +160,10 @@
                     }
                 }
             });
+
     
-            // Pie Chart
             var ctx2 = document.getElementById('pieChart').getContext('2d');
+            
             var pieChart = new Chart(ctx2, {
                 type: 'pie',
                 data: {
@@ -172,17 +171,30 @@
                     datasets: [{
                         data: @json($pieData['data']),
                         backgroundColor: [
-                            'rgba(75, 192, 192, 1)',  
-                            'rgba(255, 99, 132, 1)',  
+                            'rgba(0, 128, 0, 0.7)',  
+                            'rgba(255, 0, 0, 0.7)',  
                             'rgba(201, 203, 207, 1)'  
                         ],
-                        borderColor: '#fff', 
-                        borderWidth: 2 
+                        borderColor: 'rgba(0, 0, 0, 0.7)', 
+                        borderWidth: 1 
                     }]
                 },
                 options: {
                     responsive: true,
-                    maintainAspectRatio: false
+                    maintainAspectRatio: false,
+                    plugins: {
+                        datalabels: {
+                            formatter: (value, ctx) => {
+                                let sum = ctx.chart.data.datasets[0].data.reduce((a, b) => a + b, 0);
+                                let percentage = (value * 100 / sum).toFixed(2) + "%";
+                                return percentage;
+                            },
+                            color: '#fff',
+                            font: {
+                                weight: 'bold'
+                            }
+                        }
+                    }
                 }
             });
         });
