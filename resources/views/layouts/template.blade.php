@@ -22,6 +22,7 @@
 <body class="hold-transition sidebar-mini">
     <div class="wrapper">
         @include('layouts.header')
+        
         <aside class="main-sidebar sidebar-light-purple elevation-4">
             <div class="brand-wrapper" style="background-color:#6f42c1;">
                 <a href="{{ Auth::user()->id_level == 1 ? route('admin.index') : (Auth::user()->id_level == 2 ? route('rt.index') : route('user.index')) }}" class="brand-link d-flex align-items-center">
@@ -61,6 +62,7 @@
     <script src="{{ asset('adminlte/dist/js/adminlte.min.js') }}"></script>
     <script src="{{ asset('adminlte/plugins/chart.js/Chart.min.js') }}"></script>
     <script src="{{ asset('adminlte/dist/js/pages/barchart.js') }}"></script>
+
     
     <script>
         $.ajaxSetup({

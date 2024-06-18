@@ -52,6 +52,7 @@
                     </ul>
                 </li>
                 <li class="nav-header">Menu Bantuan Sosial</li>
+                
                 <li class="nav-item has-treeview">
                     <a href="#" class="nav-link">
                         <i class="nav-icon fas fa-hand-holding-heart"></i>
@@ -60,6 +61,7 @@
                             <i class="right fas fa-angle-left"></i>
                         </p>
                     </a>
+
                     <ul class="nav nav-treeview">
                         <li class="nav-item">
                             <a href="{{ url('/bansos') }}" class="nav-link">
@@ -77,6 +79,8 @@
                             <a href="{{ url('/penerima') }}" class="nav-link">
                                 <i class="fas fa-user-check nav-icon"></i>
                                 <p>Data Penerima</p>
+                                <!-- Notifikasi Penerima -->
+                                <span class="badge badge-danger right navbar-badge">3</span>
                             </a>
                         </li>
                         {{-- <li class="nav-item">
@@ -87,6 +91,8 @@
                         </li> --}}
                     </ul>
                 </li>
+                
+                
             @elseif (Auth::user()->id_level == 2)
                 <!-- Menu untuk RT -->
                 <li class="nav-header">Menu Administrasi</li>
