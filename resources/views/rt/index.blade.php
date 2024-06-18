@@ -7,17 +7,16 @@
         <div class="col-12">
             <div class="card">
                 <div class="card-body">
-                    <div class="row align-items-center">
-                        <div class="col-12 col-sm-4 col-md-3 text-center text-md-left">
+                    <div class="row align-items-center d-flex flex-column flex-md-row text-center">
+                        <div class="col-12 col-md-4  mb-3 mb-md-0">
                             <img src="{{ asset('adminlte/dist/img/1.png') }}" alt="SiBansos Logo" class="img-fluid rounded-circle" style="max-width: 100%; height: auto; box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.5);">
-                        </div>                       
-                        <div class="col-12 col-sm-8 col-md-9">
-                            <h1 class="display-4 mb-4">Selamat Datang, {{ Auth::user()->nama }}</h1>
-                            <p class="lead">Silahkan klik menu yang tersedia.</p>
-                            <a href="{{ route('logout') }}" class="btn btn-danger">Logout</a>
+                        </div>
+                        <div class="col-12 col-md-8  text-md-left custom-margin">
+                            <h1 class="display-5 mb-2">Selamat Datang, {{ Auth::user()->nama }}</h1>
                         </div>
                     </div>
                 </div>
+                
             </div>
         </div>
     </div>
@@ -165,29 +164,29 @@
             }
         });
     
-        // Pie Chart
-        var ctx2 = document.getElementById('pieChart').getContext('2d');
-        var pieChart = new Chart(ctx2, {
-            type: 'pie',
-            data: {
-                labels: @json($pieData['labels']),
-                datasets: [{
-                    data: @json($pieData['data']),
-                    backgroundColor: [
-                        'rgba(75, 192, 192, 1)',  // Green color
-                        'rgba(255, 99, 132, 1)',  // Red color
-                        'rgba(201, 203, 207, 1)'  // Gray color
-                    ],
-                    borderColor: '#fff', // Border color for pie chart segments
-                    borderWidth: 2 // Border width for pie chart segments
-                }]
-            },
-            options: {
-                responsive: true,
-                maintainAspectRatio: false
-            }
+// Pie Chart
+var ctx2 = document.getElementById('pieChart').getContext('2d');
+            var pieChart = new Chart(ctx2, {
+                type: 'pie',
+                data: {
+                    labels: @json($pieData['labels']),
+                    datasets: [{
+                        data: @json($pieData['data']),
+                        backgroundColor: [
+                            'rgba(0, 128, 0, 0.7)',  
+                            'rgba(255, 0, 0, 0.7)',  
+                            'rgba(201, 203, 207, 1)'  
+                        ],
+                        borderColor: 'rgba(0, 0, 0, 0.7)', 
+                        borderWidth: 1 
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false
+                }
+            });
         });
-    });
     </script>
     
 @endpush
