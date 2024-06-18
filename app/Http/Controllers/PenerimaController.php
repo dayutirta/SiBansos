@@ -26,8 +26,9 @@ class PenerimaController extends Controller
         $activeMenu = 'bansos';
 
         $bantuan = BantuanModel::all();
+        $pendingCount = PenerimaModel::where('status', 'Pending')->count();
 
-        return view('pengajuan.bansos.index', ['breadcrumb' => $breadcrumb, 'page' => $page, 'bantuan' => $bantuan, 'activeMenu' => $activeMenu]);
+        return view('pengajuan.bansos.index', ['breadcrumb' => $breadcrumb,'pendingCount' => $pendingCount, 'page' => $page, 'bantuan' => $bantuan, 'activeMenu' => $activeMenu]);
     }
 
     public function list(Request $request) 
@@ -41,30 +42,46 @@ class PenerimaController extends Controller
         return DataTables::of($bansos)
             ->addIndexColumn()
             ->addColumn('aksi', function ($bansoss) {
-
-                $nokk = auth()->user()->nokk; 
+                $nokk = auth()->user()->nokk;
     
-                $sudahdaftar = PenerimaModel::whereHas('user', function($query) use ($nokk) {
+                $penerima = PenerimaModel::whereHas('user', function($query) use ($nokk) {
                     $query->where('nokk', $nokk);
-                })->where('id_bansos', $bansoss->id_bansos)->exists();
-                
-                if ($sudahdaftar) {
-                    return '<span>Sudah Terdaftar</span>';
+                })->where('id_bansos', $bansoss->id_bansos)->first();
+
+              
+                if ($penerima) {
+                    if ($penerima->status == 'Pending') 
+                    {
+                        return '<span>Sudah Terdaftar</span>';
+                    } elseif ($penerima->status == 'Diterima' || $penerima->status == 'Ditolak') 
+                    {
+                        // Calculate ranks
+                        $sorted_edas = PenerimaModel::where('id_bansos', $bansoss->id_bansos)->where('status','Diterima')->orderBy('skoredas', 'desc')->get()->pluck('id_penerima')->flip();
+                        $sorted_saw = PenerimaModel::where('id_bansos', $bansoss->id_bansos)->where('status','Diterima')->orderBy('skoresaw', 'desc')->get()->pluck('id_penerima')->flip();
+                        
+                        $rank_edas = $sorted_edas->get($penerima->id_penerima) + 1;
+                        $rank_saw = $sorted_saw->get($penerima->id_penerima) + 1;
+                        
+                        if ($bansoss->tanggal_akhir <= now() && ($rank_edas <= $bansoss->jumlah_penerima || $rank_saw <= $bansoss->jumlah_penerima)) 
+                        {
+                            return '<span>Anda Berhak Mendapatkan Bansos</span>';
+                        } elseif ($bansoss->tanggal_akhir <= now() && ($rank_edas > $bansoss->jumlah_penerima && $rank_saw > $bansoss->jumlah_penerima)) 
+                        {
+                            return '<span>Anda Tidak Berhak Mendapatkan Bansos</span>';
+                        }
+                        return '<span>' . $penerima->status . ', pada ' . $penerima->updated_at->format('d-m-Y') . '</span>';                     
+                    } 
                 }
                 if ($bansoss->tanggal_akhir <= now()) {
                     return '';
                 } else {
-                    if ($sudahdaftar) {
-                        return '<span>Sudah Terdaftar</span>';
-                    } else {
-                        return '<a href="'.url('/pengajuan-bansos/create/'.$bansoss->id_bansos).'" class="btn btn-primary btn-sm">Daftar</a>';
-                    }
+                    return '<a href="'.url('/pengajuan-bansos/create/'.$bansoss->id_bansos).'" class="btn btn-primary btn-sm">Daftar</a>';
                 }
-                
             })
             ->rawColumns(['aksi'])
             ->make(true);
     }
+    
      
     public function create()
     {
@@ -143,18 +160,18 @@ class PenerimaController extends Controller
     {
         $breadcrumb = (object) [
             'title' => 'Data Pendaftar Bansos',
-            'list'  => ['Home', 'Bansos','Pendaftar']
+            'list'  => ['Home', 'Bansos', 'Pendaftar']
         ];
-
+    
         $page = (object) [
             'title' => 'Data Para Pendaftar Bansos'
         ];
-
+    
         $activeMenu = 'penerima';
-
-        $bansos = BansosModel::all();
-
-        return view('admin.penerima.index', ['breadcrumb' => $breadcrumb, 'page' => $page, 'bansos' => $bansos, 'activeMenu' => $activeMenu]);
+    
+        $bansosi = BansosModel::all();
+    
+        return view('admin.penerima.index', ['breadcrumb' => $breadcrumb, 'page' => $page, 'bansosi' => $bansosi, 'activeMenu' => $activeMenu]);
     }
 
     public function showup(Request $request) 
@@ -162,17 +179,24 @@ class PenerimaController extends Controller
         
         $user = Auth::user();
         $level = $user->id_level;
+                
+
         if($level == 2){
             $userRt = $user->rt;
             $penerima1 = PenerimaModel::with(['bansos', 'user'])->where('status','Pending')
             ->whereHas('user', function ($query) use ($userRt) {
             $query->where('rt', $userRt);});
+            if ($request->id_bansos) {
+                $penerima1->where('id_bansos', $request->id_bansos);
+            }
 
         return DataTables::of($penerima1)
             ->addIndexColumn()
             ->addColumn('aksi', function ($penerimas) {
-                $btn = '<a href="' . url('/penerima/accept/' . $penerimas->id_penerima) . '" class="btn btn-success btn-sm">Terima</a> ';
-                $btn .= '<a href="' . url('/penerima/reject/' . $penerimas->id_penerima) . '" class="btn btn-danger btn-sm onclick="return confirm(\'Apakah Anda yakin menghapus data ini?\');">Tolak</a> ';
+                $btn = '<a href="' . url('/penerima/accept/' . $penerimas->id_penerima) . '" class="btn btn-success btn-sm"><i class="fas fa-check"></i> Terima</a> ';
+                $btn .= '<a href="' . url('/penerima/reject/' . $penerimas->id_penerima) . '" class="btn btn-danger btn-sm" onclick="return confirm(\'Apakah Anda yakin menghapus data ini?\');"><i class="fas fa-times"></i> Tolak</a> ';
+
+                
                 return $btn;})
             ->rawColumns(['aksi'])
             ->make(true);
@@ -182,22 +206,20 @@ class PenerimaController extends Controller
             $penerima2 = PenerimaModel::with(['bansos', 'user'])->where('status','Pending')
             ->whereHas('user', function ($query) use ($userRw) {
             $query->where('rw', $userRw);});
-
+            if ($request->id_bansos) {
+                $penerima2->where('id_bansos', $request->id_bansos);
+            }
         return DataTables::of($penerima2)
             ->addIndexColumn()
             ->addColumn('aksi', function ($penerimas) {
-                $btn = '<a href="' . url('/penerima/accept/' . $penerimas->id_penerima) . '" class="btn btn-success btn-sm">Terima</a> ';
-                $btn .= '<a href="' . url('/penerima/reject/' . $penerimas->id_penerima) . '" class="btn btn-danger btn-sm onclick="return confirm(\'Apakah Anda yakin menghapus data ini?\');">Tolak</a> ';
+                $btn = '<a href="' . url('/penerima/accept/' . $penerimas->id_penerima) . '" class="btn btn-success btn-sm"><i class="fas fa-check"></i> Terima</a> ';
+                $btn .= '<a href="' . url('/penerima/reject/' . $penerimas->id_penerima) . '" class="btn btn-danger btn-sm" onclick="return confirm(\'Apakah Anda yakin menghapus data ini?\');"><i class="fas fa-times"></i> Tolak</a> ';
+
+
                 return $btn;})
             ->rawColumns(['aksi'])
             ->make(true);
-        }
-        
-
-        $penerima = PenerimaModel::with(['bansos', 'user']);
-        if ($request->id_bansos) {
-            $penerima->where('id_bansos', $request->id_bansos);
-        }  
+        } 
     }
     
     public function accept($id)
@@ -238,7 +260,7 @@ class PenerimaController extends Controller
             $edas = $this->menghitung_edas($Nmatrix, $bobot);
             // Menghitung nilai SAW
             $saw = $this->menghitung_saw($Nmatrix, $bobot);
-
+            
            // Menyimpan skor ke dalam model
             foreach ($penerimas as $index => $item) {
                 $item->skoredas = $edas[$index];
@@ -249,7 +271,7 @@ class PenerimaController extends Controller
             // Simpan status penerima
             $penerima->save();
     
-            return redirect()->back()->with('success', 'Data penerima sudah diterima');
+            return redirect()->back()->with('success', 'Data penerima Berhasil Diterima');
         } else {
             return redirect()->back()->with('error', 'Data penerima tidak ditemukan');
         }
@@ -345,6 +367,6 @@ class PenerimaController extends Controller
             $penerima->save();
         }
 
-        return redirect()->back()->with('success', 'Data penerimma sudah ditolak');
+        return redirect()->back()->with('success', 'Data Penerimma Berhasil Ditolak');
     }
 }
