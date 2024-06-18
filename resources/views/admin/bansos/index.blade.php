@@ -42,6 +42,7 @@
                             <th>Tanggal Berakhir</th>
                             <th>Tipe Bantuan</th>
                             <th>Jumlah Penerima</th>
+                            <th>Anggaran</th>
                             <th>Lokasi</th>
                             <th>Aksi</th>
                         </tr>
@@ -81,16 +82,20 @@
                 { data: "tanggal_akhir", className: "", orderable: true, searchable: true },
                 { data: "bantuan.nama_bantuan", className: "", orderable: false, searchable: false },
                 { data: "jumlah_penerima", className: "", orderable: true, searchable: true },
+                { data: "anggaran", className: "", orderable: true, searchable: true, render: function(data, type, row) {
+                    return formatRupiah(data, 'Rp. ');
+                }},
                 { data: "lokasi", className: "", orderable: true, searchable: true },
                 { data: 'aksi', name: 'aksi', orderable: false, searchable: false }
-            ]
+            ],
+            ordering:false
+        
         });
 
         $('#id_bantuan').on('change', function() {
             dataUser.ajax.reload();
         });
 
-        
         var resizeTimer;
         $(window).on('resize', function(e) {
             clearTimeout(resizeTimer);
@@ -98,6 +103,22 @@
                 dataUser.columns.adjust().draw(); 
             }, 200); 
         });
+
+        function formatRupiah(angka, prefix) {
+            var number_string = angka.toString().replace(/[^,\d]/g, ''),
+                split = number_string.split(','),
+                sisa = split[0].length % 3,
+                rupiah = split[0].substr(0, sisa),
+                ribuan = split[0].substr(sisa).match(/\d{3}/gi);
+
+            if (ribuan) {
+                var separator = sisa ? '.' : '';
+                rupiah += separator + ribuan.join('.');
+            }
+
+            rupiah = split[1] != undefined ? rupiah + ',' + split[1] : rupiah;
+            return prefix == undefined ? rupiah : (rupiah ? prefix + rupiah : '');
+        }
     });
 </script>
 @endpush
