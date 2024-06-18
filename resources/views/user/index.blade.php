@@ -5,15 +5,13 @@
     <div class="row justify-content-center">
         <div class="col-12">
             <div class="card">
-                <div class="card-body ">
-                    <div class="row align-items-center">
-                        <div class="col-12 col-sm-4 col-md-3 text-center text-md-left">
+                <div class="card-body">
+                    <div class="row align-items-center d-flex flex-column flex-md-row text-center">
+                        <div class="col-12 col-md-4  mb-3 mb-md-0">
                             <img src="{{ asset('adminlte/dist/img/1.png') }}" alt="SiBansos Logo" class="img-fluid rounded-circle" style="max-width: 100%; height: auto; box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.5);">
-                        </div>                       
-                        <div class="col-12 col-sm-8 col-md-9">
-                            <h1 class="display-4 mb-4 ">Selamat Datang, {{ Auth::user()->nama }}</h1>
-                            <p class="lead">Silahkan klik menu yang tersedia.</p>
-                            <a href="{{ route('logout') }}" class="btn btn-danger">Logout</a>
+                        </div>
+                        <div class="col-12 col-md-8  text-md-left custom-margin">
+                            <h1 class="display-5 mb-2">Selamat Datang, {{ Auth::user()->nama }}</h1>
                         </div>
                     </div>
                 </div>
