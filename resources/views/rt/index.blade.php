@@ -26,8 +26,8 @@
                 <span class="info-box-icon bg-info"><i class="fas fa-users"></i></span>
     
                 <div class="info-box-content">
-                    <span class="info-box-text">Jumlah Warga</span>
-                    <span class="info-box-number">{{ $totalSWarga }}</span>
+                    <span class="info-box-text">Jumlah Keluarga</span>
+                    <span class="info-box-number">{{ $nokk }}</span>
                 </div>
                 <!-- /.info-box-content -->
             </div>

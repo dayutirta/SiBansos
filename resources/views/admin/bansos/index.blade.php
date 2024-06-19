@@ -40,8 +40,8 @@
                             <th>Nama Program</th>
                             <th>Tanggal Mulai</th>
                             <th>Tanggal Berakhir</th>
+                            <th>Kapasitas</th>
                             <th>Tipe Bantuan</th>
-                            <th>Jumlah Penerima</th>
                             <th>Anggaran</th>
                             <th>Lokasi</th>
                             <th>Aksi</th>
@@ -80,15 +80,20 @@
                 { data: "nama_program", className: "", orderable: true, searchable: true },
                 { data: "tanggal_mulai", className: "", orderable: true, searchable: true },
                 { data: "tanggal_akhir", className: "", orderable: true, searchable: true },
+                { data: "jumlah_penerima", className: "", orderable: true, searchable: true, render: function(data, type, row) {
+                    return data + ' Orang';
+                }},
                 { data: "bantuan.nama_bantuan", className: "", orderable: false, searchable: false },
-                { data: "jumlah_penerima", className: "", orderable: true, searchable: true },
+                
                 { data: "anggaran", className: "", orderable: true, searchable: true, render: function(data, type, row) {
                     return formatRupiah(data, 'Rp. ');
                 }},
                 { data: "lokasi", className: "", orderable: true, searchable: true },
                 { data: 'aksi', name: 'aksi', orderable: false, searchable: false }
-            ],
-            ordering:false
+                ],
+                "autoWidth": false,
+                "responsive": true,
+                "ordering":false
         
         });
 

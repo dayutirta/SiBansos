@@ -2,6 +2,7 @@
 
 @section('content')
 <div class="card card-outline card-primary">
+    
     <div class="card-header">
         <h3 class="card-title">{{ $page->title }}</h3>
         <div class="card-tools">
@@ -50,12 +51,21 @@
                 "url": "{{ url('bantuan/list') }}",
                 "type": 'POST',
             },
+            "buttons": [
+    'copy', 'excel', 'pdf'
+],
+
             columns: [ 
                 { data: "DT_RowIndex", className: "text-center", orderable: false, searchable: false },
                 { data: "kode_bantuan", orderable: true, searchable: true },
                 { data: "nama_bantuan", orderable: true, searchable: true },
                 { data: "aksi", orderable: true, searchable: true },
-            ]
+            ],
+            "autoWidth": false,
+                "responsive": true,
+                "ordering":false,
+               
+
         });
 
         $('#id_bantuan').on('change', function() {

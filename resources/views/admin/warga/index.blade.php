@@ -38,12 +38,10 @@
                 <table class="table table-bordered table-striped table-hover table-sm" id="table_warga">
                     <thead>
                         <tr>
-                            <th>Nomor</th>
+                            <th>No</th>
                             <th>NIK</th>
                             <th>Nama</th>
                             <th>Alamat</th>
-                            <th>RT/RW</th>
-                            <th>Tempat, Tanggal Lahir</th>
                             <th>Aksi</th>
                         </tr>
                     </thead>
@@ -81,29 +79,20 @@
                     { data: 'DT_RowIndex', name: 'DT_RowIndex', orderable: false, searchable: false },
                     { data: 'nik', name: 'nik', orderable: false, searchable: true },
                     { data: 'nama', name: 'nama', orderable: false, searchable: true },
-                    { data: 'alamat', name: 'alamat', orderable: false, searchable: true },
                     {
                         data: null,
                         name: 'rt',
                         orderable: false,
                         searchable: true,
                         render: function(data, type, row) {
-                            return row.rt + '/' + row.rw;
-                        }
-                    },
-                    {
-                        data: null,
-                        name: 'tempat_tanggal_lahir',
-                        orderable: false,
-                        searchable: false,
-                        render: function(data, type, row) {
-                            return row.tempat_lahir + ', ' + row.tanggal_lahir;
+                            return row.alamat+ ', '+ ' RT ' + row.rt + ' / RW ' + row.rw;
                         }
                     },
                     { data: 'aksi', name: 'aksi', orderable: false, searchable: false }
                 ],
                 "autoWidth": false,
                 "responsive": true,
+                "ordering":false
             });
 
             $('#nokk').on('change', function() {

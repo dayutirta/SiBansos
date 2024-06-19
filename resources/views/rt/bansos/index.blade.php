@@ -77,11 +77,16 @@
                 { data: "tanggal_mulai", className: "", orderable: false, searchable: true },
                 { data: "tanggal_akhir", className: "", orderable: false, searchable: true },
                 { data: "bantuan.nama_bantuan", className: "", orderable: false, searchable: false },
-                { data: "jumlah_penerima", className: "", orderable: false, searchable: true },
+                { data: "jumlah_penerima", className: "", orderable: false, searchable: true,
+                render: function(data, type, row) {
+                            return data+ ' Orang';
+                        } },
                 { data: "lokasi", className: "", orderable: false, searchable: true },
                 { data: 'aksi', name: 'aksi', orderable: false, searchable: false }
             ],
-            ordering:false
+            "autoWidth": false,
+                "responsive": true,
+                "ordering":false  
         });
 
         $('#id_bantuan').on('change', function() {

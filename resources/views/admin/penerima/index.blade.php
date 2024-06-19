@@ -34,10 +34,9 @@
                     <tr>
                         <th>Nomor</th>
                         <th>Nama Program</th>
-                        <th>No KK</th>
+                        <th>NoKK</th>
                         <th>Nama</th>
                         <th>Alamat</th>
-                        <th>RT/RW</th>
                         <th>Aksi</th>
                     </tr>
                 </thead>
@@ -74,18 +73,20 @@
                 { data: 'bansos.nama_program', name: 'bansos.nama_program', orderable: false, searchable: true },
                 { data: 'user.nokk', name: 'user.nokk', orderable: false, searchable: true },
                 { data: 'user.nama', name: 'user.nama', orderable: false, searchable: true },
-                { data: 'user.alamat', name: 'user.alamat', orderable: false, searchable: true },
                 {
                     data: null,
                     name: 'user.rt',
                     orderable: false,
                     searchable: true,
                     render: function(data, type, row) {
-                        return row.user.rt + '/' + row.user.rw;
+                        return row.user.alamat + ' RT ' + row.user.rt + ' / RW ' + row.user.rw;
                     }
                 },
                 { data: 'aksi', name: 'aksi', orderable: false, searchable: false }
-            ]
+            ],
+            "autoWidth": false,
+                "responsive": true,
+                "ordering":false
         });
 
         $('#id_bansos').on('change', function() {

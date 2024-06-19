@@ -34,12 +34,11 @@
                 <table class="table table-bordered table-striped table-hover table-sm" id="table_warga">
                     <thead>
                         <tr>
-                            <th>Nomor</th>
+                            <th>No</th>
                             <th>NIK</th>
                             <th>Nama</th>
                             <th>Alamat</th>
                             <th>RT/RW</th>
-                            <th>Tempat, Tanggal Lahir</th>
                             <th>Aksi</th>
                         </tr>
                     </thead>
@@ -86,17 +85,13 @@ $(document).ready(function() {
                             return row.rt + '/' + row.rw;
                         }
                     },
-                    {
-                        data: null,
-                        name: 'tempat_tanggal_lahir',
-                        orderable: false,
-                        searchable: false,
-                        render: function(data, type, row) {
-                            return row.tempat_lahir + ', ' + row.tanggal_lahir;
-                        }
-                    },
                     { data: 'aksi', name: 'aksi', orderable: false, searchable: false }
-                ]
+                    
+                ],
+                "autoWidth": false,
+                "responsive": true,
+                "ordering":false
+                
             });
 
     $('#nokk').on('change', function() {

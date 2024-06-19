@@ -37,7 +37,6 @@
                                 <th>Nama Program</th>
                                 <th>Tanggal Mulai</th>
                                 <th>Tanggal Berakhir</th>
-                                <th>Tipe Bantuan</th>
                                 <th>Lokasi</th>
                                 <th>Aksi</th>
                             </tr>
@@ -75,10 +74,12 @@
                 { data: "nama_program", className: "", orderable: true, searchable: true },
                 { data: "tanggal_mulai", className: "", orderable: true, searchable: true },
                 { data: "tanggal_akhir", className: "", orderable: true, searchable: true },
-                { data: "bantuan.nama_bantuan", className: "", orderable: false, searchable: false },
                 { data: "lokasi", className: "", orderable: true, searchable: true },
                 { data: "aksi", className: "", orderable: false, searchable: false }
-            ]
+            ],
+            "autoWidth": false,
+                "responsive": true,
+                "ordering":false
         });
 
         $('#id_bantuan').on('change', function() {

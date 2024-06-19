@@ -28,12 +28,11 @@
                             <th>Nama Program</th>
                             <th>NoKK</th>
                             <th>Nama</th>
+                            <th>Rank EDAS</th>
+                            <th>Rank SAW</th>
                             <th>Alamat</th>
-                            <th>RT/RW</th>
-                            <th>Skor EDAS</th>
-                            <th>Rank EDAS</th> 
-                            <th>Skor SAW</th>
-                            <th>Rank SAW</th> 
+                            <th>Skor EDAS</th>   
+                            <th>Skor SAW</th> 
                         </tr>
                     </thead>
                     <tbody>
@@ -55,12 +54,12 @@
                                 <td>{{ $data->bansos->nama_program }}</td>
                                 <td>{{ $data->user->nokk }}</td>
                                 <td>{{ $data->user->nama }}</td>
-                                <td>{{ $data->user->alamat }}</td>
-                                <td>{{ $data->user->rt }}/{{ $data->user->rw }}</td>
-                                <td>{{ $data->skoredas }}</td>
                                 <td>{{ $rank_edas[$data->id_penerima] }}</td>
-                                <td>{{ $data->skoresaw }}</td>
                                 <td>{{ $rank_saw[$data->id_penerima] }}</td>
+                                <td>{{ $data->user->alamat }}, RT {{ $data->user->rt }} / RW {{ $data->user->rw }}</td>
+                                <td>{{ $data->skoredas }}</td>
+                                <td>{{ $data->skoresaw }}</td>
+                                
                             </tr>
                         @endforeach
                     </tbody>
@@ -94,13 +93,14 @@
                 { data: "nama_program", className: "", orderable: false, searchable: false },
                 { data: "nokk", className: "text-center", orderable: false, searchable: true },
                 { data: "nama", className: "", orderable: false, searchable: true },
-                { data: "alamat", className: "", orderable: false, searchable: true },
-                { data: "rt_rw", className: "text-center", orderable: false, searchable: false },
-                { data: "skoredas", className: "", orderable: false, searchable: false },
                 { data: "rank_edas", className: "text-center", orderable: true, searchable: false },
-                { data: "skoresaw", className: "", orderable: false, searchable: false },
-                { data: "rank_saw", className: "text-center", orderable: true, searchable: false }
+                { data: "rank_saw", className: "text-center", orderable: true, searchable: false },
+                { data: "alamat", className: "", orderable: false, searchable: true},
+                { data: "skoredas", className: "", orderable: false, searchable: false },              
+                { data: "skoresaw", className: "", orderable: false, searchable: false },  
             ],
+            "autoWidth": false,
+                "responsive": true,
            
         });
 

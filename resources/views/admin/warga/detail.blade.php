@@ -28,7 +28,6 @@
                         <th>NIK</th>
                         <th>Nama</th>
                         <th>Alamat</th>
-                        <th>RT/RW</th>
                         <th>Kewarganegaraan</th>
                     </tr>
                 </thead>
@@ -37,9 +36,8 @@
                             <td>{{ $warga->nokk }}</td>
                             <td>{{ $warga->nik }}</td>
                             <td>{{ $warga->nama }}</td>
-                            <td>{{ $warga->alamat }}</td>
-                            <td>{{ $warga->rt }}/{{ $warga->rw }}</td>
-                            <td>{{ $warga->kewarganegaraan }}</td>
+                            <td>{{ $warga->alamat }}, RT {{ $warga->rt }} / RW {{ $warga->rw }}</td>
+                            <td class="text-center">{{ $warga->kewarganegaraan }}</td>
                         </tr>
                 </tbody>
             </table>
@@ -102,7 +100,9 @@
     $(document).ready(function() {
         $('#table_warga').DataTable({
             searching:false,
-            ordering:false,           
+            "autoWidth": false,
+                "responsive": true,
+                "ordering":false           
         });
 
         var resizeTimer;
