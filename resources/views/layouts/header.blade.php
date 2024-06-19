@@ -4,13 +4,24 @@
     .navbar-nav .nav-link i {
         color: white;
     }
+    
 </style>
 
 <nav class="main-header navbar navbar-expand navbar-purple navbar-light">
     <!-- Left navbar links -->
     <ul class="navbar-nav">
-        <li class="nav-item">
-            <a class="nav-link" data-widget="pushmenu" href="#" role="button"><i class="fas fa-bars"></i></a>
+        <li class="nav-item position-relative">
+            <a class="nav-link" data-widget="pushmenu" href="#" role="button">
+                <i class="fas fa-bars">
+                    @isset($penerimaCount)
+                        @if($penerimaCount > 0)
+                        <span class="badge badge-danger navbar-badge" style="border-radius: 50%; width: 10px; height: 10px;">
+                            <span style="font-size: 8px; color: red;">&bull;</span>
+                        </span>
+                        @endif
+                    @endisset
+                </i>       
+            </a>
         </li>
     </ul>
 

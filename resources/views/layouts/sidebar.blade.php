@@ -30,7 +30,6 @@
                         </p>
                     </a>
                     <ul class="nav nav-treeview">
-                        
                         <li class="nav-item">
                             <a href="{{ url('/warga') }}" class="nav-link">
                                 <i class="fas fa-user-edit nav-icon"></i>
@@ -43,16 +42,9 @@
                                 <p>Riwayat Data Warga</p>
                             </a>
                         </li>
-                        {{-- <li class="nav-item">
-                            <a href="{{ url('/level') }}" class="nav-link">
-                                <i class="fas fa-print nav-icon"></i>
-                                <p>Cetak Data Warga</p>
-                            </a>
-                        </li> --}}
                     </ul>
                 </li>
                 <li class="nav-header">Menu Bantuan Sosial</li>
-                
                 <li class="nav-item has-treeview">
                     <a href="#" class="nav-link">
                         <i class="nav-icon fas fa-hand-holding-heart"></i>
@@ -60,15 +52,18 @@
                             Bantuan Sosial
                             <i class="right fas fa-angle-left"></i>
                         </p>
+                        {{-- <span class="badge badge-danger  navbar-badge">3</span> --}}
+                        @if (isset($penerimaCount) && $penerimaCount > 0)
+                            <span class="badge badge-danger  navbar-badge">{{ $penerimaCount }}</span>
+                        @endif
                     </a>
-
                     <ul class="nav nav-treeview">
                         <li class="nav-item">
                             <a href="{{ url('/bansos') }}" class="nav-link">
                                 <i class="fas fa-database nav-icon"></i>
                                 <p>Data Bansos</p>
                             </a>
-                        </li>
+                        </li>  
                         <li class="nav-item">
                             <a href="{{ url('/bantuan') }}" class="nav-link">
                                 <i class="fas fa-list nav-icon"></i>
@@ -79,20 +74,13 @@
                             <a href="{{ url('/penerima') }}" class="nav-link">
                                 <i class="fas fa-user-check nav-icon"></i>
                                 <p>Data Penerima</p>
-                                <!-- Notifikasi Penerima -->
-                                <span class="badge badge-danger right navbar-badge">3</span>
+                                @if (isset($penerimaCount) && $penerimaCount > 0)
+                                    <span class="badge badge-danger right navbar-badge">{{ $penerimaCount }}</span>
+                                @endif
                             </a>
                         </li>
-                        {{-- <li class="nav-item">
-                            <a href="{{ url('/stok') }}" class="nav-link">
-                                <i class="fas fa-print nav-icon"></i>
-                                <p>Cetak Data Penerima</p>
-                            </a>
-                        </li> --}}
                     </ul>
                 </li>
-                
-                
             @elseif (Auth::user()->id_level == 2)
                 <!-- Menu untuk RT -->
                 <li class="nav-header">Menu Administrasi</li>
@@ -105,7 +93,6 @@
                         </p>
                     </a>
                     <ul class="nav nav-treeview">
-                        
                         <li class="nav-item">
                             <a href="{{ url('/warga') }}" class="nav-link">
                                 <i class="fas fa-user-edit nav-icon"></i>
@@ -118,12 +105,6 @@
                                 <p>Riwayat Data Warga</p>
                             </a>
                         </li>
-                        {{-- <li class="nav-item">
-                            <a href="{{ url('/level') }}" class="nav-link">
-                                <i class="fas fa-print nav-icon"></i>
-                                <p>Cetak Data Warga</p>
-                            </a>
-                        </li> --}}
                     </ul>
                 </li>
                 <li class="nav-header">Menu Bantuan Sosial</li>
@@ -134,6 +115,9 @@
                             Bantuan Sosial
                             <i class="right fas fa-angle-left"></i>
                         </p>
+                        @if (isset($penerimaCount) && $penerimaCount > 0)
+                            <span class="badge badge-danger  navbar-badge">{{ $penerimaCount }}</span>
+                        @endif
                     </a>
                     <ul class="nav nav-treeview">
                         <li class="nav-item">
@@ -142,18 +126,18 @@
                                 <p>Data Bansos</p>
                             </a>
                         </li>
-                    </ul>
-                    <ul class="nav nav-treeview">
                         <li class="nav-item">
                             <a href="{{ url('/penerima') }}" class="nav-link">
                                 <i class="fas fa-user-check nav-icon"></i>
                                 <p>Data Penerima</p>
+                                @if (isset($penerimaCount) && $penerimaCount > 0)
+                            <span class="badge badge-danger  navbar-badge">{{ $penerimaCount }}</span>
+                        @endif
                             </a>
+                            
                         </li>
                     </ul>
                 </li>
-            @elseif (Auth::user()->id_level == 3)
-                <!-- Menu untuk warga -->
             @endif
             <li class="nav-header">Menu Pengajuan</li>
             <li class="nav-item has-treeview">
@@ -179,7 +163,6 @@
                     </li>
                 </ul>
             </li>
-
             <li class="nav-header">Menu Pengaturan</li>
             <li class="nav-item has-treeview">
                 <a href="#" class="nav-link">
@@ -204,7 +187,6 @@
                     </li>
                 </ul>
             </li> 
-            
         </ul>
     </nav>
     <!-- /.sidebar-menu -->
