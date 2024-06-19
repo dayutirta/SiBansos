@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\BantuanModel;
+use App\Models\PenerimaModel;
 use Illuminate\Http\Request;
 use Yajra\DataTables\DataTables;
 
@@ -21,10 +22,11 @@ class BantuanController extends Controller
         ];
 
         $activeMenu = 'bantuan';
-
+        $penerimaCount = Penerimamodel::where('status', 'Pending')->count();
         return view('admin.bantuan.index', [
             'breadcrumb' => $breadcrumb,
             'page' => $page,
+            'penerimaCount' => $penerimaCount,
             'activeMenu' => $activeMenu
         ]);
     }

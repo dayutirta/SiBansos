@@ -3,6 +3,7 @@ namespace App\Http\Controllers;
 
 use App\Models\BansosModel;
 use App\Models\BantuanModel;
+use App\Models\PenerimaModel;
 use Illuminate\Http\Request;
 use Yajra\DataTables\Facades\DataTables;
 
@@ -16,14 +17,16 @@ class BansosController extends Controller
         ];
 
         $page = (object) [
-            'title' => 'Daftar bansos yang terdaftar dalam sistem'
+            'title' => 'Daftar bansos yang terdaftar dalam sistem1'
         ];
 
         $activeMenu = 'bansos';
 
         $bantuan = BantuanModel::all();
+        $penerimaCount = Penerimamodel::where('status', 'Pending')->count();
 
-        return view('admin.bansos.index', ['breadcrumb' => $breadcrumb, 'page' => $page, 'bantuan' => $bantuan, 'activeMenu' => $activeMenu]);
+        return view('admin.bansos.index', ['breadcrumb' => $breadcrumb,'penerimaCount' => $penerimaCount,
+         'page' => $page, 'bantuan' => $bantuan, 'activeMenu' => $activeMenu]);
     }
 
     public function list(Request $request) 

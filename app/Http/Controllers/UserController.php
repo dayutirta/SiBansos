@@ -20,7 +20,7 @@ class UserController extends Controller
             $page = (object) ['title' => 'Selamat Datang di Halaman Dashboard RW'];
             $activeMenu = 'dashboard';
             $rw_logged_in = $user->rw;
-
+            $penerimaCount = Penerimamodel::where('status', 'Pending')->count();
         try {
             // Inisialisasi array untuk menyimpan jumlah warga per RT
             $warga_per_rt = [];
@@ -48,6 +48,7 @@ class UserController extends Controller
 
             return view('admin.index', [
                 'level_id' => $level_id,
+                'penerimaCount' => $penerimaCount,
                 'breadcrumb' => $breadcrumb,
                 'page' => $page,
                 'activeMenu' => $activeMenu,
@@ -84,9 +85,11 @@ class UserController extends Controller
                 // Fetch data based on the logged-in user's RT
                 $jumlahLaki = WargaModel::where('rt', $rt_logged_in)->where('jenis_kelamin', 'Laki-laki')->count();
                 $jumlahPerempuan = WargaModel::where('rt', $rt_logged_in)->where('jenis_kelamin', 'Perempuan')->count();
+                
                 $totalWarga = $jumlahLaki + $jumlahPerempuan;
                 $totalSWarga = WargaModel::where('rt', $rt_logged_in)->count();
                 
+                $nokk = WargaModel::distinct('nokk')->where('rt', $rt_logged_in)->count();
                 $totalSPenerima = PenerimaModel::count();
                 // Fetch recipient data
                 $jumlahDiterima = PenerimaModel::whereHas('user', function($query) use ($rt_logged_in) {
@@ -101,8 +104,15 @@ class UserController extends Controller
                     $query->where('rt', $rt_logged_in);
                 })->where('status', 'Pending')->count();
 
+                $penerimaCount = PenerimaModel::whereHas('user', function($query) use ($rt_logged_in) {
+                    $query->where('rt', $rt_logged_in);
+                })->where('status', 'Pending')->count();$penerimaCount = PenerimaModel::whereHas('user', function($query) use ($rt_logged_in) {
+                    $query->where('rt', $rt_logged_in);
+                })->where('status', 'Pending')->count();
                 return view('rt.index', [
                     'breadcrumb' => $breadcrumb,
+                    'nokk' => $nokk,
+                    'penerimaCount' => $penerimaCount,
                     'level_id' => $level_id,
                     'page' => $page,
                     'activeMenu' => $activeMenu,

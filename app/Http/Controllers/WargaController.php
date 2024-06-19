@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\LevelModel;
 use App\Models\WargaModel;
+use App\Models\PenerimaModel;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Yajra\DataTables\Facades\DataTables;
@@ -19,6 +20,7 @@ class WargaController extends Controller
         $user = Auth::user();
         $nokk = WargaModel::select('nokk')->where('rt', $user->rt)->distinct()->get();
         $level = $user->id_level;
+        $penerimaCount = PenerimaModel::where('status', 'Pending')->count();
 
         if ($level == 1){
             $nokkrw = WargaModel::select('nokk')->distinct()->get();
@@ -26,14 +28,18 @@ class WargaController extends Controller
                 'title' => 'Daftar Warga',
                 'list'  => ['Home', 'Warga']
             ];
-            return view('admin.warga.index', ['breadcrumb' => $breadcrumb, 'page' => $page, 'nokkrw' => $nokkrw, 'activeMenu' => $activeMenu]);    
+            return view('admin.warga.index', ['breadcrumb' => $breadcrumb,'penerimaCount' => $penerimaCount, 'page' => $page, 'nokkrw' => $nokkrw, 'activeMenu' => $activeMenu]);    
         }
         elseif($level == 2){
+            $rt_logged_in = Auth::user()->rt;
+            $penerimaCount = PenerimaModel::whereHas('user', function ($query) use ($rt_logged_in) {
+                $query->where('rt', $rt_logged_in);
+            })->where('status', 'Pending')->count();
             $breadcrumb = (object) [
             'title' => 'Daftar Warga RT',
             'list'  => ['Home', 'Warga']
         ];
-            return view('rt.warga.index', ['breadcrumb' => $breadcrumb, 'page' => $page,'nokk' => $nokk, 'activeMenu' => $activeMenu]);    
+            return view('rt.warga.index', ['breadcrumb' => $breadcrumb,'penerimaCount' => $penerimaCount, 'page' => $page,'nokk' => $nokk, 'activeMenu' => $activeMenu]);    
         }
     }
 
@@ -42,7 +48,7 @@ class WargaController extends Controller
         $user = Auth::user();
         $userLevel = $user->id_level;
         $userRt = $user->rt;
-
+        
         $warga = WargaModel::with('level')->where('status', '=', 'Aktif');
         if ($request->nokk) {
             $warga->where('nokk', $request->nokk);

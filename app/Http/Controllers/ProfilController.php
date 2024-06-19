@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Carbon\Carbon;
+use App\Models\PenerimaModel;
 
 
 class ProfilController extends Controller
@@ -22,8 +23,20 @@ class ProfilController extends Controller
             'title' => 'Selamat Datang' 
         ];
 
-        $activeMenu = 'profil'; 
-
-        return view('pengaturan.show', ['breadcrumb' => $breadcrumb, 'page' => $page, 'user' => $user, 'activeMenu' => $activeMenu]);
+        $activeMenu = 'profil';
+        $penerimaCount = PenerimaModel::where('status', 'Pending')->count();
+        $user = Auth::user();
+        $level = $user->id_level;
+        if($level == 1){
+            return view('pengaturan.show', ['breadcrumb' => $breadcrumb,'penerimaCount' => $penerimaCount, 'page' => $page, 'user' => $user, 'activeMenu' => $activeMenu]);
+        }elseif($level == 2){
+            $rt_logged_in = Auth::user()->rt;
+            $penerimaCount = PenerimaModel::whereHas('user', function($query) use ($rt_logged_in) {
+                $query->where('rt', $rt_logged_in);
+            })->where('status', 'Pending')->count();
+            return view('pengaturan.show', ['breadcrumb' => $breadcrumb,'penerimaCount'=>$penerimaCount ,'page' => $page, 'user' => $user, 'activeMenu' => $activeMenu]);
+        }else{
+            return view('pengaturan.show', ['breadcrumb' => $breadcrumb,'page' => $page, 'user' => $user, 'activeMenu' => $activeMenu]);
+        }   
     }
 }

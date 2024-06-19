@@ -23,13 +23,18 @@ class BansosController extends Controller
         $user = Auth::user();
         $id_level = $user->id_level;
         $activeMenu = 'bansos';
-
+        $penerimaCount = Penerimamodel::where('status', 'Pending')->count();
+        $rt_logged_in = $user->rt;
+        
         $bantuan = BantuanModel::all();
         if ($id_level == 1) {
-            return view('admin.bansos.index', ['breadcrumb' => $breadcrumb, 'page' => $page, 'bantuan' => $bantuan, 'activeMenu' => $activeMenu]);
+            return view('admin.bansos.index', ['penerimaCount' => $penerimaCount,'breadcrumb' => $breadcrumb, 'page' => $page, 'bantuan' => $bantuan, 'activeMenu' => $activeMenu]);
         }
         elseif($id_level == 2){
-            return view('rt.bansos.index', ['breadcrumb' => $breadcrumb, 'page' => $page, 'bantuan' => $bantuan, 'activeMenu' => $activeMenu]);
+            $penerimaCount = PenerimaModel::whereHas('user', function($query) use ($rt_logged_in) {
+                $query->where('rt', $rt_logged_in);
+            })->where('status', 'Pending')->count();
+            return view('rt.bansos.index', ['penerimaCount' => $penerimaCount,'breadcrumb' => $breadcrumb, 'page' => $page, 'bantuan' => $bantuan, 'activeMenu' => $activeMenu]);
         }
         
     }

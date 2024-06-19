@@ -26,9 +26,21 @@ class PenerimaController extends Controller
         $activeMenu = 'bansos';
 
         $bantuan = BantuanModel::all();
-        $pendingCount = PenerimaModel::where('status', 'Pending')->count();
-
-        return view('pengajuan.bansos.index', ['breadcrumb' => $breadcrumb,'pendingCount' => $pendingCount, 'page' => $page, 'bantuan' => $bantuan, 'activeMenu' => $activeMenu]);
+        $penerimaCount = PenerimaModel::where('status', 'Pending')->count();
+        $user = Auth::user();
+        $level = $user->id_level;
+        if($level == 1){
+            return view('pengajuan.bansos.index', ['breadcrumb' => $breadcrumb,'penerimaCount' => $penerimaCount, 'page' => $page, 'bantuan' => $bantuan, 'activeMenu' => $activeMenu]);
+        }elseif($level == 2){
+            $rt_logged_in = Auth::user()->rt;
+            $penerimaCount = PenerimaModel::whereHas('user', function($query) use ($rt_logged_in) {
+                $query->where('rt', $rt_logged_in);
+            })->where('status', 'Pending')->count();
+            return view('pengajuan.bansos.index', ['breadcrumb' => $breadcrumb,'penerimaCount' => $penerimaCount, 'page' => $page, 'bantuan' => $bantuan, 'activeMenu' => $activeMenu]);
+        }else{
+            return view('pengajuan.bansos.index', ['breadcrumb' => $breadcrumb, 'page' => $page, 'bantuan' => $bantuan, 'activeMenu' => $activeMenu]);
+        }
+        
     }
 
     public function list(Request $request) 
@@ -170,8 +182,18 @@ class PenerimaController extends Controller
         $activeMenu = 'penerima';
     
         $bansosi = BansosModel::all();
-    
-        return view('admin.penerima.index', ['breadcrumb' => $breadcrumb, 'page' => $page, 'bansosi' => $bansosi, 'activeMenu' => $activeMenu]);
+        $penerimaCount = PenerimaModel::where('status', 'Pending')->count();
+        $user = Auth::user();
+        $level = $user->id_level;
+        if($level == 1){
+        return view('admin.penerima.index', ['breadcrumb' => $breadcrumb,'penerimaCount' => $penerimaCount, 'page' => $page, 'bansosi' => $bansosi, 'activeMenu' => $activeMenu]);
+        }elseif($level == 2){
+            $rt_logged_in = Auth::user()->rt;
+            $penerimaCount = PenerimaModel::whereHas('user', function($query) use ($rt_logged_in) {
+                $query->where('rt', $rt_logged_in);
+            })->where('status', 'Pending')->count();
+            return view('admin.penerima.index', ['breadcrumb' => $breadcrumb,'penerimaCount' => $penerimaCount, 'page' => $page, 'bansosi' => $bansosi, 'activeMenu' => $activeMenu]);
+        }
     }
 
     public function showup(Request $request) 

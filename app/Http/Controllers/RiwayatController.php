@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\WargaModel;
+use App\Models\PenerimaModel;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Yajra\DataTables\DataTables;
@@ -17,26 +18,43 @@ class RiwayatController extends Controller
         $activeMenu = 'riwayat';
         $user = Auth::user();
         $nokkrw = WargaModel::select('nokk')
-        ->where('rt', $user->rt)
-        ->where('status', '!=', 'Aktif')
-        ->distinct()->get();
+            ->where('rt', $user->rt)
+            ->where('status', '!=', 'Aktif')
+            ->distinct()->get();
         $level = $user->id_level;
-        if ($level == 1){
+
+        if ($level == 1) {
+            $penerimaCount = PenerimaModel::where('status', 'Pending')->count();
             $nokkrw = WargaModel::select('nokk')
-        ->where('status', '!=', 'Aktif')
-        ->distinct()->get();
+                ->where('status', '!=', 'Aktif')
+                ->distinct()->get();
             $breadcrumb = (object) [
                 'title' => 'Daftar Riwayat Warga',
-                'list'  => ['Home', 'Riwayat']
+                'list' => ['Home', 'Riwayat']
             ];
-            return view('admin.riwayat.index', ['breadcrumb' => $breadcrumb, 'page' => $page, 'nokkrw' => $nokkrw, 'activeMenu' => $activeMenu]);    
-        }
-        elseif($level == 2){
+            return view('admin.riwayat.index', [
+                'breadcrumb' => $breadcrumb,
+                'penerimaCount' => $penerimaCount,
+                'page' => $page,
+                'nokkrw' => $nokkrw,
+                'activeMenu' => $activeMenu
+            ]);
+        } elseif ($level == 2) {
+            $rt_logged_in = Auth::user()->rt;
+            $penerimaCount = PenerimaModel::whereHas('user', function ($query) use ($rt_logged_in) {
+                $query->where('rt', $rt_logged_in);
+            })->where('status', 'Pending')->count();
             $breadcrumb = (object) [
                 'title' => 'Daftar Riwayat Warga per RT',
-                'list'  => ['Home', 'Riwayat']
-        ];
-            return view('admin.riwayat.index', ['breadcrumb' => $breadcrumb, 'page' => $page, 'nokkrw' => $nokkrw, 'activeMenu' => $activeMenu]);    
+                'list' => ['Home', 'Riwayat']
+            ];
+            return view('admin.riwayat.index', [
+                'breadcrumb' => $breadcrumb,
+                'penerimaCount' => $penerimaCount,
+                'page' => $page,
+                'nokkrw' => $nokkrw,
+                'activeMenu' => $activeMenu
+            ]);
         }
     }
 
