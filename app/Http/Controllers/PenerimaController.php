@@ -251,9 +251,12 @@ class PenerimaController extends Controller
     
         if ($penerima) {
             $penerima->status = 'Diterima';
-    
-            // Mengambil semua data penerima
-            $penerimas = PenerimaModel::all();
+            // Simpan status penerima
+            $penerima->save();
+            // Mengambil semua data penerima dengan status 'Diterima' dan id_bansos yang sama
+            $penerimas = PenerimaModel::where('status', 'Diterima')
+            ->where('id_bansos', $penerima->id_bansos)
+            ->get();
     
             // Memastikan bahwa tidak ada data penerima yang kosong
             if ($penerimas->isEmpty()) {
@@ -290,8 +293,7 @@ class PenerimaController extends Controller
                 $item->save();
             }
     
-            // Simpan status penerima
-            $penerima->save();
+            
     
             return redirect()->back()->with('success', 'Data penerima Berhasil Diterima');
         } else {
@@ -390,5 +392,138 @@ class PenerimaController extends Controller
         }
 
         return redirect()->back()->with('success', 'Data Penerimma Berhasil Ditolak');
+    }
+
+    public function showEdas($id)
+    {
+        // Mendapatkan data bansos berdasarkan ID
+        $bansos = BansosModel::with('bantuan')->find($id);
+        if (!$bansos) {
+            return redirect()->back()->with('error', 'Data bansos tidak ditemukan.');
+        }
+    
+        $breadcrumb = (object) [
+            'title' => 'Data Perangkingan Edas',
+            'list'  => ['Home', 'Bansos', 'Pendaftar', 'Edas']
+        ];
+    
+        $page = (object) [
+            'title' => 'Data Para Pendaftar Bansos'
+        ];
+    
+        $activeMenu = 'penerima';
+        $penerima = PenerimaModel::with(['bansos'])
+            ->where('id_bansos', $id)
+            ->where('status', 'Diterima')
+            ->get();
+        if ($penerima->isEmpty()) {
+            return redirect()->back()->with('error', 'Tidak ada data penerima yang ditemukan.');
+        }
+    
+        // Membuat matriks keputusan
+        $matrix = [];
+        foreach ($penerima as $item) {
+            $matrix[] = [
+                intval($item->pendapatan),
+                intval($item->status_rumah),
+                intval($item->pln),
+                intval($item->pdam),
+                intval($item->status_kesehatan)
+            ];
+        }
+    
+        // Normalisasi matriks
+        $Nmatrix = $this->normalisasi($matrix);
+    
+        // Menghitung rata-rata
+        $rata = $this->menghitung_rata($Nmatrix);
+    
+        $bobot = [0.30, 0.20, 0.15, 0.20, 0.15];
+        $alternatif = count($Nmatrix);
+        $kriteria = count($bobot);
+        $pda_nda = [];
+        $edas = [];
+    
+        for ($i = 0; $i < $alternatif; $i++) {
+            $pda_sum = 0;
+            $nda_sum = 0;
+    
+            for ($j = 0; $j < $kriteria; $j++) {
+                $pda = max(0, $Nmatrix[$i][$j] - $rata[$j]);
+                $nda = max(0, $rata[$j] - $Nmatrix[$i][$j]);
+    
+                $pda_sum += $pda * $bobot[$j];
+                $nda_sum += $nda * $bobot[$j];
+    
+                $pda_nda[$i][$j] = [
+                    'pda' => number_format($pda, 2),
+                    'nda' => number_format($nda, 2)
+                ];
+            }
+    
+            // Menghitung skor EDAS sebagai rata-rata dari PDA dan NDA
+            $edas[$i] = number_format(($pda_sum + (1 - $nda_sum)) / 2, 2);
+        } 
+        return view('admin.penerima.edas', compact('penerima','bansos', 'page', 'breadcrumb', 'activeMenu', 'Nmatrix', 'rata', 'pda_nda', 'edas'));
+    }
+      
+    public function showSaw($id)
+    {
+        // Mendapatkan data bansos berdasarkan ID
+        $bansos = BansosModel::with('bantuan')->find($id);
+        if (!$bansos) {
+            return redirect()->back()->with('error', 'Data bansos tidak ditemukan.');
+        }
+    
+        $breadcrumb = (object) [
+            'title' => 'Data Perangkingan SAW',
+            'list'  => ['Home', 'Bansos', 'Pendaftar', 'SAW']
+        ];
+    
+        $page = (object) [
+            'title' => 'Data Para Pendaftar Bansos'
+        ];
+    
+        $activeMenu = 'penerima';
+        $penerima = PenerimaModel::with(['bansos'])
+            ->where('id_bansos', $id)
+            ->where('status', 'Diterima')
+            ->get();
+        if ($penerima->isEmpty()) {
+            return redirect()->back()->with('error', 'Tidak ada data penerima yang ditemukan.');
+        }
+    
+        // Membuat matriks keputusan
+        $matrix = [];
+        foreach ($penerima as $item) {
+            $matrix[] = [
+                intval($item->pendapatan),
+                intval($item->status_rumah),
+                intval($item->pln),
+                intval($item->pdam),
+                intval($item->status_kesehatan)
+            ];
+        }
+    
+        // Normalisasi matriks
+        $Nmatrix = $this->normalisasi($matrix);
+    
+        // Menghitung rata-rata
+        $rata = $this->menghitung_rata($Nmatrix);
+    
+        $bobot = [0.30, 0.20, 0.15, 0.20, 0.15];
+        $alternatif = count($Nmatrix);
+        $kriteria = count($bobot);
+        $saw = [];
+        for ($i = 0; $i < $alternatif; $i++) {
+            $score = 0;
+
+            for ($j = 0; $j < $kriteria; $j++) {
+                $score += $Nmatrix[$i][$j] * $bobot[$j];
+            }
+
+            $saw[$i] = $score;
+        } 
+        return view('admin.penerima.saw', compact('penerima','bansos', 'page', 'breadcrumb', 'activeMenu', 'Nmatrix', 'saw'));
     }
 }

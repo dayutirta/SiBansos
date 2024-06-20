@@ -79,8 +79,6 @@ class BansosController extends Controller
         }
     }
     
-
-    
     public function create()
     {
         $breadcrumb = (object) [
