@@ -114,4 +114,6 @@ Route::group(['prefix' => 'penerima'], function() {
     Route::post('/showup', [PenerimaController::class, 'showup']);
     Route::get('/accept/{id}', [PenerimaController::class, 'accept']);
     Route::get('/reject/{id}', [PenerimaController::class, 'reject']);  
+    Route::get('/edas/{id}', [PenerimaController::class, 'showEdas'])->name('penerima.edas');
+    Route::get('/saw/{id}', [PenerimaController::class, 'showSaw'])->name('penerima.saw');
 });
