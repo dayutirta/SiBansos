@@ -37,7 +37,24 @@
         </aside>
 
         <div class="content-wrapper">
-            @include('layouts.breadcrumb')
+            @if(isset($breadcrumb))
+                <div class="content-header">
+                    <div class="container-fluid">
+                        <div class="row mb-2">
+                            <div class="col-sm-6">
+                                <h1 class="m-0">{{ $breadcrumb->title }}</h1>
+                            </div>
+                            <div class="col-sm-6">
+                                <ol class="breadcrumb float-sm-right">
+                                    @foreach($breadcrumb->list as $item)
+                                        <li class="breadcrumb-item">{{ $item }}</li>
+                                    @endforeach
+                                </ol>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            @endif
             <section class="content">
                 @yield('content')
             </section>
@@ -63,7 +80,6 @@
     <script src="{{ asset('adminlte/plugins/chart.js/Chart.min.js') }}"></script>
     <script src="{{ asset('adminlte/dist/js/pages/barchart.js') }}"></script>
 
-    
     <script>
         $.ajaxSetup({
             headers: {
