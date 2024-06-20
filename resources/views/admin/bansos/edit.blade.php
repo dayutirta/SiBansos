@@ -62,11 +62,11 @@
                     </div>
                 </div>
                 <div class="form-group row">
-                    <label class="col-12 col-md-2 control-label col-form-label">
-                        Tanggal Mulai
+                    <label class="col-12 col-md-2 col-form-label control-label">
+                       Tanggal Mulai
                     </label>
                     <div class="col-12 col-md-10">
-                        <input type="date" name="tanggal_mulai" id="tanggal_mulai" class="form-control" value="{{ $bansos->tanggal_mulai }}" required>
+                        <input type="date" name="tanggal_mulai" class="form-control" id="tanggal_mulai" value="{{ $bansos->tanggal_mulai }}" required>
                         @error('tanggal_mulai')
                             <small class="form-text text-danger">
                                 {{ $message }}
@@ -75,11 +75,14 @@
                     </div>
                 </div>
                 <div class="form-group row">
-                    <label class="col-12 col-md-2 control-label col-form-label">
+                    <label class="col-12 col-md-2 col-form-label control-label">
                         Tanggal Berakhir
                     </label>
                     <div class="col-12 col-md-10">
-                        <input type="date" name="tanggal_akhir" id="tanggal_akhir" class="form-control" value="{{ $bansos->tanggal_akhir }}" required>
+                        <input type="date" name="tanggal_akhir" class="form-control" id="tanggal_akhir" value="{{ $bansos->tanggal_akhir }}" required disabled>
+                        <small id="error-tanggal-berakhir" class="form-text text-danger d-none">
+                            Silakan isi tanggal mulai terlebih dahulu.
+                        </small>
                         @error('tanggal_akhir')
                             <small class="form-text text-danger">
                                 {{ $message }}
@@ -148,5 +151,30 @@
 @endpush
 
 @push('js')
-    
+<script>
+    $(document).ready(function() {
+        $('#tanggal_mulai').on('change', function() {
+            var tanggalMulai = $(this).val();
+            if (tanggalMulai) {
+                $('#tanggal_akhir').prop('disabled', false); // Aktifkan input tanggal berakhir jika tanggal mulai sudah diisi
+                $('#tanggal_akhir').attr('min', tanggalMulai);
+                $('#error-tanggal-berakhir').addClass('d-none'); // Sembunyikan pesan kesalahan saat tanggal mulai diubah
+            } else {
+                $('#tanggal_akhir').prop('disabled', true); // Matikan input tanggal berakhir jika tanggal mulai belum diisi
+                $('#tanggal_akhir').val(''); // Kosongkan nilai input tanggal berakhir jika tanggal mulai belum diisi
+            }
+        });
+
+        $('#tanggal_akhir').on('change', function() {
+            var tanggalMulai = $('#tanggal_mulai').val();
+            var tanggalAkhir = $(this).val();
+            
+            if (!tanggalMulai) {
+                $('#error-tanggal-berakhir').removeClass('d-none'); // Tampilkan pesan kesalahan jika tanggal mulai kosong
+            } else {
+                $('#error-tanggal-berakhir').addClass('d-none'); // Sembunyikan pesan kesalahan jika tanggal mulai sudah diisi
+            }
+        });
+    });
+</script>
 @endpush
