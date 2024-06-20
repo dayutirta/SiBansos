@@ -6,17 +6,18 @@
         <h3 class="card-title">
             {{ $page->title }}
         </h3>
-        <div class="card-tools">
+        <div class="card-tools d-flex">
+            <a class="btn btn-outline-secondary btn-sm mr-2" href="{{ route('penerima.edas', $bansos->id_bansos) }}">EDAS</a>
+            <a class="btn btn-outline-secondary btn-sm" href="{{ route('penerima.saw', $bansos->id_bansos) }}">SAW</a>
         </div>
     </div>
+    
     <div class="card-body">
         @empty($penerima)
             <div class="alert alert-danger alert-dismissible">
                 <h5>
-                    <i class="icon fas fa-ban">
-                        Kesalahan!
-                    </i>
-                    Data yang anda cari tidak ditemukan!
+                    <i class="icon fas fa-ban"></i>
+                    Kesalahan! Data yang anda cari tidak ditemukan!
                 </h5>
             </div>
         @else
@@ -25,14 +26,11 @@
                     <thead>
                         <tr>
                             <th>No</th>
-                            <th>Nama Program</th>
                             <th>NoKK</th>
                             <th>Nama</th>
+                            <th>Alamat</th>
                             <th>Rank EDAS</th>
                             <th>Rank SAW</th>
-                            <th>Alamat</th>
-                            <th>Skor EDAS</th>   
-                            <th>Skor SAW</th> 
                         </tr>
                     </thead>
                     <tbody>
@@ -51,15 +49,11 @@
                         @foreach($penerima as $index => $data)
                             <tr>
                                 <td>{{ $index + 1 }}</td>
-                                <td>{{ $data->bansos->nama_program }}</td>
                                 <td>{{ $data->user->nokk }}</td>
                                 <td>{{ $data->user->nama }}</td>
+                                <td>{{ $data->user->alamat }}, RT {{ $data->user->rt }} / RW {{ $data->user->rw }}</td>
                                 <td>{{ $rank_edas[$data->id_penerima] }}</td>
                                 <td>{{ $rank_saw[$data->id_penerima] }}</td>
-                                <td>{{ $data->user->alamat }}, RT {{ $data->user->rt }} / RW {{ $data->user->rw }}</td>
-                                <td>{{ $data->skoredas }}</td>
-                                <td>{{ $data->skoresaw }}</td>
-                                
                             </tr>
                         @endforeach
                     </tbody>
@@ -87,30 +81,55 @@
 @push('js')
 <script>
     $(document).ready(function() {
-        $('#table_penerima').DataTable({
-            columns: [
-                { data: "DT_RowIndex", className: "text-center", orderable: true, searchable: false },
-                { data: "nama_program", className: "", orderable: false, searchable: false },
-                { data: "nokk", className: "text-center", orderable: false, searchable: true },
-                { data: "nama", className: "", orderable: false, searchable: true },
-                { data: "rank_edas", className: "text-center", orderable: true, searchable: false },
-                { data: "rank_saw", className: "text-center", orderable: true, searchable: false },
-                { data: "alamat", className: "", orderable: false, searchable: true},
-                { data: "skoredas", className: "", orderable: false, searchable: false },              
-                { data: "skoresaw", className: "", orderable: false, searchable: false },  
+        var table = $('#table_penerima').DataTable({
+            responsive: true,
+            lengthChange: false,
+            autoWidth: false,
+            buttons: [
+                {
+                    extend: 'excel',
+                    text: '<i class="far fa-file-excel"></i> Excel',
+                    className: 'btn btn-default',
+                    exportOptions: {
+                        columns: ':visible'
+                    }
+                },
+                {
+                    extend: 'pdf',
+                    text: '<i class="far fa-file-pdf"></i> PDF',
+                    className: 'btn btn-default',
+                    exportOptions: {
+                        columns: ':visible'
+                    }
+                },
+                {
+                    extend: 'print',
+                    text: '<i class="fas fa-print"></i> Print',
+                    className: 'btn btn-default',
+                    exportOptions: {
+                        columns: ':visible'
+                    }
+                }
             ],
-            "autoWidth": false,
-                "responsive": true,
-           
+            
+            columnDefs: [
+                { responsivePriority: 1, targets: 0 },
+                { responsivePriority: 2, targets: 5 },
+                { responsivePriority: 3, targets: 2 },
+                { responsivePriority: 4, targets: 4 },
+                { responsivePriority: 5, targets: 1 }
+            ]
         });
 
+        table.buttons().container().appendTo('#table_penerima_wrapper .col-md-6:eq(0)');
+
         var resizeTimer;
-            $(window).on('resize', function(e) {
-                clearTimeout(resizeTimer);
-                resizeTimer = setTimeout(function() {
-                    table.ajax.reload(null, false); 
-                }, 200); 
-            });
+        $(window).on('resize', function() {
+            clearTimeout(resizeTimer);
+            resizeTimer = setTimeout(function() {
+                table.columns.adjust().responsive.recalc();
+            }, 200);
+        });
     });
 </script>
 @endpush
