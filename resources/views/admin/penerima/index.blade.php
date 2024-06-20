@@ -79,7 +79,7 @@
                     orderable: false,
                     searchable: true,
                     render: function(data, type, row) {
-                        return row.user.alamat + ' RT ' + row.user.rt + ' / RW ' + row.user.rw;
+                        return row.user.alamat + ', RT ' + row.user.rt + ' / RW ' + row.user.rw;
                     }
                 },
                 { data: 'aksi', name: 'aksi', orderable: false, searchable: false }
