@@ -16,7 +16,6 @@ class WargaSeeder extends Seeder
      */
     public function run()
     {
-
         $faker = Faker::create('id_ID');
         $seeds = [];
         $nik_counter = 1;
@@ -49,7 +48,7 @@ class WargaSeeder extends Seeder
                 'status_pernikahan' => 'Menikah',
                 'rt' => $rt,
                 'rw' => 1,
-                'foto' => $this->convertToBlob(__DIR__ . '/../../resources/img/' . $faker->randomElement($foto_index) . '.png'),
+                'foto' => '/storage/foto/' . $faker->randomElement($foto_index) . '.png', // Path sesuai struktur direktori Laravel
                 'created_at' => Carbon::now(),
                 'updated_at' => Carbon::now(),
             ];
@@ -72,7 +71,7 @@ class WargaSeeder extends Seeder
                 'status_pernikahan' => 'Menikah',
                 'rt' => $rt,
                 'rw' => 1,
-                'foto' => $this->convertToBlob(__DIR__ . '/../../resources/img/' . $faker->randomElement($foto_index_perempuan) . '.png'),
+                'foto' => '/storage/foto/' . $faker->randomElement($foto_index_perempuan) . '.png', // Path sesuai struktur direktori Laravel
                 'created_at' => Carbon::now(),
                 'updated_at' => Carbon::now(),
             ];
@@ -113,7 +112,7 @@ class WargaSeeder extends Seeder
                     'status_pernikahan' => 'Belum Menikah',
                     'rt' => $rt,
                     'rw' => 1,
-                    'foto' => $this->convertToBlob(__DIR__ . '/../../resources/img/' . ($jenis_kelamin_anak === 'Laki-laki' ? $faker->randomElement($foto_index) : $faker->randomElement($foto_index_perempuan)) . '.png'),
+                    'foto' => '/storage/foto/' . ($jenis_kelamin_anak === 'Laki-laki' ? $faker->randomElement($foto_index) : $faker->randomElement($foto_index_perempuan)) . '.png', // Path sesuai struktur direktori Laravel
                     'created_at' => Carbon::now(),
                     'updated_at' => Carbon::now(),
                 ];
@@ -143,13 +142,6 @@ class WargaSeeder extends Seeder
         DB::table('m_warga')->insert($seeds);
     }
 
-    // Fungsi convertToBlob
-    private function convertToBlob($path)
-    {
-        // Fungsi untuk mengkonversi gambar ke blob
-        return base64_encode(file_get_contents($path)); // Misal, Anda perlu mengonversi gambar ke base64.
-    }
-
     // Fungsi getAgama untuk menentukan agama dengan distribusi yang diinginkan
     private function getAgama($faker)
     {
@@ -163,3 +155,4 @@ class WargaSeeder extends Seeder
         }
     }
 }
+
