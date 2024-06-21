@@ -22,7 +22,7 @@
                     Kembali
                 </a>
             @else
-                <form action="{{ url('/warga/' . $warga->id_warga) }}" method="POST" class="form-horizontal">
+                <form action="{{ url('/warga/' . $warga->id_warga) }}" method="POST" class="form-horizontal " enctype="multipart/form-data">
                     @csrf
                     @method('PUT') <!-- Lebih prefer untuk menggunakan @method('PUT') -->
                     <div class="row">
@@ -142,7 +142,7 @@
                                 <label class="control-label">Pekerjaan</label>
                                 <select name="pekerjaan" class="form-control" id="pekerjaan" required>
                                     <option value="" disabled>-- Pilih Pekerjaan --</option>
-                                    <option value="{{ $warga->pekerjaan }}"disabled selected>{{ $warga->pekerjaan }}</option>
+                                    <option value="{{ $warga->pekerjaan }}" selected>{{ $warga->pekerjaan }}</option>
                                     <option value="Buruh">Buruh</option>
                                     <option value="PNS">PNS</option>
                                     <option value="Karyawan Swasta">Karyawan Swasta</option>
@@ -162,7 +162,7 @@
                                 <label class="control-label">Pendidikan</label>
                                 <select name="pendidikan" class="form-control" id="pendidikan" required>
                                     <option value=""disabled >-- Pilih Pendidikan --</option>
-                                    <option value="{{ $warga->pendidikan }}"disabled selected>{{ $warga->pendidikan }}</option>
+                                    <option value="{{ $warga->pendidikan }}" selected>{{ $warga->pendidikan }}</option>
                                     <option value="SD">SD</option>
                                     <option value="SMP">SMP Sederajat</option>
                                     <option value="SMA/SMK">SMA/SMK Sederajat</option>
@@ -187,6 +187,23 @@
                                 @enderror
                             </div>
 
+                            <div class="form-group">
+                                <label class="col-form-label">Foto</label>
+                            
+                                <div class="d-flex align-items-center">
+                                    <img src="{{ asset($warga->foto) }}" alt="foto user" style="max-width: 100px; max-height: 100px;" class="mr-3 img-thumbnail">
+                            
+                                    <div class="custom-file">
+                                        <input type="file" name="foto" class="custom-file-input" id="foto" >
+                                        <label class="custom-file-label" for="foto">Choose file</label>
+                                    </div>
+                                </div>
+                            
+                                @error('foto')
+                    <small class="form-text text-danger">{{ $message }}</small>
+                @enderror
+                            </div>
+                            
                             
                         </div>
                     </div>
@@ -207,5 +224,12 @@
 @endpush
 
 @push('js')
+<script>
+    document.querySelector('.custom-file-input').addEventListener('change', function(e) {
+        var fileName = document.getElementById("foto").files[0].name;
+        var nextSibling = e.target.nextElementSibling;
+        nextSibling.innerText = fileName;
+    });
+</script>
 @endpush
 
