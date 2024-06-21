@@ -7,7 +7,7 @@
         <div class="card-tools"></div>
     </div>
     <div class="card-body">
-        <form action="{{ url('warga') }}" method="POST" class="form-horizontal">
+        <form action="{{ url('warga') }}" method="POST" class="form-horizontal" enctype="multipart/form-data">
             @csrf
     <div class="row">
         <div class="col-md-6">
@@ -224,6 +224,17 @@
                     @enderror
                 
             </div>
+
+            <div class="form-group">
+                <label class="col-form-label">Foto</label>
+                <div class="custom-file">
+                    <input type="file" name="foto" class="custom-file-input" id="foto" required>
+                    <label class="custom-file-label" for="foto">Choose file</label>
+                </div>
+                @error('foto')
+                    <small class="form-text text-danger">{{ $message }}</small>
+                @enderror
+            </div>
         </div>
     </div>
             <div class="form-group ">
@@ -245,5 +256,11 @@
 @endpush
 
 @push('js')
-    
+<script>
+    document.querySelector('.custom-file-input').addEventListener('change', function(e) {
+        var fileName = document.getElementById("foto").files[0].name;
+        var nextSibling = e.target.nextElementSibling;
+        nextSibling.innerText = fileName;
+    });
+</script>
 @endpush
