@@ -139,8 +139,37 @@ class WargaController extends Controller
             'status_pernikahan' => 'required|string',
             'rt' => 'required|string',
             'rw' => 'required|string',
+            'foto' => 'required|file|mimes:jpg,jpeg,png|max:5120',
         ]);
+    
+        // Proses unggah file
+        if ($request->hasFile('foto')) {
+            $file = $request->file('foto');
+            $filename = time() . '_' . $file->getClientOriginalName();
+            
+            // Tentukan path penyimpanan secara manual
+            $customPath = 'C:/laragon/www/SIBANSOS/storage/app/public/foto'; // Path penyimpanan sesuai dengan yang Anda tentukan
+    
+            // Pastikan directory penyimpanan ada, jika tidak, buat directory
+            if (!file_exists($customPath)) {
+                mkdir($customPath, 0755, true);
+            }
+    
+            // Pindahkan file ke path yang ditentukan
+            $file->move($customPath, $filename);
+    
+            // Set path file untuk disimpan di database
+            $filePath = '/storage/foto/' . $filename;
 
+    
+            // Cek apakah path tidak kosong
+            if (!$filePath) {
+                return redirect()->back()->withErrors(['foto' => 'File upload failed']);
+            }
+        } else {
+            return redirect()->back()->withErrors(['foto' => 'File upload failed']);
+        }
+    
         WargaModel::create([
             'id_level' => $request->id_level,
             'nik' => $request->nik,
@@ -158,11 +187,12 @@ class WargaController extends Controller
             'status_pernikahan' => $request->status_pernikahan,
             'rt' => $request->rt,
             'rw' => $request->rw,
+            'foto' => $filePath, // Simpan path file di database
         ]);
-
+    
         return redirect('/warga')->with('success', 'Data berhasil ditambahkan');
     }
-
+    
     public function show(String $id)
     {
         
@@ -226,7 +256,6 @@ class WargaController extends Controller
     public function update(Request $request, String $id)
     {
         $request->validate([
-            // 'id_level' => 'required|integer',
             'nik' => 'required|string',
             'nokk' => 'required|string',
             'nama' => 'required|string',
@@ -241,13 +270,57 @@ class WargaController extends Controller
             'status_pernikahan' => 'required|string',
             'rt' => 'required|string',
             'rw' => 'required|string',
+            'foto' => 'nullable|file|mimes:jpg,jpeg,png|max:5120',
         ]);
-
-        $warga = WargaModel::where('id_warga', $id)->first();
-
-        if ($warga) {
+    
+        $warga = WargaModel::find($id);
+    
+        if (!$warga) {
+            return redirect()->back()->withErrors(['message' => 'Data warga tidak ditemukan']);
+        }
+    
+        // Handle file upload if new file is provided
+        if ($request->hasFile('foto')) {
+            // Validate and store the new file
+            $file = $request->file('foto');
+            $filename = time() . '_' . $file->getClientOriginalName();
+            
+            // Specify storage path
+            $customPath = 'C:/laragon/www/SIBANSOS/storage/app/public/foto';
+    
+            // Ensure storage directory exists, if not, create it
+            if (!file_exists($customPath)) {
+                mkdir($customPath, 0755, true);
+            }
+    
+            // Move file to specified path
+            $file->move($customPath, $filename);
+    
+            // Set file path to be saved in the database
+            $filePath = '/storage/foto/' . $filename;
+    
+            // Update warga data including the new photo path
             $warga->update([
-                // 'id_level' => $request->id_level,
+                'nik' => $request->nik,
+                'nokk' => $request->nokk,
+                'nama' => $request->nama,
+                'jenis_kelamin' => $request->jenis_kelamin,
+                'tempat_lahir' => $request->tempat_lahir,
+                'tanggal_lahir' => $request->tanggal_lahir,
+                'alamat' => $request->alamat,
+                'agama' => $request->agama,
+                'kewarganegaraan' => $request->kewarganegaraan,
+                'pekerjaan' => $request->pekerjaan,
+                'pendidikan' => $request->pendidikan,
+                'status_pernikahan' => $request->status_pernikahan,
+                'rt' => $request->rt,
+                'rw' => $request->rw,
+                'foto' => $filePath, // Save new file path in database
+            ]);
+    
+        } else {
+            // Update warga data without changing the photo
+            $warga->update([
                 'nik' => $request->nik,
                 'nokk' => $request->nokk,
                 'nama' => $request->nama,
@@ -264,9 +337,10 @@ class WargaController extends Controller
                 'rw' => $request->rw,
             ]);
         }
-
+    
         return redirect('/warga')->with('success', 'Data berhasil diubah');
     }
+    
 
     public function ubahStatus(String $id)
     {
