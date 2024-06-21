@@ -21,7 +21,6 @@ Route::post('login', [AuthController::class, 'proses_login'])->name('proses_logi
 Route::get('logout', [AuthController::class, 'logout'])->name('logout');
 Route::get('registrasi', [AuthController::class, 'register'])->name('registrasi');
 
-
 //route autentikasi berdasarkan levelnya
 Route::group(['middleware' => ['auth']], function () {
     Route::group(['middleware' => ['cek_login:1']], function () {
