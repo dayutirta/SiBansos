@@ -7,6 +7,7 @@ use Illuminate\Support\Facades\DB;
 use App\Models\WargaModel;
 use App\Models\PenerimaModel;
 use Carbon\carbon;
+use Illuminate\Support\Facades\Response;
 
 class UserController extends Controller
 {
@@ -14,6 +15,8 @@ class UserController extends Controller
     {
         $user = Auth::user();
         $level_id = $user->id_level;
+        $userPhoto = $this->getUserPhoto();
+        // dd($userPhoto);
         
         if ($user->id_level == '1'){
             $breadcrumb = (object) ['title' => 'Homepage RW','list' => ['Home','Welcome']];
@@ -48,6 +51,7 @@ class UserController extends Controller
 
             return view('admin.index', [
                 'level_id' => $level_id,
+                'userPhoto' => $userPhoto,
                 'penerimaCount' => $penerimaCount,
                 'breadcrumb' => $breadcrumb,
                 'page' => $page,
@@ -111,6 +115,7 @@ class UserController extends Controller
                 })->where('status', 'Pending')->count();
                 return view('rt.index', [
                     'breadcrumb' => $breadcrumb,
+                    'userPhoto' => $userPhoto,
                     'nokk' => $nokk,
                     'penerimaCount' => $penerimaCount,
                     'level_id' => $level_id,
@@ -148,7 +153,25 @@ class UserController extends Controller
             ];
             $page = (object) ['title' => 'Selamat datang di halaman warga'];
             $activeMenu = 'dashboard';
-            return view('user.index', ['breadcrumb' => $breadcrumb,'page' => $page,'activeMenu' => $activeMenu]);
+            return view('user.index', ['breadcrumb' => $breadcrumb,'userPhoto' => $userPhoto,'page' => $page,'activeMenu' => $activeMenu]);
         }
     }
+
+    public function getUserPhoto()
+    {
+        $user = Auth::user();
+        $id_warga = $user->id_warga;
+    
+        $foto = DB::table('m_warga')->where('id_warga', $id_warga)->value('foto');
+    
+        if ($foto) {
+            // Ubah format base64 ke PNG
+            $base64Foto = 'data:image/png;base64,' . base64_encode($foto);
+            return $base64Foto;
+        }
+    
+        return null;
+    }
+    
+    
 }
