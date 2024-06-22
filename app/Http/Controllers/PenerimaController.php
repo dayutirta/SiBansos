@@ -93,7 +93,6 @@ class PenerimaController extends Controller
             ->rawColumns(['aksi'])
             ->make(true);
     }
-    
      
     public function create()
     {
