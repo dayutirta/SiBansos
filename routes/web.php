@@ -10,6 +10,8 @@ use App\Http\Controllers\UserController;
 use App\Http\Controllers\ProfilController;
 use App\Http\Controllers\RiwayatController;
 use App\Http\Controllers\SettingController;
+use App\Http\Controllers\SuratController;
+use App\Http\Controllers\PengajuanController;
 use Illuminate\Support\Facades\Route;
 
 //route index testing tampilan
@@ -72,8 +74,7 @@ Route::group(['prefix' => 'bantuan'], function() {
     Route::get('/', [BantuanController::class, 'index']);          
     Route::post('/list', [BantuanController::class, 'list']);      
     Route::get('/create', [BantuanController::class, 'create']);   
-    Route::post('/', [BantuanController::class, 'store']);         
-    Route::get('/{id}', [BantuanController::class, 'show']);       
+    Route::post('/', [BantuanController::class, 'store']);          
     Route::get('/{id}/edit', [BantuanController::class, 'edit']);  
     Route::put('/{id}', [BantuanController::class, 'update']);     
     Route::delete('/{id}', [BantuanController::class, 'destroy']); 
@@ -91,19 +92,28 @@ Route::group(['prefix' => 'setting'], function() {
     Route::get('/', [SettingController::class, 'index']);
 });
 
-// Route untuk Pengajuan Dokumen
-Route::group(['prefix' => 'pengajuan-dokumen'], function() {
-    Route::get('/', [BansosController::class, 'index']);          
-    Route::post('/list', [BansosController::class, 'list']);      
-    Route::get('/create', [BansosController::class, 'create']);   
-    Route::post('/', [BansosController::class, 'store']);
-});
+// // Route untuk Pengajuan Surat
+// Route::group(['prefix' => 'pengajuan-surat'], function() {
+//     Route::get('/', [PengajuanController::class, 'index']);          
+//     Route::post('/list', [PengajuanController::class, 'list']);      
+//     Route::get('/create', [PengajuanController::class, 'create']);   
+//     Route::post('/', [PengajuanController::class, 'store']);
+// });
+
+// //route Surat
+// Route::group(['prefix' => 'surat'], function() {
+//     Route::get('/', [PengajuanController::class, 'show']);          
+//     Route::post('/showup', [PengajuanController::class, 'showup']);
+//     Route::get('/accept/{id}', [PengajuanController::class, 'accept']);
+//     Route::get('/reject/{id}', [PengajuanController::class, 'reject']); 
+// });
 
 // Route untuk Pengajuan Bansos
 Route::group(['prefix' => 'pengajuan-bansos'], function() {
     Route::get('/', [PenerimaController::class, 'index']);          
     Route::post('/list', [PenerimaController::class, 'list']);      
     Route::get('/create/{id}', [PenerimaController::class, 'create']);   
+    Route::get('/find/{id}', [PenerimaController::class, 'find']);   
     Route::post('/', [PenerimaController::class, 'store']);
 });
 
