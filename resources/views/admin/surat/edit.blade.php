@@ -1,0 +1,78 @@
+@extends('layouts.template')
+
+@section('content')
+<div class="card card-outline card-primary">
+    <div class="card-header">
+        <h3 class="card-title">
+            {{ $page->title }}
+        </h3>
+        <div class="card-tools">
+
+        </div>
+    </div>
+    <div class="card-body">
+        @empty($surat)
+            <div class="alert alert-danger alert-dismissible">
+                <h5>
+                    <i class="icon fas fa-ban">
+                        Kesalahan!
+                    </i>
+                    Data yang anda cari tidak ditemukan!
+                </h5>
+            </div>
+            <a href="{{ url('surat') }}" class="btn btn-sm btn-default mt-2">
+                Kembali
+            </a>
+        @else
+            <form action="{{ url('/surat/' . $surat->id_surat) }}" method="POST" class="form-horizontal">
+                @csrf
+                {!! method_field('PUT') !!}
+                <div class="form-group row">
+                    <label class="col-sm-12 col-md-2 control-label col-form-label">
+                        Kode Surat
+                    </label>
+                    <div class="col-sm-12 col-md-10">
+                        <input type="text" name="kode_surat" id="kode_surat" class="form-control" value="{{ old('kode_surat') ?? $surat->kode_surat }}" required>
+                        @error('kode_surat')
+                            <small class="form-text text-danger">
+                                {{ $message }}
+                            </small>
+                        @enderror
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label class="col-sm-12 col-md-2 control-label col-form-label">
+                        Nama Surat
+                    </label>
+                    <div class="col-sm-12 col-md-10">
+                        <input type="text" name="nama_surat" id="nama_surat" class="form-control" value="{{ old('nama_surat') ?? $surat->nama_surat }}" required>
+                        @error('nama_surat')
+                            <small class="form-text text-danger">
+                                {{ $message }}
+                            </small>
+                        @enderror
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <div class="col-12 text-right">
+                        <button type="submit" class="btn btn-primary btn-sm">
+                            Simpan
+                        </button>
+                        <a href="{{ url('surat') }}" class="btn btn-default btn-sm ml-1">
+                            Kembali
+                        </a>
+                    </div>
+                </div>
+            </form>
+        @endempty
+    </div>
+</div>
+@endsection
+
+@push('css')
+    
+@endpush
+
+@push('js')
+    
+@endpush
