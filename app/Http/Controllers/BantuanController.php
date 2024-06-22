@@ -46,8 +46,7 @@ class BantuanController extends Controller
         })
         ->rawColumns(['aksi'])
         ->make(true);
-        }
-
+    }
 
     public function create()
     {
@@ -87,33 +86,6 @@ class BantuanController extends Controller
         ]);
 
         return redirect('/bantuan')->with('success', 'Data berhasil ditambahkan');
-    }
-
-    public function show(String $id)
-    {
-        $bantuan = BantuanModel::find($id);
-
-        $breadcrumb = (object) [
-            'title' => 'Detail Bantuan',
-            'list' => [
-                'Home',
-                'Bantuan',
-                'Detail Bantuan'
-            ]
-        ];
-
-        $page = (object) [
-            'title' => 'Detail Bantuan',
-        ];
-
-        $activeMenu = 'bantuan';
-
-        return view('admin.bantuan.detail', [
-            'bantuan' => $bantuan,
-            'breadcrumb' => $breadcrumb,
-            'page' => $page,
-            'activeMenu' => $activeMenu
-        ]);
     }
 
     public function edit(String $id)
