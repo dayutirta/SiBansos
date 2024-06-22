@@ -79,7 +79,7 @@
     <script src="{{ asset('adminlte/dist/js/adminlte.min.js') }}"></script>
     <script src="{{ asset('adminlte/plugins/chart.js/Chart.min.js') }}"></script>
     <script src="{{ asset('adminlte/dist/js/pages/barchart.js') }}"></script>
-
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.1/moment.min.js"></script>
     <script>
         $.ajaxSetup({
             headers: {

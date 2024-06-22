@@ -42,6 +42,15 @@
                                 <p>Riwayat Data Warga</p>
                             </a>
                         </li>
+                        {{-- <li class="nav-item">
+                            <a href="{{ url('/surat') }}" class="nav-link">
+                                <i class="fas fa-envelope-open-text nav-icon"></i>
+                                <p>Data Pengajuan Surat</p>
+                                @if (isset($penerimaCount) && $penerimaCount > 0)
+                                    <span class="badge badge-danger right navbar-badge">{{ $penerimaCount }}</span>
+                                @endif
+                            </a>
+                        </li> --}}
                     </ul>
                 </li>
                 <li class="nav-header">Menu Bantuan Sosial</li>
@@ -52,7 +61,6 @@
                             Bantuan Sosial
                             <i class="right fas fa-angle-left"></i>
                         </p>
-                        {{-- <span class="badge badge-danger  navbar-badge">3</span> --}}
                         @if (isset($penerimaCount) && $penerimaCount > 0)
                             <span class="badge badge-danger  navbar-badge">{{ $penerimaCount }}</span>
                         @endif
@@ -91,6 +99,9 @@
                             Data Warga
                             <i class="right fas fa-angle-left"></i>
                         </p>
+                        @if (isset($penerimaCount) && $penerimaCount > 0)
+                        <span class="badge badge-danger  navbar-badge">{{ $penerimaCount }}</span>
+                        @endif
                     </a>
                     <ul class="nav nav-treeview">
                         <li class="nav-item">
@@ -103,6 +114,15 @@
                             <a href="{{ url('/riwayat') }}" class="nav-link">
                                 <i class="fas fa-history nav-icon"></i>
                                 <p>Riwayat Data Warga</p>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="{{ url('/penerima') }}" class="nav-link">
+                                <i class="fas fa-user-check nav-icon"></i>
+                                <p>Data Pengajuan</p>
+                                @if (isset($penerimaCount) && $penerimaCount > 0)
+                                    <span class="badge badge-danger right navbar-badge">{{ $penerimaCount }}</span>
+                                @endif
                             </a>
                         </li>
                     </ul>
@@ -149,12 +169,12 @@
                     </p>
                 </a>
                 <ul class="nav nav-treeview">
-                    <li class="nav-item">
-                        <a href="{{ url('/setting') }}" class="nav-link">
+                    {{-- <li class="nav-item">
+                        <a href="{{ url('/pengajuan-surat') }}" class="nav-link">
                             <i class="far fa-file-alt nav-icon"></i>
                             <p>Pengajuan Dokumen</p>
                         </a>
-                    </li>
+                    </li> --}}
                     <li class="nav-item">
                         <a href="{{ url('/pengajuan-bansos') }}" class="nav-link">
                             <i class="fas fa-hands-helping nav-icon"></i>

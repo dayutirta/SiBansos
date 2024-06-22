@@ -8,9 +8,7 @@
             <!-- Bagian Profil -->
             <div class="col-md-4">
                 <div class="text-center mb-4">
-                    
-                    <img src="{{ asset('adminlte/dist/img/1.png') }}" alt="SiBansos Logo" class="img-fluid rounded-circle" style="max-width: 100%; height: auto; box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.5);">
-                    
+                        <img src="{{ asset(Auth::user()->foto) }}" alt="SiBansos Logo" class="img-fluid rounded-circle" style="max-width: 100%; height: auto; box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.5);">
                 </div>
             </div>
             <div class="col-md-8">
