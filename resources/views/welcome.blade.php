@@ -21,15 +21,15 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.4.1/font/bootstrap-icons.css" rel="stylesheet">
 
     <!-- Libraries Stylesheet -->
-    <link href="{{ asset('landingpage/lib/animate/animate.min.css') }}" rel="stylesheet">
-    <link href="{{ asset('landingpage/lib/owlcarousel/assets/owl.carousel.min.css') }}" rel="stylesheet">
-    <link href="{{ asset('landingpage/lib/lightbox/css/lightbox.min.css') }}" rel="stylesheet">
+    <link href="{{ secure_asset('landingpage/lib/animate/animate.min.css') }}" rel="stylesheet">
+    <link href="{{ secure_asset('landingpage/lib/owlcarousel/assets/owl.carousel.min.css') }}" rel="stylesheet">
+    <link href="{{ secure_asset('landingpage/lib/lightbox/css/lightbox.min.css') }}" rel="stylesheet">
 
     <!-- Customized Bootstrap Stylesheet -->
-    <link href="{{ asset('landingpage/css/bootstrap.min.css') }}" rel="stylesheet">
+    <link href="{{ secure_asset('landingpage/css/bootstrap.min.css') }}" rel="stylesheet">
 
     <!-- Template Stylesheet -->
-    <link href="{{ asset('landingpage/css/style.css') }}" rel="stylesheet">
+    <link href="{{ secure_asset('landingpage/css/style.css') }}" rel="stylesheet">
 </head>
 
 <body>
@@ -47,7 +47,7 @@
                 <nav class="navbar navbar-expand-lg navbar-light px-4 px-lg-5 py-2 py-lg-0">
                     <div class="container-fluid">
                         <a href="" class="navbar-brand p-0">
-                            <h1 class="m-0">SiBansos</h1>
+                            <h1 class="m-0">SiBansosi</h1>
                         </a>
                         <div class="d-flex align-items-center ms-auto">
                             <a href="{{ url('login') }}" class="btn btn-secondary rounded-pill py-2 px-4 ms-3">Login</a>
