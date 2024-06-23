@@ -28,7 +28,7 @@ class SuratSeeder extends Seeder
             ],
             [
                 'kode_surat' => 'KTP/KK',
-                'nama_surat' => 'Surat Pengantar Pembuatan KTP/KK',
+                'nama_surat' => 'Surat Pengantar Pembuatan KTP_KK',
                 'created_at' => now(),
                 'updated_at' => now(),
             ],
