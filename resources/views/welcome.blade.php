@@ -9,7 +9,7 @@
     <meta content="" name="description">
 
     <!-- Favicon -->
-    <link rel="icon" type="image/png" href="{{ asset('adminlte/dist/img/SiB_new.png') }}">
+    <link rel="icon" type="image/png" href="{{ secure_asset('adminlte/dist/img/SiB_new.png') }}">
 
     <!-- Google Web Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -21,15 +21,15 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.4.1/font/bootstrap-icons.css" rel="stylesheet">
 
     <!-- Libraries Stylesheet -->
-    <link href="{{ asset('landingpage/lib/animate/animate.min.css') }}" rel="stylesheet">
-    <link href="{{ asset('landingpage/lib/owlcarousel/assets/owl.carousel.min.css') }}" rel="stylesheet">
-    <link href="{{ asset('landingpage/lib/lightbox/css/lightbox.min.css') }}" rel="stylesheet">
+    <link href="{{ secure_asset('landingpage/lib/animate/animate.min.css') }}" rel="stylesheet">
+    <link href="{{ secure_asset('landingpage/lib/owlcarousel/secure_assets/owl.carousel.min.css') }}" rel="stylesheet">
+    <link href="{{ secure_asset('landingpage/lib/lightbox/css/lightbox.min.css') }}" rel="stylesheet">
 
     <!-- Customized Bootstrap Stylesheet -->
-    <link href="{{ asset('landingpage/css/bootstrap.min.css') }}" rel="stylesheet">
+    <link href="{{ secure_asset('landingpage/css/bootstrap.min.css') }}" rel="stylesheet">
 
     <!-- Template Stylesheet -->
-    <link href="{{ asset('landingpage/css/style.css') }}" rel="stylesheet">
+    <link href="{{ secure_asset('landingpage/css/style.css') }}" rel="stylesheet">
 </head>
 
 <body>
@@ -50,7 +50,7 @@
                             <h1 class="m-0">SiBansos</h1>
                         </a>
                         <div class="d-flex align-items-center ms-auto">
-                            <a href="{{ url('login') }}" class="btn btn-secondary rounded-pill py-2 px-4 ms-3">Login</a>
+                            <a href="{{ secure_url('login') }}" class="btn btn-secondary rounded-pill py-2 px-4 ms-3">Login</a>
                         </div>
                     </div>
                 </nav>
@@ -63,7 +63,7 @@
                                 <p class="text-white pb-3 animated slideInDown">SiBansos, merupakan platform yang dirancang khusus untuk memudahkan administrasi dan pengajuan bantuan sosial di tingkat RW. Kami hadir untuk memberikan solusi praktis, transparan, dan efisien dalam pengelolaan bantuan sosial bagi warga.</p>
                             </div>
                             <div class="col-lg-6 text-center text-lg-start">
-                                <img class="img-fluid animated zoomIn" src="{{ asset('landingpage/img/hero-3.png') }}" alt="" style="width: 100%; height: auto;">
+                                <img class="img-fluid animated zoomIn" src="{{ secure_asset('landingpage/img/hero-3.png') }}" alt="" style="width: 100%; height: auto;">
                             </div>
                         </div>
                     </div>
@@ -209,7 +209,7 @@
                             <p class="text-white pb-3 animated slideInDown">Informasi dan data yang terdapat dalam situs web ini adalah data dummy dan hanya digunakan untuk tujuan pemenuhan tugas proyek kuliah. Data yang disajikan tidak bersifat asli dan tidak dimaksudkan untuk digunakan dalam konteks yang sebenarnya.</p>
                         </div>
                         <div class="col-md-12 col-lg-6">
-                                <img class="img-fluid animated zoomIn" src="{{ asset('landingpage/img/hero.png') }}" alt="">
+                                <img class="img-fluid animated zoomIn" src="{{ secure_asset('landingpage/img/hero.png') }}" alt="">
                         </div>
                     </div>
                 </div>
@@ -241,16 +241,16 @@
     <!-- JavaScript Libraries -->
     <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="{{ asset('landingpage/lib/wow/wow.min.js') }}"></script>
-    <script src="{{ asset('landingpage/lib/easing/easing.min.js') }}"></script>
-    <script src="{{ asset('landingpage/lib/waypoints/waypoints.min.js') }}"></script>
-    <script src="{{ asset('landingpage/lib/counterup/counterup.min.js') }}"></script>
-    <script src="{{ asset('landingpage/lib/owlcarousel/owl.carousel.min.js') }}"></script>
-    <script src="{{ asset('landingpage/lib/isotope/isotope.pkgd.min.js') }}"></script>
-    <script src="{{ asset('landingpage/lib/lightbox/js/lightbox.min.js') }}"></script>
+    <script src="{{ secure_asset('landingpage/lib/wow/wow.min.js') }}"></script>
+    <script src="{{ secure_asset('landingpage/lib/easing/easing.min.js') }}"></script>
+    <script src="{{ secure_asset('landingpage/lib/waypoints/waypoints.min.js') }}"></script>
+    <script src="{{ secure_asset('landingpage/lib/counterup/counterup.min.js') }}"></script>
+    <script src="{{ secure_asset('landingpage/lib/owlcarousel/owl.carousel.min.js') }}"></script>
+    <script src="{{ secure_asset('landingpage/lib/isotope/isotope.pkgd.min.js') }}"></script>
+    <script src="{{ secure_asset('landingpage/lib/lightbox/js/lightbox.min.js') }}"></script>
 
     <!-- Template Javascript -->
-    <script src="{{ asset('landingpage/js/main.js') }}"></script>
+    <script src="{{ secure_asset('landingpage/js/main.js') }}"></script>
 </body>
 
 </html>
