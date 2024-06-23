@@ -155,11 +155,6 @@ class WargaController extends Controller
             // Tentukan path penyimpanan secara manual
             $customPath = 'C:/laragon/www/SIBANSOS/storage/app/public/foto'; // Path penyimpanan sesuai dengan yang Anda tentukan
     
-            // Pastikan directory penyimpanan ada, jika tidak, buat directory
-            if (!file_exists($customPath)) {
-                mkdir($customPath, 0755, true);
-            }
-    
             // Pindahkan file ke path yang ditentukan
             $file->move($customPath, $filename);
     
