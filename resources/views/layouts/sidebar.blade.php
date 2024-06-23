@@ -22,12 +22,15 @@
                 <!-- Menu untuk RW -->
                 <li class="nav-header">Menu Administrasi</li>
                 <li class="nav-item has-treeview">
-                    <a href="#" class="nav-link">
+                    <a href="#" class="nav-link {{ $activeMenu == 'warga' || $activeMenu == 'riwayat' || $activeMenu == 'surat' ? 'active' : '' }}">
                         <i class="nav-icon fas fa-users"></i>
                         <p>
                             Data Warga
                             <i class="right fas fa-angle-left"></i>
                         </p>
+                        @if (isset($pengajuanCount) && $pengajuanCount > 0)
+                        <span class="badge badge-danger  navbar-badge">{{ $pengajuanCount }}</span>
+                        @endif
                     </a>
                     <ul class="nav nav-treeview">
                         <li class="nav-item">
@@ -37,25 +40,25 @@
                             </a>
                         </li>
                         <li class="nav-item">
-                            <a href="{{ url('/riwayat') }}" class="nav-link">
+                            <a href="{{ url('/riwayat') }}" class="nav-link ">
                                 <i class="fas fa-history nav-icon"></i>
                                 <p>Riwayat Data Warga</p>
                             </a>
                         </li>
-                        {{-- <li class="nav-item">
-                            <a href="{{ url('/surat') }}" class="nav-link">
+                        <li class="nav-item">
+                            <a href="{{ url('/pengajuan') }}" class="nav-link">
                                 <i class="fas fa-envelope-open-text nav-icon"></i>
                                 <p>Data Pengajuan Surat</p>
-                                @if (isset($penerimaCount) && $penerimaCount > 0)
-                                    <span class="badge badge-danger right navbar-badge">{{ $penerimaCount }}</span>
+                                @if (isset($pengajuanCount) && $pengajuanCount > 0)
+                                    <span class="badge badge-danger right navbar-badge">{{ $pengajuanCount }}</span>
                                 @endif
                             </a>
-                        </li> --}}
+                        </li>
                     </ul>
                 </li>
                 <li class="nav-header">Menu Bantuan Sosial</li>
                 <li class="nav-item has-treeview">
-                    <a href="#" class="nav-link">
+                    <a href="#" class="nav-link {{ $activeMenu == 'bansos' || $activeMenu == 'bantuan' || $activeMenu == 'penerima' ? 'active' : '' }}">
                         <i class="nav-icon fas fa-hand-holding-heart"></i>
                         <p>
                             Bantuan Sosial
@@ -93,15 +96,15 @@
                 <!-- Menu untuk RT -->
                 <li class="nav-header">Menu Administrasi</li>
                 <li class="nav-item has-treeview">
-                    <a href="#" class="nav-link">
+                    <a href="#" class="nav-link {{ $activeMenu == 'warga' || $activeMenu == 'riwayat' || $activeMenu == 'surat' ? 'active' : '' }}">
                         <i class="nav-icon fas fa-users"></i>
                         <p>
                             Data Warga
                             <i class="right fas fa-angle-left"></i>
                         </p>
-                        @if (isset($penerimaCount) && $penerimaCount > 0)
-                        <span class="badge badge-danger  navbar-badge">{{ $penerimaCount }}</span>
-                        @endif
+                        @if (isset($pengajuanCount) && $pengajuanCount > 0)
+                                    <span class="badge badge-danger right navbar-badge">{{ $pengajuanCount }}</span>
+                                @endif
                     </a>
                     <ul class="nav nav-treeview">
                         <li class="nav-item">
@@ -117,11 +120,11 @@
                             </a>
                         </li>
                         <li class="nav-item">
-                            <a href="{{ url('/penerima') }}" class="nav-link">
+                            <a href="{{ url('/pengajuan') }}" class="nav-link">
                                 <i class="fas fa-user-check nav-icon"></i>
                                 <p>Data Pengajuan</p>
-                                @if (isset($penerimaCount) && $penerimaCount > 0)
-                                    <span class="badge badge-danger right navbar-badge">{{ $penerimaCount }}</span>
+                                @if (isset($pengajuanCount) && $pengajuanCount > 0)
+                                    <span class="badge badge-danger right navbar-badge">{{ $pengajuanCount }}</span>
                                 @endif
                             </a>
                         </li>
@@ -129,7 +132,7 @@
                 </li>
                 <li class="nav-header">Menu Bantuan Sosial</li>
                 <li class="nav-item has-treeview">
-                    <a href="#" class="nav-link">
+                    <a href="#" class="nav-link {{ $activeMenu == 'bansos' || $activeMenu == 'bantuan' || $activeMenu == 'penerima' ? 'active' : '' }}">
                         <i class="nav-icon fas fa-hand-holding-heart"></i>
                         <p>
                             Bantuan Sosial
@@ -161,7 +164,7 @@
             @endif
             <li class="nav-header">Menu Pengajuan</li>
             <li class="nav-item has-treeview">
-                <a href="#" class="nav-link">
+                <a href="#" class="nav-link {{ $activeMenu == 'pengajuan' || $activeMenu == 'penerimabansos' ? 'active' : '' }}">
                     <i class="nav-icon fas fa-file-alt"></i>
                     <p>
                         Pengajuan Surat
@@ -169,12 +172,12 @@
                     </p>
                 </a>
                 <ul class="nav nav-treeview">
-                    {{-- <li class="nav-item">
+                    <li class="nav-item">
                         <a href="{{ url('/pengajuan-surat') }}" class="nav-link">
                             <i class="far fa-file-alt nav-icon"></i>
                             <p>Pengajuan Dokumen</p>
                         </a>
-                    </li> --}}
+                    </li>
                     <li class="nav-item">
                         <a href="{{ url('/pengajuan-bansos') }}" class="nav-link">
                             <i class="fas fa-hands-helping nav-icon"></i>
@@ -185,7 +188,7 @@
             </li>
             <li class="nav-header">Menu Pengaturan</li>
             <li class="nav-item has-treeview">
-                <a href="#" class="nav-link">
+                <a href="#" class="nav-link {{ $activeMenu == 'profil' || $activeMenu == 'setting' ? 'active' : '' }}">
                     <i class="nav-icon fas fa-cogs"></i>
                     <p>
                         Pengaturan

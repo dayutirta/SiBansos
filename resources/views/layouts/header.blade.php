@@ -14,12 +14,14 @@
             <a class="nav-link" data-widget="pushmenu" href="#" role="button">
                 <i class="fas fa-bars">
                     @isset($penerimaCount)
-                        @if($penerimaCount > 0)
+                    @isset($pengajuanCount)
+                        @if($penerimaCount > 0 && $pengajuanCount > 0)
                         <span class="badge badge-danger navbar-badge" style="border-radius: 50%; width: 10px; height: 10px;">
                             <span style="font-size: 8px; color: red;">&bull;</span>
                         </span>
                         @endif
                     @endisset
+                @endisset
                 </i>       
             </a>
         </li>
