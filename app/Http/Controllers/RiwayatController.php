@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\WargaModel;
 use App\Models\PenerimaModel;
+use App\Models\PengajuanModel;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Yajra\DataTables\DataTables;
@@ -25,6 +26,7 @@ class RiwayatController extends Controller
 
         if ($level == 1) {
             $penerimaCount = PenerimaModel::where('status', 'Pending')->count();
+            $pengajuanCount = pengajuanModel::where('status', 'Pending')->count();
             $nokkrw = WargaModel::select('nokk')
                 ->where('status', '!=', 'Aktif')
                 ->distinct()->get();
@@ -35,6 +37,7 @@ class RiwayatController extends Controller
             return view('admin.riwayat.index', [
                 'breadcrumb' => $breadcrumb,
                 'penerimaCount' => $penerimaCount,
+                'pengajuanCount' => $pengajuanCount,
                 'page' => $page,
                 'nokkrw' => $nokkrw,
                 'activeMenu' => $activeMenu
@@ -44,6 +47,9 @@ class RiwayatController extends Controller
             $penerimaCount = PenerimaModel::whereHas('user', function ($query) use ($rt_logged_in) {
                 $query->where('rt', $rt_logged_in);
             })->where('status', 'Pending')->count();
+            $pengajuanCount = pengajuanModel::whereHas('user', function ($query) use ($rt_logged_in) {
+                $query->where('rt', $rt_logged_in);
+            })->where('status', 'Pending')->count();
             $breadcrumb = (object) [
                 'title' => 'Daftar Riwayat Warga per RT',
                 'list' => ['Home', 'Riwayat']
@@ -51,6 +57,7 @@ class RiwayatController extends Controller
             return view('admin.riwayat.index', [
                 'breadcrumb' => $breadcrumb,
                 'penerimaCount' => $penerimaCount,
+                'pengajuanCount' => $pengajuanCount,
                 'page' => $page,
                 'nokkrw' => $nokkrw,
                 'activeMenu' => $activeMenu

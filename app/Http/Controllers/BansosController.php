@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 use App\Models\BansosModel;
 use App\Models\BantuanModel;
 use App\Models\PenerimaModel;
+use App\Models\PengajuanModel;
 use Illuminate\Http\Request;
 use Yajra\DataTables\Facades\DataTables;
 use Illuminate\Support\Facades\Auth;
@@ -24,17 +25,21 @@ class BansosController extends Controller
         $id_level = $user->id_level;
         $activeMenu = 'bansos';
         $penerimaCount = Penerimamodel::where('status', 'Pending')->count();
+        $pengajuanCount = PengajuanModel::where('status', 'Pending')->count();
         $rt_logged_in = $user->rt;
         
         $bantuan = BantuanModel::all();
         if ($id_level == 1) {
-            return view('admin.bansos.index', ['penerimaCount' => $penerimaCount,'breadcrumb' => $breadcrumb, 'page' => $page, 'bantuan' => $bantuan, 'activeMenu' => $activeMenu]);
+            return view('admin.bansos.index', ['penerimaCount' => $penerimaCount,'breadcrumb' => $breadcrumb, 'page' => $page, 'bantuan' => $bantuan, 'activeMenu' => $activeMenu,'pengajuanCount' => $pengajuanCount]);
         }
         elseif($id_level == 2){
             $penerimaCount = PenerimaModel::whereHas('user', function($query) use ($rt_logged_in) {
                 $query->where('rt', $rt_logged_in);
             })->where('status', 'Pending')->count();
-            return view('rt.bansos.index', ['penerimaCount' => $penerimaCount,'breadcrumb' => $breadcrumb, 'page' => $page, 'bantuan' => $bantuan, 'activeMenu' => $activeMenu]);
+            $pengajuanCount = PengajuanModel::whereHas('user', function($query) use ($rt_logged_in) {
+                $query->where('rt', $rt_logged_in);
+            })->where('status', 'Pending')->count();
+            return view('rt.bansos.index', ['penerimaCount' => $penerimaCount,'breadcrumb' => $breadcrumb, 'page' => $page, 'bantuan' => $bantuan, 'activeMenu' => $activeMenu,'pengajuanCount' => $pengajuanCount]);
         }
         
     }

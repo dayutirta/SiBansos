@@ -6,6 +6,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use App\Models\WargaModel;
 use App\Models\PenerimaModel;
+use App\Models\PengajuanModel;
 use Carbon\carbon;
 use Illuminate\Support\Facades\Response;
 
@@ -24,6 +25,7 @@ class UserController extends Controller
             $activeMenu = 'dashboard';
             $rw_logged_in = $user->rw;
             $penerimaCount = Penerimamodel::where('status', 'Pending')->count();
+            $pengajuanCount = Pengajuanmodel::where('status', 'Pending')->count();
         try {
             // Inisialisasi array untuk menyimpan jumlah warga per RT
             $warga_per_rt = [];
@@ -53,6 +55,7 @@ class UserController extends Controller
                 'level_id' => $level_id,
                 'userPhoto' => $userPhoto,
                 'penerimaCount' => $penerimaCount,
+                'pengajuanCount' => $pengajuanCount,
                 'breadcrumb' => $breadcrumb,
                 'page' => $page,
                 'activeMenu' => $activeMenu,
@@ -110,7 +113,8 @@ class UserController extends Controller
 
                 $penerimaCount = PenerimaModel::whereHas('user', function($query) use ($rt_logged_in) {
                     $query->where('rt', $rt_logged_in);
-                })->where('status', 'Pending')->count();$penerimaCount = PenerimaModel::whereHas('user', function($query) use ($rt_logged_in) {
+                })->where('status', 'Pending')->count();
+                $pengajuanCount = PengajuanModel::whereHas('user', function($query) use ($rt_logged_in) {
                     $query->where('rt', $rt_logged_in);
                 })->where('status', 'Pending')->count();
                 return view('rt.index', [
@@ -118,6 +122,7 @@ class UserController extends Controller
                     'userPhoto' => $userPhoto,
                     'nokk' => $nokk,
                     'penerimaCount' => $penerimaCount,
+                    'pengajuanCount' => $pengajuanCount,
                     'level_id' => $level_id,
                     'page' => $page,
                     'activeMenu' => $activeMenu,

@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\BantuanModel;
 use App\Models\PenerimaModel;
+use App\Models\PengajuanModel;
 use Illuminate\Http\Request;
 use Yajra\DataTables\DataTables;
 
@@ -23,10 +24,12 @@ class BantuanController extends Controller
 
         $activeMenu = 'bantuan';
         $penerimaCount = Penerimamodel::where('status', 'Pending')->count();
+        $pengajuanCount = pengajuanmodel::where('status', 'Pending')->count();
         return view('admin.bantuan.index', [
             'breadcrumb' => $breadcrumb,
             'page' => $page,
             'penerimaCount' => $penerimaCount,
+            'pengajuanCount' => $pengajuanCount,
             'activeMenu' => $activeMenu
         ]);
     }
