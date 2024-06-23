@@ -66,7 +66,7 @@
     
                 <div class="info-box-content">
                     <span class="info-box-text">Pengajuan Baru</span>
-                    <span class="info-box-number">{{ $jumlahPending }}</span>
+                    <span class="info-box-number">{{ $penerimaCount }}</span>
                 </div>
                 <!-- /.info-box-content -->
             </div>

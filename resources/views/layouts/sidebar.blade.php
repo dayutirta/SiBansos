@@ -92,6 +92,7 @@
                         </li>
                     </ul>
                 </li>
+            
             @elseif (Auth::user()->id_level == 2)
                 <!-- Menu untuk RT -->
                 <li class="nav-header">Menu Administrasi</li>
@@ -101,10 +102,11 @@
                         <p>
                             Data Warga
                             <i class="right fas fa-angle-left"></i>
+                            
                         </p>
                         @if (isset($pengajuanCount) && $pengajuanCount > 0)
-                                    <span class="badge badge-danger right navbar-badge">{{ $pengajuanCount }}</span>
-                                @endif
+                                <span class="badge badge-danger navbar-badge">{{ $pengajuanCount }}</span>
+                            @endif
                     </a>
                     <ul class="nav nav-treeview">
                         <li class="nav-item">
@@ -137,10 +139,10 @@
                         <p>
                             Bantuan Sosial
                             <i class="right fas fa-angle-left"></i>
+                            @if (isset($penerimaCount) && $penerimaCount > 0)
+                                <span class="badge badge-danger navbar-badge">{{ $penerimaCount }}</span>
+                            @endif
                         </p>
-                        @if (isset($penerimaCount) && $penerimaCount > 0)
-                            <span class="badge badge-danger  navbar-badge">{{ $penerimaCount }}</span>
-                        @endif
                     </a>
                     <ul class="nav nav-treeview">
                         <li class="nav-item">
@@ -154,14 +156,14 @@
                                 <i class="fas fa-user-check nav-icon"></i>
                                 <p>Data Penerima</p>
                                 @if (isset($penerimaCount) && $penerimaCount > 0)
-                            <span class="badge badge-danger  navbar-badge">{{ $penerimaCount }}</span>
-                        @endif
+                                    <span class="badge badge-danger navbar-badge">{{ $penerimaCount }}</span>
+                                @endif
                             </a>
-                            
                         </li>
                     </ul>
                 </li>
             @endif
+            
             <li class="nav-header">Menu Pengajuan</li>
             <li class="nav-item has-treeview">
                 <a href="#" class="nav-link {{ $activeMenu == 'pengajuan' || $activeMenu == 'penerimabansos' ? 'active' : '' }}">
