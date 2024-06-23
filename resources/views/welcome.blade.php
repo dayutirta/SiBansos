@@ -50,7 +50,7 @@
                             <h1 class="m-0">SiBansos</h1>
                         </a>
                         <div class="d-flex align-items-center ms-auto">
-                            <a href="{{ url('login') }}" class="btn btn-secondary rounded-pill py-2 px-4 ms-3">Login</a>
+                            <a href="{{ secure_secure_url('login') }}" class="btn btn-secondary rounded-pill py-2 px-4 ms-3">Login</a>
                         </div>
                     </div>
                 </nav>
