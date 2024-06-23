@@ -23,7 +23,7 @@
                                 <option value="{{ $item->id_surat }}">{{ $item->nama_surat }}</option>
                             @endforeach
                         </select>
-                        <small class="form-text text-muted">Nama Program</small>
+                        <small class="form-text text-muted">Nama Surat</small>
                     </div>
                 </div>
             </div>
@@ -33,10 +33,9 @@
                 <thead>
                     <tr>
                         <th>Nomor</th>
-                        <th>Nama Program</th>
-                        <th>NoKK</th>
-                        <th>Nama</th>
-                        <th>Alamat</th>
+                        <th>Nama Surat</th>
+                        <th>Nama Pemohon</th>
+                        <th>Keterangan</th>
                         <th>Aksi</th>
                     </tr>
                 </thead>
@@ -62,7 +61,7 @@
         var table = $('#table_pengajuan').DataTable({
             serverSide: true,
             ajax: {
-                url: "{{ url('penerima/showup') }}",
+                url: "{{ url('pengajuan/showup') }}",
                 type: 'POST',
                 data: function(d) {
                     d.id_surat = $('#id_surat').val();
@@ -71,17 +70,8 @@
             columns: [
                 { data: 'DT_RowIndex', name: 'DT_RowIndex', orderable: false, searchable: false },
                 { data: 'surat.nama_surat', name: 'surat.nama_surat', orderable: false, searchable: true },
-                { data: 'user.nokk', name: 'user.nokk', orderable: false, searchable: true },
-                { data: 'user.nama', name: 'user.nama', orderable: false, searchable: true },
-                {
-                    data: null,
-                    name: 'user.rt',
-                    orderable: false,
-                    searchable: true,
-                    render: function(data, type, row) {
-                        return row.user.alamat + ', RT ' + row.user.rt + ' / RW ' + row.user.rw;
-                    }
-                },
+                { data: 'warga.nama', name: 'warga.nama', orderable: false, searchable: true },
+                { data: 'keterangan', name: 'surat.keterangan', orderable: false, searchable: true },
                 { data: 'aksi', name: 'aksi', orderable: false, searchable: false }
             ],
             "autoWidth": false,
