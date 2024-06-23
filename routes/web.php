@@ -92,21 +92,25 @@ Route::group(['prefix' => 'setting'], function() {
     Route::get('/', [SettingController::class, 'index']);
 });
 
-// // Route untuk Pengajuan Surat
-// Route::group(['prefix' => 'pengajuan-surat'], function() {
-//     Route::get('/', [PengajuanController::class, 'index']);          
-//     Route::post('/list', [PengajuanController::class, 'list']);      
-//     Route::get('/create', [PengajuanController::class, 'create']);   
-//     Route::post('/', [PengajuanController::class, 'store']);
-// });
+// Route untuk Pengajuan Surat
+Route::group(['prefix' => 'pengajuan-surat'], function() {
+    Route::get('/', [PengajuanController::class, 'index']);          
+    Route::post('/list', [PengajuanController::class, 'list']);      
+    Route::get('/create', [PengajuanController::class, 'create']);   
+    Route::post('/', [PengajuanController::class, 'store']);
+    Route::get('/download/{id}', [PengajuanController::class, 'download'])->name('download');
 
-// //route Surat
-// Route::group(['prefix' => 'surat'], function() {
-//     Route::get('/', [PengajuanController::class, 'show']);          
-//     Route::post('/showup', [PengajuanController::class, 'showup']);
-//     Route::get('/accept/{id}', [PengajuanController::class, 'accept']);
-//     Route::get('/reject/{id}', [PengajuanController::class, 'reject']); 
-// });
+});
+
+//route Surat
+Route::group(['prefix' => 'pengajuan'], function() {
+    Route::get('/', [PengajuanController::class, 'show']);          
+    Route::post('/showup', [PengajuanController::class, 'showup']);
+    Route::get('/accept/{id}', [PengajuanController::class, 'accept']);
+    Route::get('/reject/{id}', [PengajuanController::class, 'reject']);
+    Route::get('/terima/{id}', [PengajuanController::class, 'terima']);
+    Route::get('/tolak/{id}', [PengajuanController::class, 'tolak']);  
+});
 
 // Route untuk Pengajuan Bansos
 Route::group(['prefix' => 'pengajuan-bansos'], function() {
