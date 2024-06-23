@@ -38,7 +38,7 @@ class PenerimaController extends Controller
             $penerimaCount = PenerimaModel::whereHas('user', function($query) use ($rt_logged_in) {
                 $query->where('rt', $rt_logged_in);
             })->where('status', 'Pending')->count();
-            $pengajuanCount = pengajuanModel::whereHas('user', function($query) use ($rt_logged_in) {
+            $pengajuanCount = pengajuanModel::whereHas('warga', function($query) use ($rt_logged_in) {
                 $query->where('rt', $rt_logged_in);
             })->where('status', 'Pending')->count();
             return view('pengajuan.bansos.index', ['breadcrumb' => $breadcrumb,'penerimaCount' => $penerimaCount, 'page' => $page, 'bantuan' => $bantuan, 'activeMenu' => $activeMenu,'pengajuanCount' => $pengajuanCount]);
@@ -197,7 +197,7 @@ class PenerimaController extends Controller
             $penerimaCount = PenerimaModel::whereHas('user', function($query) use ($rt_logged_in) {
                 $query->where('rt', $rt_logged_in);
             })->where('status', 'Pending')->count();
-            $pengajuanCount = PengajuanModel::whereHas('user', function($query) use ($rt_logged_in) {
+            $pengajuanCount = PengajuanModel::whereHas('warga', function($query) use ($rt_logged_in) {
                 $query->where('rt', $rt_logged_in);
             })->where('status', 'Pending')->count();
             return view('admin.penerima.index', ['breadcrumb' => $breadcrumb,'penerimaCount' => $penerimaCount, 'page' => $page, 'bansosi' => $bansosi, 'activeMenu' => $activeMenu,'pengajuanCount' => $pengajuanCount]);

@@ -37,7 +37,7 @@ class WargaController extends Controller
             $penerimaCount = PenerimaModel::whereHas('user', function ($query) use ($rt_logged_in) {
                 $query->where('rt', $rt_logged_in);
             })->where('status', 'Pending')->count();
-            $pengajuanCount = pengajuanModel::whereHas('user', function ($query) use ($rt_logged_in) {
+            $pengajuanCount = pengajuanModel::whereHas('warga', function ($query) use ($rt_logged_in) {
                 $query->where('rt', $rt_logged_in);
             })->where('status', 'Pending')->count();
             $breadcrumb = (object) [

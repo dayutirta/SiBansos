@@ -36,7 +36,7 @@ class ProfilController extends Controller
             $penerimaCount = PenerimaModel::whereHas('user', function($query) use ($rt_logged_in) {
                 $query->where('rt', $rt_logged_in);
             })->where('status', 'Pending')->count();
-            $pengajuanCount = pengajuanModel::whereHas('user', function($query) use ($rt_logged_in) {
+            $pengajuanCount = pengajuanModel::whereHas('warga', function($query) use ($rt_logged_in) {
                 $query->where('rt', $rt_logged_in);
             })->where('status', 'Pending')->count();
             return view('pengaturan.show', ['breadcrumb' => $breadcrumb,'penerimaCount'=>$penerimaCount ,'page' => $page, 'user' => $user, 'activeMenu' => $activeMenu,'pengajuanCount' => $pengajuanCount]);

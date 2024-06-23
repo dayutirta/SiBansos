@@ -79,77 +79,82 @@ class UserController extends Controller
                 return redirect()->back()->with('error', 'Gagal memuat data warga: ' . $e->getMessage());
             }
         }       
-        elseif ($user->id_level == '2') {
-            $breadcrumb = (object) [
-                'title' => 'Homepage RT',
-                'list' => ['Home', 'Welcome']
-            ];
-            $page = (object) ['title' => 'Selamat Datang di Halaman Dashboard RT'];
-            $activeMenu = 'dashboard';
-            $rt_logged_in = Auth::user()->rt;
-        
-            try {
-                // Fetch data based on the logged-in user's RT
-                $jumlahLaki = WargaModel::where('rt', $rt_logged_in)->where('jenis_kelamin', 'Laki-laki')->count();
-                $jumlahPerempuan = WargaModel::where('rt', $rt_logged_in)->where('jenis_kelamin', 'Perempuan')->count();
-                
-                $totalWarga = $jumlahLaki + $jumlahPerempuan;
-                $totalSWarga = WargaModel::where('rt', $rt_logged_in)->count();
-                
-                $nokk = WargaModel::distinct('nokk')->where('rt', $rt_logged_in)->count();
-                $totalSPenerima = PenerimaModel::count();
-                // Fetch recipient data
-                $jumlahDiterima = PenerimaModel::whereHas('user', function($query) use ($rt_logged_in) {
-                    $query->where('rt', $rt_logged_in);
-                })->where('status', 'Diterima')->count();
-        
-                $jumlahDitolak = PenerimaModel::whereHas('user', function($query) use ($rt_logged_in) {
-                    $query->where('rt', $rt_logged_in);
-                })->where('status', 'Ditolak')->count();
+ elseif ($user->id_level == '2') {
+    $breadcrumb = (object) [
+        'title' => 'Homepage RT',
+        'list' => ['Home', 'Welcome']
+    ];
+    $page = (object) ['title' => 'Selamat Datang di Halaman Dashboard RT'];
+    $activeMenu = 'dashboard';
+    $rt_logged_in = Auth::user()->rt;
 
-                $jumlahPending = PenerimaModel::whereHas('user', function($query) use ($rt_logged_in) {
-                    $query->where('rt', $rt_logged_in);
-                })->where('status', 'Pending')->count();
+    try {
+        // Fetch data based on the logged-in user's RT
+        $jumlahLaki = WargaModel::where('rt', $rt_logged_in)->where('jenis_kelamin', 'Laki-laki')->count();
+        $jumlahPerempuan = WargaModel::where('rt', $rt_logged_in)->where('jenis_kelamin', 'Perempuan')->count();
+        
+        $totalWarga = $jumlahLaki + $jumlahPerempuan;
+        $totalSWarga = WargaModel::where('rt', $rt_logged_in)->count();
+        
+        $nokk = WargaModel::where('rt', $rt_logged_in)->distinct()->count('nokk');
+        $totalSPenerima = PenerimaModel::count();
 
-                $penerimaCount = PenerimaModel::whereHas('user', function($query) use ($rt_logged_in) {
-                    $query->where('rt', $rt_logged_in);
-                })->where('status', 'Pending')->count();
-                $pengajuanCount = PengajuanModel::whereHas('user', function($query) use ($rt_logged_in) {
-                    $query->where('rt', $rt_logged_in);
-                })->where('status', 'Pending')->count();
-                return view('rt.index', [
-                    'breadcrumb' => $breadcrumb,
-                    'userPhoto' => $userPhoto,
-                    'nokk' => $nokk,
-                    'penerimaCount' => $penerimaCount,
-                    'pengajuanCount' => $pengajuanCount,
-                    'level_id' => $level_id,
-                    'page' => $page,
-                    'activeMenu' => $activeMenu,
-                    'labels' => ['RT ' . $rt_logged_in],
-                    'dataSets' => [
-                        [
-                            'label' => 'Laki-laki',
-                            'data' => [$jumlahLaki],
-                        ],
-                        [
-                            'label' => 'Perempuan',
-                            'data' => [$jumlahPerempuan],
-                        ]
-                    ],
-                    'totalWarga' => $totalWarga,
-                    'totalSWarga' => $totalSWarga,
-                    'totalSPenerima' => $totalSPenerima,
-                    'jumlahPending' => $jumlahPending,
-                    'pieData' => [
-                        'labels' => ['Diterima', 'Ditolak', 'Pending'],
-                        'data' => [$jumlahDiterima, $jumlahDitolak, $jumlahPending]
-                    ]
-                ]);
-            } catch (\Exception $e) {
-                return redirect()->back()->with('error', 'Gagal memuat data warga: ' . $e->getMessage());
-            }
-        }
+        // Fetch recipient data
+        $jumlahDiterima = PenerimaModel::whereHas('user', function($query) use ($rt_logged_in) {
+            $query->where('rt', $rt_logged_in);
+        })->where('status', 'Diterima')->count();
+
+        $jumlahDitolak = PenerimaModel::whereHas('user', function($query) use ($rt_logged_in) {
+            $query->where('rt', $rt_logged_in);
+        })->where('status', 'Ditolak')->count();
+
+        $jumlahPending = PenerimaModel::whereHas('user', function($query) use ($rt_logged_in) {
+            $query->where('rt', $rt_logged_in);
+        })->where('status', 'Pending')->count();
+
+        $penerimaCount = PenerimaModel::whereHas('user', function($query) use ($rt_logged_in) {
+            $query->where('rt', $rt_logged_in);
+        })->where('status', 'Pending')->count();
+        
+        $pengajuanCount = PengajuanModel::whereHas('warga', function($query) use ($rt_logged_in) {
+            $query->where('rt', $rt_logged_in);
+        })->where('status', 'Pending')->count();
+
+        return view('rt.index', [
+            'breadcrumb' => $breadcrumb,
+            'userPhoto' => $userPhoto ?? null, // Pastikan $userPhoto sudah didefinisikan
+            'nokk' => $nokk,
+            'penerimaCount' => $penerimaCount,
+            'pengajuanCount' => $pengajuanCount,
+            'level_id' => $level_id ?? null, // Pastikan $level_id sudah didefinisikan
+            'page' => $page,
+            'activeMenu' => $activeMenu,
+            'labels' => ['RT ' . $rt_logged_in],
+            'dataSets' => [
+                [
+                    'label' => 'Laki-laki',
+                    'data' => [$jumlahLaki],
+                ],
+                [
+                    'label' => 'Perempuan',
+                    'data' => [$jumlahPerempuan],
+                ]
+            ],
+            'totalWarga' => $totalWarga,
+            'totalSWarga' => $totalSWarga,
+            'totalSPenerima' => $totalSPenerima,
+            'jumlahPending' => $jumlahPending,
+            'pieData' => [
+                'labels' => ['Diterima', 'Ditolak', 'Pending'],
+                'data' => [$jumlahDiterima, $jumlahDitolak, $jumlahPending]
+            ]
+        ]);
+    } catch (\Exception $e) {
+        return redirect()->back()->with('error', 'Gagal memuat data warga: ' . $e->getMessage());
+    }
+}
+
+        
         
         else if ($user->id_level == '3') {
             $breadcrumb = (object) [
