@@ -5,7 +5,7 @@
         <div class="card-header">
             <h3 class="card-title">{{ $page->title }}</h3>
             <div class="card-tools">
-                <a class="btn btn-sm btn-primary mt-1" href="{{ url('bansos/create')}}">Tambah</a>
+                <a class="btn btn-sm btn-primary mt-1" href="{{ secure_url('bansos/create')}}">Tambah</a>
             </div>
         </div>
         <div class="card-body">
@@ -69,7 +69,7 @@
         var dataUser = $('#table_bansos').DataTable({
             serverSide: true,
             ajax: {
-                "url": "{{ url('bansos/list') }}",
+                "url": "{{ secure_url('bansos/list') }}",
                 "type": "POST",
                 "data": function (d) {
                     d.id_bantuan = $('#id_bantuan').val();
