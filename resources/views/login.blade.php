@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+e<!DOCTYPE html>
 <html lang="en">
 
 <head>
@@ -60,13 +60,13 @@
                         <button type="submit" class="btn btn-primary btn-block">Login</button>
                     </div>
                     <div class="col-12">
-                        <a href="{{ url('/') }}" class="btn btn-secondary btn-block mt-2">Kembali</a>
+                        <a href="{{ secure_url('/') }}" class="btn btn-secondary btn-block mt-2">Kembali</a>
                     </div>
                 </div>
             </form>
 
             <p class="mt-3 mb-1 text-center">
-                Belum punya akun? <a href="{{ route('registrasi') }}">Registrasi disini</a>
+                Belum punya akun? <a href="{{ secure_url('registrasi') }}">Registrasi disini</a>
             </p>
 
         </div>
