@@ -6,7 +6,7 @@
             <h3 class="card-title">{{ $page->title }}</h3>
             {{-- Button Tambah --}}
             <div class="card-tools">
-                <a class="btn btn-sm btn-primary mt-1" href="{{ url('warga/create') }}">Tambah</a>
+                <a class="btn btn-sm btn-primary mt-1" href="{{ secure_url('warga/create') }}">Tambah</a>
             </div>
         </div>
         <div class="card-body">
@@ -69,7 +69,7 @@
             var table = $('#table_warga').DataTable({
                 serverSide: true,
                 ajax: {
-                    "url": "{{ url('warga/list') }}",
+                    "url": "{{ secure_url('warga/list') }}",
                     "type": 'POST',
                     "data": function(d) {
                         d.nokk = $('#nokk').val();
