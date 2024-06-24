@@ -27,7 +27,7 @@
         <div class="card login-card-body">
             <p class="login-box-msg">Login untuk masuk</p>
 
-            <form action="{{ secure_url(route('registrasi')) }}" method="post">
+            <form action="{{ secure_url(route('login')) }}" method="post">
                 @csrf
                 <div class="input-group mb-3">
                     <input type="text" name="nik" class="form-control @error('nik') is-invalid @enderror" placeholder="NIK" value="{{ old('nik') }}" required autofocus>
